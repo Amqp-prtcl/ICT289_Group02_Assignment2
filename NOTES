@@ -1,0 +1,13 @@
+
+
+
+struct ball *balls;
+
+struct ball **moving;
+
+Have a table of collisions
+
+table size (cm2): 356.9 x 177.8
+
+
+
