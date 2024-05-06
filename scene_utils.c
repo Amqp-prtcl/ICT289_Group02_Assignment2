@@ -1,5 +1,5 @@
 #include "scene_utils.h"
-#include "vector_math.h"
+#include "vector.h"
 
 
 void drawGrid(GLfloat cell_length, int grid_length) {

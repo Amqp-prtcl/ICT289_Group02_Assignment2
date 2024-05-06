@@ -1,5 +1,8 @@
 #include "phys.h"
+#include "ball.h"
 #include "stdio.h"
+
+#include "board.h"
 
 void phys_reset(struct phys *phys) {
     phys->mass = 1;
@@ -7,6 +10,7 @@ void phys_reset(struct phys *phys) {
     vector3_to_zero(phys->speed);
 }
 
+/*
 void apply_gravity(struct phys *phys, const GLfloat delta) {
     phys->speed[1] -= G_FORCE * delta;
 }
@@ -26,7 +30,53 @@ void apply_collision(struct phys *phys, struct object_trans *obj,
         phys->speed[2] *= GROUND_BOUND_FRICTION;
         obj->position[1] = phys->radius;
     }
+}*/
+
+void compute_next_pos(struct board *board, const GLfloat delta) {
+    struct ball *b;
+    for (size_t i = 0; i < board->balls_num; i++) {
+        b = board->balls + i;
+
+        b->trans.position[0] += b->phys.speed[0] * delta;
+        b->trans.position[1] += b->phys.speed[1] * delta;
+        b->trans.position[2] += b->phys.speed[2] * delta;
+    }
 }
+
+static void apply_collision(struct ball *b1, struct ball *b2) {
+    Vector3 dist, vr;
+    GLfloat d, impulse;
+
+    vector3_sub(b2->trans.position, b1->trans.position, dist);
+    d = vector3_norm(dist);
+
+    if (d >= get_ball_radius(b1) + get_ball_radius(b2))
+        return;
+
+    // normalize dist
+    vector3_scale(dist, 1/d, dist);
+    vector3_sub(b2->phys.speed, b1->phys.speed, vr);
+    impulse = vector3_dot(dist, vr);
+
+    vector3_affine(dist, impulse/b1->phys.mass,
+            b1->phys.speed, b1->phys.speed);
+    vector3_affine(dist, -impulse/b2->phys.mass,
+            b2->phys.speed, b2->phys.speed);
+}
+
+
+void apply_collisions(struct board *board, const GLfloat delta) {
+    struct ball *b1;
+    for (size_t i = 0; i < board->balls_num; i++) {
+        b1 = board->balls + i;
+        for (size_t j = i+1; j < board->balls_num; j++)
+            apply_collision(b1, board->balls+j);
+    }
+}
+
+/*
+    TOO HARD TO IMPLEMENT -- SCRAPPED
+
 
 // The collision algorithm:
 //
@@ -55,15 +105,34 @@ void apply_collision(struct phys *phys, struct object_trans *obj,
 //
 
 
-GLfloat test_ball_walls(const struct ball *ball, const GLfloat delta) {
+static GLfloat test_ball_walls(const struct board *board,
+        const struct ball *ball, const GLfloat delta) {
+
+    GLfloat d1, d2, d3;
+    const GLfoat rad = get_ball_radius(ball);
+    
+
+    if (d1 < )
     return -1;
 }
 
-GLfloat test_ball_ball(const struct ball *b1, const struct ball *b2,
+static GLfloat test_ball_ball(const struct ball *b1, const struct ball *b2,
         const GLfloat delta) {
     return -1;
 }
 
+static void fill_pos_array(const struct board *board, Vector3 *pos) {
+    for (size_t i = 0; i < board->balls_num; i++) {
+        vector_copy(pos+i, board->balls[i].trans.position);
+    }
+}
+
+static void fill_delta_array(const struct board *board, GLfloat *times,
+        const GLfloat delta) {
+    for (size_t i = 0; i < board->balls_num; i++) {
+        times[i] = delta;
+    }
+}
 
 //   |b1|b2|b3|b4|..|bn|
 //---|--|--|--|--|--|--|
@@ -72,18 +141,18 @@ GLfloat test_ball_ball(const struct ball *b1, const struct ball *b2,
 // b3|        |xx|..|xx|
 // b4|           |..|xx|
 // ..|              |xx|
-void fill_collide_table(const struct ball *balls, const size_t l,
-        const GLfloat delta, GLfloat *times, GLfloat *col_table,
-        Vector3 *positions) {
+void fill_collide_table(const struct *board, const GLfloat delta,
+        GLfloat *times, GLfloat *col_table, Vector3 *positions) {
 
     size_t c = 0;
     for (size_t i = 0; i < l; i++)
         for (size_t j = i; j < l; j++) {
             if (j == i) {
-                col_table[c++] = test_ball_wall(balls[i], delta);
+                col_table[c++] = test_ball_walls(balls+i, delta);
                 // TODO test for wall collision
                 continue;
             }
             //TODO test collision between balls i and j
         }
 }
+*/

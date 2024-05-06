@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GL/freeglut.h"
-#include "vector_math.h"
+#include "vector.h"
 
 #define TRUE 1
 #define FALSE 0

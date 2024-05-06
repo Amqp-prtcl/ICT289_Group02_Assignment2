@@ -1,4 +1,4 @@
-#include "vector_math.h"
+#include "vector.h"
 #include "math.h"
 #include "GL/freeglut.h"
 
@@ -23,7 +23,7 @@ void vector3_to_one(Vector3 v) {
     v[2] = 1;
 }
 
-void vector3_move(const Vector3 in, Vector3 out) {
+void vector3_copy(Vector3 out, const Vector3 in) {
     out[0] = in[0];
     out[1] = in[1];
     out[2] = in[2];
@@ -62,6 +62,10 @@ void vector3_affine(const Vector3 a, const GLfloat k,
     c[0] = a[0]*k + b[0];
     c[1] = a[1]*k + b[1];
     c[2] = a[2]*k + b[2];
+}
+
+GLfloat vector3_dot(const Vector3 a, const Vector3 b) {
+    return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 }
 
 // vectors cannot overlap

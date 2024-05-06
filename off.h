@@ -3,7 +3,7 @@
 #include "GL/freeglut.h"
 #include "stddef.h"
 
-#include "vector_math.h"
+#include "vector.h"
 
 struct off_triangle {
     size_t p1;
