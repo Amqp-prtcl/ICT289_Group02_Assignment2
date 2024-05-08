@@ -43,13 +43,21 @@ void vector3_scale(const Vector3 v, const GLfloat k, Vector3 out) {
 
 void vector3_normalize(const Vector3 in, Vector3 out) {
     GLfloat n = vector3_norm(in);;
-    n = 1/n;
+    if (n != 0) {
+        n = 1/n;
+    }
     out[0] = in[0] * n;
     out[1] = in[1] * n;
     out[2] = in[2] * n;
 }
 
 // OTHER OPERATIONS
+
+void vector3_add(const Vector3 a, const Vector3 b, Vector3 out) {
+    out[0] = a[0] + b[0];
+    out[1] = a[1] + b[1];
+    out[2] = a[2] + b[2];
+}
 
 void vector3_sub(const Vector3 a, const Vector3 b, Vector3 out) {
     out[0] = a[0] - b[0];

@@ -7,6 +7,7 @@ typedef GLfloat Vector3[3];
 extern const Vector3 vector3_zeros;
 extern const Vector3 vector3_one;
 
+// NOTE: bad names (confusing)
 extern const Vector3 vector3_forward;
 extern const Vector3 vector3_up;
 extern const Vector3 vector3_left;
@@ -27,6 +28,8 @@ void vector3_scale(const Vector3 v, const GLfloat k, Vector3 out);
 void vector3_normalize(const Vector3 in, Vector3 out);
 
 //// OHTER OPERATIONS ////
+
+void vector3_add(const Vector3 a, const Vector3 b, Vector3 out);
 
 void vector3_sub(const Vector3 a, const Vector3 b, Vector3 out);
 

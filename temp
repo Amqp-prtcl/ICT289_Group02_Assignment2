@@ -1,78 +1,3 @@
-#include "phys.h"
-#include "ball.h"
-#include "stdio.h"
-
-#include "board.h"
-
-void phys_reset(struct phys *phys) {
-    phys->mass = 1;
-    phys->radius = 1;
-    vector3_to_zero(phys->speed);
-}
-
-/*
-void apply_gravity(struct phys *phys, const GLfloat delta) {
-    phys->speed[1] -= G_FORCE * delta;
-}
-
-void apply_speed(const struct phys *phys, struct object_trans *obj,
-        const GLfloat delta) {
-    obj->position[0] += phys->speed[0] * delta;
-    obj->position[1] += phys->speed[1] * delta;
-    obj->position[2] += phys->speed[2] * delta;
-}
-
-void apply_collision(struct phys *phys, struct object_trans *obj,
-        const GLfloat delay) {
-    if (obj->position[1] - phys->radius <= 0) {
-        phys->speed[0] *= GROUND_BOUND_FRICTION;
-        phys->speed[1] *= -GROUND_BOUND_FRICTION;
-        phys->speed[2] *= GROUND_BOUND_FRICTION;
-        obj->position[1] = phys->radius;
-    }
-}*/
-
-void compute_next_pos(struct board *board, const GLfloat delta) {
-    struct ball *b;
-    for (size_t i = 0; i < board->balls_num; i++) {
-        b = board->balls + i;
-
-        b->trans.position[0] += b->phys.speed[0] * delta;
-        b->trans.position[1] += b->phys.speed[1] * delta;
-        b->trans.position[2] += b->phys.speed[2] * delta;
-    }
-}
-
-static void apply_collision(struct ball *b1, struct ball *b2) {
-    Vector3 dist, vr;
-    GLfloat d, impulse;
-
-    vector3_sub(b2->trans.position, b1->trans.position, dist);
-    d = vector3_norm(dist);
-
-    if (d >= get_ball_radius(b1) + get_ball_radius(b2))
-        return;
-
-    // normalize dist
-    vector3_scale(dist, 1/d, dist);
-    vector3_sub(b2->phys.speed, b1->phys.speed, vr);
-    impulse = vector3_dot(dist, vr);
-
-    vector3_affine(dist, impulse/b1->phys.mass,
-            b1->phys.speed, b1->phys.speed);
-    vector3_affine(dist, -impulse/b2->phys.mass,
-            b2->phys.speed, b2->phys.speed);
-}
-
-
-void apply_collisions(struct board *board, const GLfloat delta) {
-    struct ball *b1;
-    for (size_t i = 0; i < board->balls_num; i++) {
-        b1 = board->balls + i;
-        for (size_t j = i+1; j < board->balls_num; j++)
-            apply_collision(b1, board->balls+j);
-    }
-}
 
 /*
     TOO HARD TO IMPLEMENT -- SCRAPPED
@@ -155,4 +80,4 @@ void fill_collide_table(const struct *board, const GLfloat delta,
             //TODO test collision between balls i and j
         }
 }
-*/
+*

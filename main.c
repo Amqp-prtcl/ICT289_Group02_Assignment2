@@ -10,7 +10,9 @@
 #include "phys.h"
 #include "board.h"
 
-#define DELAY 20
+#include "dbg.h"
+
+#define DELAY 1
 #define WIND_W 1300
 #define WIND_H 700
 
@@ -20,40 +22,56 @@ struct ball balls[10] = {
     {
         {255, 0, 0},
         {
-            {-3, 0, 0},
+            {0, 0, 0},
             {0, 0, 0},
             {1, 1, 1}
         },
         {
             1,
-            1,
-            {.5, 0, 0}
+            .5,
+            {0, 0, 0}
         }
     },
     {
         {0, 255, 0},
         {
-            {6, 0, 0},
+            {-2, 0, -.5},
             {0, 0, 0},
             {1, 1, 1}
         },
         {
             1,
-            1,
-            {-1.5, 0, 0}
+            .5,
+            {0, 0, 0}
         }
     },
     {
-        {255, 0, 0},
+        {0, 0, 255},
         {
-            {0, 0, 0},
+            {8, 0, 0},
             {0, 0, 0},
             {1, 1, 1}
         },
         {
-            1,
-            1,
-            {1, 0, 1}
+            1.5,
+            .5,
+            {-8, 0, 0}
+        }
+    },
+};
+
+struct ball balls_2[] = {
+    {
+        {255, 0, 0},
+        {
+            {8, 3, 8},
+            {0, 0, 0},
+            {1, 1, 1}
+        },
+        {
+            2,
+            3,
+            {-4, 0, -4}
         }
     },
 };
@@ -66,16 +84,25 @@ void init(void) {
    board.length = 200;
 
    board.balls = balls;
-   board.balls_num = 2;
+   board.balls_num = 3;
+   board.timescale = 1.0;
+   board.table_friction_coef = 1.0;
 }
 
+/*
+void draw_wall(const struct wall *w) {
+    glColor3fv(w->color);
+    glBegin(GL_POLYGON);
+    glVertex3fv(w->p1);
+    glVertex3f(w->p1[0]);
+    glVertex3fv(w->p2);
+    glVertex3f();
+    glEnd();
+}
+*/
+
 void draw_ball(const struct ball *ball) {
-    printf("color: {%f, %f, %f}, pos = {%f, %f, %f}, speed = {%f, %f, %f}\n",
-            ball->color[0], ball->color[1], ball->color[2],
-            ball->trans.position[0],
-            ball->trans.position[1],
-            ball->trans.position[2],
-            ball->phys.speed[0], ball->phys.speed[1], ball->phys.speed[2]);
+    DBG_BALL(ball);
     glColor3fv(ball->color);
     glPushMatrix();
     object_trans_apply(&ball->trans);
@@ -118,8 +145,8 @@ void test(int last_time) {
     GLfloat delta = (GLfloat)(curr_time - last_time)/1000.0;
     glutTimerFunc(DELAY, test, curr_time);
 
-    compute_next_pos(&board, delta);
-    apply_collisions(&board, delta);
+    compute_next_pos(&board, delta * board.timescale);
+    apply_collisions(&board, delta * board.timescale);
 
     glutPostRedisplay();
 }
