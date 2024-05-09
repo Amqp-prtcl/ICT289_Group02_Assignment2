@@ -3,7 +3,7 @@ CFLAGS:=-I/opt/local/include -MMD -g -DDEBUG
 LDFLAGS:=-L/opt/local/lib
 LDLIBS:=-lglut -lGLU -lGL -lm
 
-SRC:= main.c object.c scene_utils.c off.c shape.c vector.c board.c
+SRC:= main.c object.c scene_utils.c off.c shape.c vector.c board.c matrix.c
 OBJ:=${SRC:.c=.o}
 DEPS:=${SRC:.c=.d}
 

@@ -34,6 +34,7 @@ void compute_next_pos(struct board *board, const GLfloat delta) {
 }
 
 static void ball_wall_collision(struct ball *b, const struct wall *w) {
+    return;
     Vector3 c;
     GLfloat d, imp;
 

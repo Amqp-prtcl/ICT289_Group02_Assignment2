@@ -76,33 +76,45 @@ struct ball balls_2[] = {
     },
 };
 
+struct wall walls[] = {
+    {
+        {255, 255, 255},
+        {0, 0, 0},
+        {0, 3, 0},
+        {3, 3, 0},
+    },
+};
+
 void init(void) {
-   glClearColor (0.0, 0.0, 0.0, 0.0);
-   glEnable(GL_DEPTH_TEST);
+    glClearColor (0.0, 0.0, 0.0, 0.0);
+    glEnable(GL_DEPTH_TEST);
 
-   board.width = 100;
-   board.length = 200;
+    board.width = 100;
+    board.length = 200;
 
-   board.balls = balls;
-   board.balls_num = 3;
-   board.timescale = 1.0;
-   board.table_friction_coef = 1.0;
+    board.balls = balls;
+    board.balls_num = 3;
+
+    board.walls = walls;
+    board.walls_num = 1;
+    precompute_wall(walls);
+
+    board.timescale = 1.0;
+    board.table_friction_coef = 1.0;
 }
 
-/*
 void draw_wall(const struct wall *w) {
     glColor3fv(w->color);
     glBegin(GL_POLYGON);
     glVertex3fv(w->p1);
-    glVertex3f(w->p1[0]);
     glVertex3fv(w->p2);
-    glVertex3f();
+    glVertex3fv(w->p3);
+    glVertex3fv(w->p4);
     glEnd();
 }
-*/
 
 void draw_ball(const struct ball *ball) {
-    DBG_BALL(ball);
+    //DBG_BALL(ball);
     glColor3fv(ball->color);
     glPushMatrix();
     object_trans_apply(&ball->trans);
@@ -117,6 +129,8 @@ void display(void) {
 
     for (size_t i = 0; i < board.balls_num; i++)
         draw_ball(board.balls + i);
+    for (size_t i = 0; i < board.walls_num; i++)
+        draw_wall(board.walls + i);
 
     glutSwapBuffers();
 }
@@ -136,7 +150,7 @@ void keyboard (unsigned char key, int x, int y) {
         case 27:
         case 'q':
         case 'Q':
-            exit(0);
+            glutLeaveMainLoop();
     }
 }
 
