@@ -4,7 +4,6 @@
 #include "ball.h"
 #include "wall.h"
 
-
 struct board {
     GLfloat width;
     GLfloat length;
@@ -21,6 +20,6 @@ struct board {
     GLfloat table_friction_coef;
 };
 
-void compute_next_pos(struct board *board, const GLfloat delta);
-void apply_collisions(struct board *board, const GLfloat delta);
+void board_compute_next_positions(struct board *board, const GLfloat delta);
+void board_handle_collisions(struct board *board, const GLfloat delta);
 

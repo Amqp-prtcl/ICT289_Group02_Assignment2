@@ -9,7 +9,7 @@
 #define _line_prefix __FILE__":" D2(__LINE__) " "
 
 #define DBG(a, fmt) printf(_line_prefix #a" = "fmt"\n", __LINE__, a);
-#define DBG_PRINT(...) printf(_line_prefix); printf(__VA_ARGS__);
+#define DBG_PRINT(...) {printf(_line_prefix); printf(__VA_ARGS__);}
 
 #else
 
@@ -30,11 +30,18 @@
 
 #define DBG_BALL(b) DBG_PRINT(#b" = {"\
     "color: {%03.0f, %03.0f, %03.0f}, "\
-    "pos: {%03.3f, %03.3f, %03.3f}, "\
-    "speed: {%03.3f, %03.3f, %03.3f}}\n",\
+    "pos: {%3.3f, %3.3f, %3.3f}, "\
+    "speed: {%3.3f, %3.3f, %3.3f}}\n",\
             b->color[0], b->color[1], b->color[2],\
             b->trans.position[0],\
             b->trans.position[1],\
             b->trans.position[2],\
             b->phys.speed[0], b->phys.speed[1], b->phys.speed[2])
+
+#define DBG_MAT(m) DBG_PRINT(#m" =\n| %3.3f %3.3f %3.3f |\n"\
+        "| %3.3f %3.3f %3.3f |\n"\
+        "| %3.3f %3.3f %3.3f |\n",\
+        m[0], m[1], m[2],\
+        m[3], m[4], m[5],\
+        m[6], m[7], m[8])
 

@@ -17,7 +17,7 @@ extern const Vector3 vector3_left;
 void vector3_to_zero(Vector3 v);
 void vector3_to_one(Vector3 v);
 
-void vector3_copy(Vector3 out, const Vector3 in);
+void vector3_copy(const Vector3 in, Vector3 out);
 
 //// SINGLE VECTOR OPERATIONS ////
 

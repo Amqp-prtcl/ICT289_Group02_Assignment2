@@ -23,7 +23,7 @@ void vector3_to_one(Vector3 v) {
     v[2] = 1;
 }
 
-void vector3_copy(Vector3 out, const Vector3 in) {
+void vector3_copy(const Vector3 in, Vector3 out) {
     out[0] = in[0];
     out[1] = in[1];
     out[2] = in[2];

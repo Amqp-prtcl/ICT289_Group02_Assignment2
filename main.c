@@ -64,14 +64,14 @@ struct ball balls_2[] = {
     {
         {255, 0, 0},
         {
-            {8, 3, 8},
+            {6, 0, 5},
             {0, 0, 0},
             {1, 1, 1}
         },
         {
-            2,
-            3,
-            {-4, 0, -4}
+            1,
+            .5,
+            {-7, 0, -7}
         }
     },
 };
@@ -81,7 +81,7 @@ struct wall walls[] = {
         {255, 255, 255},
         {0, 0, 0},
         {0, 3, 0},
-        {3, 3, 0},
+        {2.5, 3, -2.5},
     },
 };
 
@@ -97,7 +97,7 @@ void init(void) {
 
     board.walls = walls;
     board.walls_num = 1;
-    precompute_wall(walls);
+    wall_init(walls);
 
     board.timescale = 1.0;
     board.table_friction_coef = 1.0;
@@ -118,7 +118,7 @@ void draw_ball(const struct ball *ball) {
     glColor3fv(ball->color);
     glPushMatrix();
     object_trans_apply(&ball->trans);
-    glutWireSphere(get_ball_radius(ball), 30, 30);
+    glutWireSphere(ball_get_radius(ball), 30, 30);
     glPopMatrix();
 }
 
@@ -159,8 +159,8 @@ void test(int last_time) {
     GLfloat delta = (GLfloat)(curr_time - last_time)/1000.0;
     glutTimerFunc(DELAY, test, curr_time);
 
-    compute_next_pos(&board, delta * board.timescale);
-    apply_collisions(&board, delta * board.timescale);
+    board_compute_next_positions(&board, delta * board.timescale);
+    board_handle_collisions(&board, delta * board.timescale);
 
     glutPostRedisplay();
 }
