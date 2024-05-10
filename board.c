@@ -43,7 +43,8 @@ static void ball_wall_collision(struct ball *b, const struct wall *w) {
     vector3_sub(b->trans.position, w->p2, v1);
     matrix_vector_mul(w->m, v1, v2);
 
-    if (v2[2] < 0 || v2[2] > 0.5 || is_not_bound(v2[0]) || is_not_bound(v2[1]))
+    if (v2[2] < 0 || v2[2] > ball_get_radius(b) ||
+            is_not_bound(v2[0]) || is_not_bound(v2[1]))
         return;
 
     //DBG_VEC(v2);
@@ -53,6 +54,9 @@ static void ball_wall_collision(struct ball *b, const struct wall *w) {
     imp = vector3_dot(b->phys.speed, w->normal);
 
     vector3_affine(w->normal, -2*imp, b->phys.speed, b->phys.speed);
+
+    vector3_affine(w->normal, ball_get_radius(b)-v2[2],
+            b->trans.position, b->trans.position);
 }
 
 static void ball_ball_collision(struct ball *b1, struct ball *b2) {
@@ -74,6 +78,9 @@ static void ball_ball_collision(struct ball *b1, struct ball *b2) {
             b1->phys.speed, b1->phys.speed);
     vector3_affine(dist, -impulse/b2->phys.mass,
             b2->phys.speed, b2->phys.speed);
+
+    vector3_affine(dist, ball_get_radius(b1)-d,
+            b1->trans.position, b1->trans.position);
 }
 
 
