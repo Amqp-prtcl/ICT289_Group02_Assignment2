@@ -8,7 +8,7 @@
 #define D2(a) D1(a)
 #define _line_prefix __FILE__":" D2(__LINE__) " "
 
-#define DBG(a, fmt) printf(_line_prefix #a" = "fmt"\n", __LINE__, a);
+#define DBG(a, fmt) printf(_line_prefix #a" = "fmt"\n", a);
 #define DBG_PRINT(...) {printf(_line_prefix); printf(__VA_ARGS__);}
 
 #else

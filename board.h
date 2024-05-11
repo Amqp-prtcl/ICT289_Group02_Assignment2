@@ -16,8 +16,6 @@ struct board {
     size_t walls_num;
 
     GLfloat timescale;
-
-    GLfloat table_friction_coef;
 };
 
 void board_compute_next_positions(struct board *board, const GLfloat delta);

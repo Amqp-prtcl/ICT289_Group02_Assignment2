@@ -12,7 +12,7 @@
 
 #include "dbg.h"
 
-#define DELAY 1
+#define DELAY 10
 #define WIND_W 1300
 #define WIND_H 700
 
@@ -83,6 +83,13 @@ struct wall walls[] = {
         {-.8, 3, 0},
         {2.5, 3, -2.5},
     },
+    {
+        {0, 50, 50},
+        {100, -0.5, 100},
+        {-100, -0.5, 100},
+        {-100, -0.5, -100},
+        0, .3,
+    },
 };
 
 void init(void) {
@@ -95,12 +102,13 @@ void init(void) {
     board.balls = balls;
     board.balls_num = 3;
 
-    board.walls = walls;
+    board.walls = walls+1;
     board.walls_num = 1;
-    wall_init(walls);
+
+    for (size_t i = 0; i < board.walls_num; i++)
+        wall_init(board.walls + i);
 
     board.timescale = 1.0;
-    board.table_friction_coef = 1.0;
 }
 
 void draw_wall(const struct wall *w) {
@@ -124,8 +132,8 @@ void draw_ball(const struct ball *ball) {
 
 void display(void) {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    drawGrid(100/100, 100);
-    drawAxis();
+    //drawGrid(100/100, 100);
+    //drawAxis();
 
     for (size_t i = 0; i < board.balls_num; i++)
         draw_ball(board.balls + i);

@@ -10,6 +10,13 @@ struct wall {
     Vector3 p2;
     Vector3 p3;
 
+    // 0 means no energy loss, higer values result in higer energy loos
+    // on impact
+    GLfloat collision_coef;
+
+    // 0 means no friction, the higher the more friction
+    GLfloat friction_coef;
+
     // should be automatically filled by CHECK_WALL()
     Vector3 p4;
     Vector3 normal;
