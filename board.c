@@ -46,17 +46,17 @@ static void ball_wall_collision(struct ball *b, const struct wall *w,
 
     // imp will be negative
     imp = vector3_dot(b->phys.speed, w->normal);
-    DBGF(delta);
-    DBGF(imp);
+    //DBGF(delta);
+    //DBGF(imp);
     if (imp < 1 && imp > -1) {
-        DBG_PRINT("friction\n");
+        //DBG_PRINT("friction\n");
         // apply friction instead of collision
-        DBG_VEC(b->phys.speed);
+        //DBG_VEC(b->phys.speed);
         vector3_affine(b->phys.speed, -w->friction_coef/b->phys.mass*delta,
                 b->phys.speed, b->phys.speed);
         vector3_affine(w->normal, -imp,
                 b->phys.speed, b->phys.speed);
-        DBG_VEC(b->phys.speed);
+        //DBG_VEC(b->phys.speed);
         return;
     }
 
