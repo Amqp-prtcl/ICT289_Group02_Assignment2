@@ -16,6 +16,12 @@
 #define WIND_W 1300
 #define WIND_H 700
 
+#define UI_DEFAULT_X_POSITION 10.0f
+#define UI_DEFAULT_Y_POSITION 20.0f
+
+int game_started = 0;
+int display_help = 1;
+
 struct board board;
 
 struct ball balls[10] = {
@@ -130,6 +136,16 @@ void draw_ball(const struct ball *ball) {
     glPopMatrix();
 }
 
+void set_viewport(int w, int h) {
+    glViewport(0, 0, (GLsizei) w, (GLsizei) h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(90.0, (GLfloat) w/(GLfloat) h, 1.0, 200.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(5.0, 12.0, 5.0, 0.0, 2.5, 0.0, 0.0, 1.0, 0.0);
+}
+
 void display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     //drawGrid(100/100, 100);
@@ -139,6 +155,8 @@ void display(void) {
         draw_ball(board.balls + i);
     for (size_t i = 0; i < board.walls_num; i++)
         draw_wall(board.walls + i);
+
+    set_viewport(WIND_W, WIND_H);
 
     glutSwapBuffers();
 }
@@ -155,10 +173,34 @@ void reshape(int w, int h) {
 
 void keyboard(unsigned char key, int x, int y) {
     switch (key) {
+        // Esc & Q - quit the program
         case 27:
         case 'q':
         case 'Q':
             glutLeaveMainLoop();
+            break;
+
+        // H = toggle help menu
+        case 'h':
+        case 'H':
+            display_help = (display_help == 1) ? 0 : 1;
+            break;
+
+        // Enter - start the game
+        case 13:
+            game_started = 1;
+            break;
+
+        // R - restart the game
+        case 'r':
+        case 'R':
+            game_started = 0;
+            break;
+
+        // Default - nothing
+        default: {
+            break;
+        }
     }
 }
 
