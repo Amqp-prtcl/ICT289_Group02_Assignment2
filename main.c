@@ -93,7 +93,7 @@ struct wall walls[] = {
 };
 
 void init(void) {
-    glClearColor (0.0, 0.0, 0.0, 0.0);
+    glClearColor(0.0, 0.0, 0.0, 0.0);
     glEnable(GL_DEPTH_TEST);
 
     board.width = 100;
@@ -131,7 +131,7 @@ void draw_ball(const struct ball *ball) {
 }
 
 void display(void) {
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     //drawGrid(100/100, 100);
     //drawAxis();
 
@@ -143,17 +143,17 @@ void display(void) {
     glutSwapBuffers();
 }
 
-void reshape (int w, int h) {
-   glViewport (0, 0, (GLsizei) w, (GLsizei) h);
-   glMatrixMode (GL_PROJECTION);
-   glLoadIdentity ();
+void reshape(int w, int h) {
+   glViewport(0, 0, (GLsizei) w, (GLsizei) h);
+   glMatrixMode(GL_PROJECTION);
+   glLoadIdentity();
    gluPerspective(90.0, (GLfloat) w/(GLfloat) h, 1.0, 200.0);
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
-   gluLookAt (5.0, 12.0, 5.0, 0.0, 2.5, 0.0, 0.0, 1.0, 0.0);
+   gluLookAt(5.0, 12.0, 5.0, 0.0, 2.5, 0.0, 0.0, 1.0, 0.0);
 }
 
-void keyboard (unsigned char key, int x, int y) {
+void keyboard(unsigned char key, int x, int y) {
     switch (key) {
         case 27:
         case 'q':
@@ -175,11 +175,11 @@ void test(int last_time) {
 
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
-    glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowSize (WIND_W, WIND_H);
-    glutInitWindowPosition (10, 10);
-    glutCreateWindow (argv[0]);
-    init ();
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitWindowSize(WIND_W, WIND_H);
+    glutInitWindowPosition(10, 10);
+    glutCreateWindow(argv[0]);
+    init();
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
     glutKeyboardFunc(keyboard);
