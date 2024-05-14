@@ -136,6 +136,64 @@ void draw_ball(const struct ball *ball) {
     glPopMatrix();
 }
 
+
+void draw_text(char text[], GLfloat x, GLfloat y, GLfloat viewport[4]) {
+    glRasterPos2f(UI_DEFAULT_X_POSITION + x,
+                  viewport[3] - UI_DEFAULT_Y_POSITION - y);
+
+    for (int i = 0; i < strlen(text); ++i) {
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, text[i]);
+    }
+}
+
+void draw_ui() {
+    // Get viewport
+    GLfloat viewport[4];
+    glGetFloatv(GL_VIEWPORT, viewport);
+
+    // Begin UI
+    ui_begin(viewport);
+
+    // Set text colour
+    glColor3f(1, 0, 0);
+
+    // Display UI options //
+    if (display_help == 0) {
+        draw_text("H - Show keyboard options",
+                  0, 0, viewport);
+
+        // End UI early since keyboard options are hidden
+        ui_end();
+        return;
+    }
+
+    // Options that are always displayed in the keyboard options
+    draw_text("Q - Quit",
+              0, 0, viewport);
+    draw_text("H - Hide keyboard options",
+              0, 20, viewport);
+    draw_text("< and > - Increment and decrement play field roughness",
+              0, 60, viewport);
+    draw_text("[ and ] - Increase and decrease mass of all balls",
+              0, 80, viewport);
+
+    // Options displayed if the game has not started
+    if (game_started == 0) {
+        draw_text("F - Toggle between triangle and rectangle ball format",
+                  0, 120, viewport);
+        draw_text("Enter - Start the game",
+                  0, 140, viewport);
+
+        // Options displayed if the game is in progress
+    } else {
+        draw_text("R - Restart the game",
+                  0, 120, viewport);
+    }
+
+    // End UI
+    ui_end();
+}
+
 void set_viewport(int w, int h) {
     glViewport(0, 0, (GLsizei) w, (GLsizei) h);
     glMatrixMode(GL_PROJECTION);
@@ -156,19 +214,21 @@ void display(void) {
     for (size_t i = 0; i < board.walls_num; i++)
         draw_wall(board.walls + i);
 
+    draw_ui();
+
     set_viewport(WIND_W, WIND_H);
 
     glutSwapBuffers();
 }
 
 void reshape(int w, int h) {
-   glViewport(0, 0, (GLsizei) w, (GLsizei) h);
-   glMatrixMode(GL_PROJECTION);
-   glLoadIdentity();
-   gluPerspective(90.0, (GLfloat) w/(GLfloat) h, 1.0, 200.0);
-   glMatrixMode(GL_MODELVIEW);
-   glLoadIdentity();
-   gluLookAt(5.0, 12.0, 5.0, 0.0, 2.5, 0.0, 0.0, 1.0, 0.0);
+    glViewport(0, 0, (GLsizei) w, (GLsizei) h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(90.0, (GLfloat) w/(GLfloat) h, 1.0, 200.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(5.0, 12.0, 5.0, 0.0, 2.5, 0.0, 0.0, 1.0, 0.0);
 }
 
 void keyboard(unsigned char key, int x, int y) {
