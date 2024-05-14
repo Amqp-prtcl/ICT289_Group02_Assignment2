@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="ICT289_Group02_Assignment2" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/ICT289_Group02_Assignment2" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/ICT289_Group02_Assignment2" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="ball.h" />
+		<Unit filename="board.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="board.h" />
+		<Unit filename="dbg.h" />
+		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="matrix.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="matrix.h" />
+		<Unit filename="object.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="object.h" />
+		<Unit filename="off.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="off.h" />
+		<Unit filename="phys.h" />
+		<Unit filename="scene_utils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="scene_utils.h" />
+		<Unit filename="shape.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="shape.h" />
+		<Unit filename="ui.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ui.h" />
+		<Unit filename="vector.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="vector.h" />
+		<Unit filename="wall.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="wall.h" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

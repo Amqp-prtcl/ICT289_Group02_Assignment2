@@ -6,3 +6,7 @@
 **/*.dYLIB
 
 **/.idea
+
+/bin
+/*.depend
+/*.layout
