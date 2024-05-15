@@ -9,6 +9,7 @@
 #include "shape.h"
 #include "phys.h"
 #include "board.h"
+#include "ui.h"
 
 #include "dbg.h"
 
