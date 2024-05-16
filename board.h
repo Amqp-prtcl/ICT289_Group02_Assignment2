@@ -3,6 +3,7 @@
 #include "vector.h"
 #include "ball.h"
 #include "wall.h"
+#include "cue.h"
 
 struct board {
     GLfloat width;
@@ -14,6 +15,8 @@ struct board {
 
     struct wall *walls;
     size_t walls_num;
+
+    struct cue cue;
 
     GLfloat timescale;
 };

@@ -18,3 +18,13 @@ void wall_init(struct wall *w) {
     w->filled = 1;
 }
 
+void draw_wall(const struct wall *w) {
+    glColor3fv(w->color);
+    glBegin(GL_POLYGON);
+    glVertex3fv(w->p1);
+    glVertex3fv(w->p2);
+    glVertex3fv(w->p3);
+    glVertex3fv(w->p4);
+    glEnd();
+}
+

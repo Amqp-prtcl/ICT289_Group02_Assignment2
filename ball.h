@@ -10,7 +10,7 @@ struct ball {
     struct phys phys;
 };
 
-static GLfloat ball_get_radius(const struct ball *b) {
-    return b->trans.scale[0] * b->phys.radius;
-}
+#define ball_get_radius(b) (b)->trans.scale[0] * (b)->phys.radius
+
+void draw_ball(const struct ball *ball);
 

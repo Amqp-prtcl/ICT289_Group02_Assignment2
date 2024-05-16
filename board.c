@@ -102,3 +102,12 @@ void board_handle_collisions(struct board *board, const GLfloat delta) {
     }
 }
 
+/*
+static void update_cue(struct board *board, const GLfloat delta) {
+}
+
+static void cue_ball_collision(const struct cue *cue, struct board *board,
+        const GLfloat delta) {
+}
+*/
+

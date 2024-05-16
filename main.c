@@ -9,6 +9,7 @@
 #include "shape.h"
 #include "phys.h"
 #include "board.h"
+#include "cue.h"
 #include "ui.h"
 
 #include "dbg.h"
@@ -99,44 +100,42 @@ struct wall walls[] = {
     },
 };
 
-void init(void) {
-    glClearColor(0.0, 0.0, 0.0, 0.0);
+struct cue cue = {
+    {
+        {0, 255, 0},
+        {
+            {0, 0, 0},
+            {0, 0, 0},
+            {1, 1, 1},
+        },
+        {
+            .6,
+            .01,
+            {0, 0, 0}
+        }
+    },
+};
+
+static void init(void) {
+    glClearColor (0.0, 0.0, 0.0, 0.0);
     glEnable(GL_DEPTH_TEST);
 
     board.width = 100;
     board.length = 200;
 
     board.balls = balls;
-    board.balls_num = 3;
+    board.balls_num = 0;
 
     board.walls = walls+1;
-    board.walls_num = 1;
+    board.walls_num = 0;
+
+    board.cue = cue;
 
     for (size_t i = 0; i < board.walls_num; i++)
         wall_init(board.walls + i);
 
     board.timescale = 1.0;
 }
-
-void draw_wall(const struct wall *w) {
-    glColor3fv(w->color);
-    glBegin(GL_POLYGON);
-    glVertex3fv(w->p1);
-    glVertex3fv(w->p2);
-    glVertex3fv(w->p3);
-    glVertex3fv(w->p4);
-    glEnd();
-}
-
-void draw_ball(const struct ball *ball) {
-    //DBG_BALL(ball);
-    glColor3fv(ball->color);
-    glPushMatrix();
-    object_trans_apply(&ball->trans);
-    glutWireSphere(ball_get_radius(ball), 30, 30);
-    glPopMatrix();
-}
-
 
 void draw_text(char text[], GLfloat x, GLfloat y, GLfloat viewport[4]) {
     glRasterPos2f(UI_DEFAULT_X_POSITION + x,
@@ -202,13 +201,13 @@ void set_viewport(int w, int h) {
     gluPerspective(90.0, (GLfloat) w/(GLfloat) h, 1.0, 200.0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(5.0, 12.0, 5.0, 0.0, 2.5, 0.0, 0.0, 1.0, 0.0);
+    gluLookAt(1.0, 1.5, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 }
 
 void display(void) {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //drawGrid(100/100, 100);
-    //drawAxis();
+    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    drawGrid(100/100, 100);
+    drawAxis();
 
     for (size_t i = 0; i < board.balls_num; i++)
         draw_ball(board.balls + i);
@@ -219,17 +218,19 @@ void display(void) {
 
     set_viewport(WIND_W, WIND_H);
 
+    draw_cue(&board.cue);
+
     glutSwapBuffers();
 }
 
-void reshape(int w, int h) {
-    glViewport(0, 0, (GLsizei) w, (GLsizei) h);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(90.0, (GLfloat) w/(GLfloat) h, 1.0, 200.0);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(5.0, 12.0, 5.0, 0.0, 2.5, 0.0, 0.0, 1.0, 0.0);
+void reshape (int w, int h) {
+   glViewport (0, 0, (GLsizei) w, (GLsizei) h);
+   glMatrixMode (GL_PROJECTION);
+   glLoadIdentity ();
+   gluPerspective(90.0, (GLfloat) w/(GLfloat) h, 1.0, 200.0);
+   glMatrixMode(GL_MODELVIEW);
+   glLoadIdentity();
+   gluLookAt (2.0, 2.0, 2.0, 0.0, .5, 0.0, 0.0, 1.0, 0.0);
 }
 
 void keyboard(unsigned char key, int x, int y) {
