@@ -1,6 +1,6 @@
 CC:=gcc
 CFLAGS:=-I/opt/local/include -MMD -g -DDEBUG -Wall
-LDFLAGS:=-L/opt/local/lib
+LDFLAGS:=-L/opt/local/lib #-fsanitize=address
 LDLIBS:=-lglut -lGLU -lGL -lm
 
 SRC:= main.c object.c scene_utils.c off.c shape.c vector.c board.c matrix.c\

@@ -65,6 +65,12 @@ void vector3_sub(const Vector3 a, const Vector3 b, Vector3 out) {
     out[2] = a[2] - b[2];
 }
 
+void vector3_lerp(const Vector3 a, const Vector3 b, GLfloat t, Vector3 out) {
+    out[0] = (1-t)*a[0] + t*b[0];
+    out[1] = (1-t)*a[1] + t*b[1];
+    out[2] = (1-t)*a[2] + t*b[2];
+}
+
 void vector3_affine(const Vector3 a, const GLfloat k,
         const Vector3 b, Vector3 c) {
     c[0] = a[0]*k + b[0];

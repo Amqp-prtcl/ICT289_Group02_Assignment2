@@ -33,6 +33,8 @@ void vector3_add(const Vector3 a, const Vector3 b, Vector3 out);
 
 void vector3_sub(const Vector3 a, const Vector3 b, Vector3 out);
 
+void vector3_lerp(const Vector3 a, const Vector3 b, GLfloat t, Vector3 out);
+
 void vector3_affine(const Vector3 a, const GLfloat k, const Vector3 b,
         Vector3 c);
 
