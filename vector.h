@@ -1,6 +1,8 @@
 #pragma once
 #include "GL/freeglut.h"
 
+#define CLAMP(x,a,b) ((x)<(a)?(a):((x)>(b)?(b):(x)))
+
 typedef GLfloat Vector3[3];
 #define Point3 Vector3
 

@@ -99,6 +99,8 @@ void board_handle_collisions(struct board *board, const GLfloat delta) {
             ball_ball_collision(b1, board->balls+j);
         for (size_t j = 0; j < board->walls_num; j++)
             ball_wall_collision(b1, board->walls + j, delta);
+        for (size_t j = 0; j < board->table.walls_num; j++)
+            ball_wall_collision(b1, board->table.walls + j, delta);
     }
 }
 

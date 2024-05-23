@@ -4,7 +4,7 @@
 
 void drawGrid(GLfloat cell_length, int grid_length);
 
-void drawAxis();
+void drawAxis(void);
 
-void drawcube();
+void drawcube(void);
 

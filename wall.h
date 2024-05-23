@@ -31,7 +31,7 @@ struct wall {
     int filled;
 };
 
-#define CHECK_WALL(w) if (!w->filled) precompute_wall(w);
+#define CHECK_WALL(w) if (!(w)->filled) wall_init(w);
 void wall_init(struct wall *w);
 void draw_wall(const struct wall *w);
 

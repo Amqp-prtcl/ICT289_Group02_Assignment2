@@ -25,7 +25,6 @@ void draw_cue(const struct cue *cue) {
     glPopMatrix();
 }
 
-//#include "stdio.h"
 #define MAP(x,a,b,c,d) (x-a) / (b-a) * (d-c) + c
 
 #define DELAY 3

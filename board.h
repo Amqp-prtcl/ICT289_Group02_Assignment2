@@ -4,6 +4,7 @@
 #include "ball.h"
 #include "wall.h"
 #include "cue.h"
+#include "table.h"
 
 struct board {
     GLfloat width;
@@ -15,6 +16,8 @@ struct board {
 
     struct wall *walls;
     size_t walls_num;
+
+    struct table table;
 
     struct cue cue;
 

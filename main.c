@@ -11,10 +11,13 @@
 #include "board.h"
 #include "cue.h"
 #include "ui.h"
+#include "camera.h"
+#include "input.h"
+#include "table.h"
 
 #include "dbg.h"
 
-#define DELAY 10
+#define DELAY 1
 #define WIND_W 1300
 #define WIND_H 700
 
@@ -30,39 +33,39 @@ struct ball balls[10] = {
     {
         {255, 0, 0},
         {
-            {0, 0, 0},
+            {0, 1, 0},
             {0, 0, 0},
             {1, 1, 1}
         },
         {
-            1,
-            .5,
+            0.162,
+            0.028575,
             {0, 0, 0}
         }
     },
     {
         {0, 255, 0},
         {
-            {-2, 0, -.5},
+            {-2, .5, -.5},
             {0, 0, 0},
             {1, 1, 1}
         },
         {
-            1,
-            .5,
+            0.162,
+            .028575,
             {0, 0, 0}
         }
     },
     {
         {0, 0, 255},
         {
-            {8, 0, 0},
+            {8, .5, 0},
             {0, 0, 0},
             {1, 1, 1}
         },
         {
-            1.5,
-            .5,
+            0.162,
+            .028575,
             {-8, 0, 0}
         }
     },
@@ -84,20 +87,21 @@ struct ball balls_2[] = {
     },
 };
 
+
 struct wall walls[] = {
-    {
+/*    {
         {255, 255, 255},
-        {-.8, 0, 0},
-        {-.8, 3, 0},
-        {2.5, 3, -2.5},
+        {0, 0, 0},
+        {-1.5, 3, 0},
+        {2.5, 3, -3.5},
     },
     {
         {0, 50, 50},
-        {100, -0.5, 100},
-        {-100, -0.5, 100},
-        {-100, -0.5, -100},
+        {100, 0, 100},
+        {-100, 0, 100},
+        {-100, 0, -100},
         0, .3,
-    },
+    },*/
 };
 
 struct cue cue = {
@@ -112,11 +116,13 @@ struct cue cue = {
             .6,
             .01,
             {0, 0, 0}
-        }
+        },
     },
+    {0, 0, 0},
 };
 
 static void init(void) {
+    init_camera();
     glClearColor (0.0, 0.0, 0.0, 0.0);
     glEnable(GL_DEPTH_TEST);
 
@@ -124,10 +130,12 @@ static void init(void) {
     board.length = 200;
 
     board.balls = balls;
-    board.balls_num = 0;
+    board.balls_num = 1;
 
-    board.walls = walls+1;
+    board.walls = walls;
     board.walls_num = 0;
+
+    init_default_table(&board.table);
 
     board.cue = cue;
 
@@ -141,84 +149,56 @@ void draw_text(char text[], GLfloat x, GLfloat y, GLfloat viewport[4]) {
     glRasterPos2f(UI_DEFAULT_X_POSITION + x,
                   viewport[3] - UI_DEFAULT_Y_POSITION - y);
 
-    for (int i = 0; i < strlen(text); ++i) {
-        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, text[i]);
-    }
+    while (*text != 0)
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, *(text++));
 }
 
 void draw_ui() {
-    // Get viewport
     GLfloat viewport[4];
     glGetFloatv(GL_VIEWPORT, viewport);
 
-    // Begin UI
     ui_begin(viewport);
-
-    // Set text colour
     glColor3f(1, 0, 0);
-
-    // Display UI options //
     if (display_help == 0) {
-        draw_text("H - Show keyboard options",
-                  0, 0, viewport);
-
-        // End UI early since keyboard options are hidden
+        draw_text("H - Show keyboard options", 0, 0, viewport);
         ui_end();
         return;
     }
-
-    // Options that are always displayed in the keyboard options
-    draw_text("Q - Quit",
-              0, 0, viewport);
-    draw_text("H - Hide keyboard options",
-              0, 20, viewport);
+    draw_text("Q - Quit", 0, 0, viewport);
+    draw_text("H - Hide keyboard options", 0, 20, viewport);
     draw_text("< and > - Increment and decrement play field roughness",
               0, 60, viewport);
     draw_text("[ and ] - Increase and decrease mass of all balls",
               0, 80, viewport);
 
-    // Options displayed if the game has not started
     if (game_started == 0) {
         draw_text("F - Toggle between triangle and rectangle ball format",
                   0, 120, viewport);
-        draw_text("Enter - Start the game",
-                  0, 140, viewport);
-
-        // Options displayed if the game is in progress
+        draw_text("Enter - Start the game", 0, 140, viewport);
     } else {
-        draw_text("R - Restart the game",
-                  0, 120, viewport);
+        draw_text("R - Restart the game", 0, 120, viewport);
     }
-
-    // End UI
     ui_end();
-}
-
-void set_viewport(int w, int h) {
-    glViewport(0, 0, (GLsizei) w, (GLsizei) h);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(90.0, (GLfloat) w/(GLfloat) h, 1.0, 200.0);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(1.0, 1.5, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 }
 
 void display(void) {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    drawGrid(100/100, 100);
+    glPushMatrix();
+    camera_apply();
     drawAxis();
+    drawGrid(100/100, 100);
 
     for (size_t i = 0; i < board.balls_num; i++)
         draw_ball(board.balls + i);
     for (size_t i = 0; i < board.walls_num; i++)
         draw_wall(board.walls + i);
 
+    draw_table(&board.table);
+    glPopMatrix();
+
     draw_ui();
 
-    set_viewport(WIND_W, WIND_H);
-
-    draw_cue(&board.cue);
+    //draw_cue(&board.cue);
 
     glutSwapBuffers();
 }
@@ -227,42 +207,33 @@ void reshape (int w, int h) {
    glViewport (0, 0, (GLsizei) w, (GLsizei) h);
    glMatrixMode (GL_PROJECTION);
    glLoadIdentity ();
-   gluPerspective(90.0, (GLfloat) w/(GLfloat) h, 1.0, 200.0);
+   gluPerspective(80.0, (GLfloat) w/(GLfloat) h, 0.01, 3000.0);
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
-   gluLookAt (2.0, 2.0, 2.0, 0.0, .5, 0.0, 0.0, 1.0, 0.0);
+   //gluLookAt (4.0, 4.0, 4.0, 0.0, .5, 0.0, 0.0, 1.0, 0.0);
 }
 
 void keyboard(unsigned char key, int x, int y) {
     switch (key) {
-        // Esc & Q - quit the program
         case 27:
         case 'q':
         case 'Q':
             glutLeaveMainLoop();
             break;
-
-        // H = toggle help menu
         case 'h':
         case 'H':
             display_help = (display_help == 1) ? 0 : 1;
             break;
-
-        // Enter - start the game
         case 13:
             game_started = 1;
+            //cue_start_anim(&board.cue);
             break;
-
-        // R - restart the game
         case 'r':
         case 'R':
             game_started = 0;
             break;
-
-        // Default - nothing
-        default: {
+        default:
             break;
-        }
     }
 }
 
@@ -273,6 +244,8 @@ void test(int last_time) {
 
     board_compute_next_positions(&board, delta * board.timescale);
     board_handle_collisions(&board, delta * board.timescale);
+
+    camera_handle_keyboard(delta);
 
     glutPostRedisplay();
 }
@@ -286,7 +259,11 @@ int main(int argc, char** argv) {
     init();
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
-    glutKeyboardFunc(keyboard);
+    glutPassiveMotionFunc(camera_handle_mouse);
+
+    glutKeyboardUpFunc(input_up_callback);
+    glutKeyboardFunc(input_down_callback);
+    input_press_callback = keyboard;
 
     glutTimerFunc(DELAY, test, glutGet(GLUT_ELAPSED_TIME));
     glutMainLoop();
