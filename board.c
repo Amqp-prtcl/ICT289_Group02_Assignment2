@@ -5,23 +5,35 @@
 
 #define G_FORCE 9.81
 
-static void apply_forces(const struct board *board, struct ball *b,
+static GLfloat apply_forces(const struct board *board, struct ball *b,
         const GLfloat delta) {
     b->phys.speed[1] += -G_FORCE*delta;
+	return vector3_norm(b->phys.speed);
 }
 
+// returns the nrom of the highest speed (in order to interpolate)
 static void apply_speed(struct ball *b, const GLfloat delta) {
     Vector3 dv;
     vector3_scale(b->phys.speed, delta, dv);
     vector3_add(b->trans.position, dv, b->trans.position);
 }
 
+GLfloat board_apply_forces(struct board *board, const GLfloat delta) {
+	GLfloat max_speed, speed;
+	max_speed = -1;
+    struct ball *b;
+    for (size_t i = 0; i < board->balls_num; i++) {
+        b = board->balls + i;
+        if ((speed = apply_forces(board, b, delta)) > max_speed)
+			max_speed = speed;
+	}
+	return max_speed;
+}
+
 void board_compute_next_positions(struct board *board, const GLfloat delta) {
     struct ball *b;
     for (size_t i = 0; i < board->balls_num; i++) {
         b = board->balls + i;
-
-        apply_forces(board, b, delta);
         apply_speed(b, delta);
     }
 }

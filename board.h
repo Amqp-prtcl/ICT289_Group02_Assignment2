@@ -24,6 +24,7 @@ struct board {
     GLfloat timescale;
 };
 
+GLfloat board_apply_forces(struct board *board, const GLfloat delta);
 void board_compute_next_positions(struct board *board, const GLfloat delta);
 void board_handle_collisions(struct board *board, const GLfloat delta);
 

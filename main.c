@@ -17,7 +17,7 @@
 
 #include "dbg.h"
 
-#define DELAY 1
+#define DELAY 2
 #define WIND_W 1300
 #define WIND_H 700
 
@@ -242,8 +242,25 @@ void test(int last_time) {
     GLfloat delta = (GLfloat)(curr_time - last_time)/1000.0;
     glutTimerFunc(DELAY, test, curr_time);
 
-    board_compute_next_positions(&board, delta * board.timescale);
-    board_handle_collisions(&board, delta * board.timescale);
+	GLfloat curr, max_speed, sub_delta;
+	curr = 0;
+
+	max_speed = board_apply_forces(&board, delta);
+	sub_delta = (0.028)/max_speed * board.timescale;
+	DBGF(max_speed);
+	DBGF(sub_delta);
+	DBGF(delta);
+	if (sub_delta > delta)
+		sub_delta = delta;
+	while (curr < delta) {
+		board_compute_next_positions(&board, sub_delta);
+    	board_handle_collisions(&board, sub_delta);
+		curr += sub_delta;
+
+	}
+
+    //max_speed = board_compute_next_positions(&board, delta * board.timescale);
+    //board_handle_collisions(&board, delta * board.timescale);
 
     camera_handle_keyboard(delta);
 
