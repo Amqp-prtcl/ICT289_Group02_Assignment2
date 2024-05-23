@@ -1,4 +1,5 @@
 #include "matrix.h"
+#include "math.h"
 #include "dbg.h"
 
 #define THRESH 0.3
@@ -52,4 +53,23 @@ void matrix_vector_mul(const Matrix3x3 m, const Vector3 in, Vector3 out) {
             t += in[j] * m[I(i, j)];
         out[i] = t;
     }
+}
+
+void matrix_rotate_vector(const Vector3 rotation, Vector3 out) {
+	GLfloat cosa, sina, cosb, sinb, cosy, siny;
+	cosa = cosf(0);//rotation[0] * M_PI/180);
+	sina = sinf(0);//rotation[0] * M_PI/180);
+
+	cosb = cosf(rotation[1] * M_PI/180);
+	sinb = sinf(rotation[1] * M_PI/180);
+
+	cosy = cosf(rotation[2] * M_PI/180);
+	siny = sinf(rotation[2] * M_PI/180);
+
+	Matrix3x3 m = {
+		cosb*cosa, cosa*sinb*siny-sina*cosy, cosa*sinb*cosy+sina*siny,
+		cosb*sina, sina*sinb*siny+cosa*cosy, sina*sinb*cosy-cosa*siny,
+		-sinb, cosb*siny, cosb*cosy,
+	};
+	matrix_vector_mul(m, vector3_forward, out);
 }

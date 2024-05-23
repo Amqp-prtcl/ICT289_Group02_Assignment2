@@ -12,3 +12,6 @@ int matrix_invert(const Matrix3x3 in, Matrix3x3 out);
 // WARN: this function actually perfoms:  out = m' * in
 // (the transpose of m)
 void matrix_vector_mul(const Matrix3x3 m, const Vector3 in, Vector3 out);
+
+void matrix_rotate_vector(const Vector3 rotation, Vector3 out);
+

@@ -247,9 +247,6 @@ void test(int last_time) {
 
 	max_speed = board_apply_forces(&board, delta);
 	sub_delta = (0.028)/max_speed * board.timescale;
-	DBGF(max_speed);
-	DBGF(sub_delta);
-	DBGF(delta);
 	if (sub_delta > delta)
 		sub_delta = delta;
 	while (curr < delta) {

@@ -1,4 +1,6 @@
 #include "object.h"
+#include "matrix.h"
+#include "math.h"
 
 void object_trans_reset(struct object_trans *obj) {
     vector3_to_zero(obj->position);

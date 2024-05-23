@@ -1,5 +1,6 @@
 #include "camera.h"
 #include "input.h"
+#include "matrix.h"
 #include "dbg.h"
 
 // since it is the viewing point, all translations must be done in the
@@ -25,6 +26,8 @@ void camera_apply() {
 
 #define MOVE_SPEED 1
 void camera_handle_keyboard(const GLfloat delta) {
+	Vector3 f;
+	matrix_rotate_vector(current_camera.rot, f);
     if (is_key_down('w'))
         vector3_affine(vector3_left, delta,
                 current_camera.pos, current_camera.pos);
@@ -32,10 +35,10 @@ void camera_handle_keyboard(const GLfloat delta) {
         vector3_affine(vector3_left, -delta,
                 current_camera.pos, current_camera.pos);
     if (is_key_down('a'))
-        vector3_affine(vector3_forward, delta,
+        vector3_affine(f /*vector3_forward*/, delta,
                 current_camera.pos, current_camera.pos);
     if (is_key_down('d'))
-        vector3_affine(vector3_forward, -delta,
+        vector3_affine(f/*vector3_forward*/, -delta,
                 current_camera.pos, current_camera.pos);
     if (is_key_down(' '))
         vector3_affine(vector3_up, -delta,
