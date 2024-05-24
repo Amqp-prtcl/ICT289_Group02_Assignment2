@@ -5,10 +5,9 @@
 
 #define G_FORCE 9.81
 
-static GLfloat apply_forces(const struct board *board, struct ball *b,
-        const GLfloat delta) {
+static GLfloat apply_forces(struct ball *b, const GLfloat delta) {
     b->phys.speed[1] += -G_FORCE*delta;
-	return vector3_norm(b->phys.speed);
+    return vector3_norm(b->phys.speed);
 }
 
 // returns the nrom of the highest speed (in order to interpolate)
@@ -19,15 +18,15 @@ static void apply_speed(struct ball *b, const GLfloat delta) {
 }
 
 GLfloat board_apply_forces(struct board *board, const GLfloat delta) {
-	GLfloat max_speed, speed;
-	max_speed = -1;
+    GLfloat max_speed, speed;
+    max_speed = -1;
     struct ball *b;
     for (size_t i = 0; i < board->balls_num; i++) {
         b = board->balls + i;
-        if ((speed = apply_forces(board, b, delta)) > max_speed)
-			max_speed = speed;
-	}
-	return max_speed;
+        if ((speed = apply_forces(b, delta)) > max_speed)
+            max_speed = speed;
+    }
+    return max_speed;
 }
 
 void board_compute_next_positions(struct board *board, const GLfloat delta) {
@@ -40,7 +39,7 @@ void board_compute_next_positions(struct board *board, const GLfloat delta) {
 
 // COLLISIONS HANDLING
 
-#define is_not_bound(a) a < 0 || a > 1
+#define is_not_bound(a) a < 0.0 || a > 1.0
 static void ball_wall_collision(struct ball *b, const struct wall *w,
         const GLfloat delta) {
     Vector3 v1, v2;
@@ -49,31 +48,31 @@ static void ball_wall_collision(struct ball *b, const struct wall *w,
     vector3_sub(b->trans.position, w->p2, v1);
     matrix_vector_mul(w->m, v1, v2);
 
-    if (v2[2] < 0 || v2[2] > ball_get_radius(b) ||
+    if (v2[2] < -ball_get_radius(b) || v2[2] > ball_get_radius(b) ||
             is_not_bound(v2[0]) || is_not_bound(v2[1]))
         return;
-
-    vector3_affine(w->normal, ball_get_radius(b)-v2[2],
+    vector3_affine(w->normal, SIGN(v2[2])*(ball_get_radius(b)-ABS(v2[2])),
             b->trans.position, b->trans.position);
 
-    // imp will be negative
+    Vector3 v3 = {0, G_FORCE*delta, 0};
+    GLfloat frict_thresh = vector3_dot(v3, w->normal);
+
     imp = vector3_dot(b->phys.speed, w->normal);
     //DBGF(delta);
     //DBGF(imp);
-    if (imp < 1 && imp > -1) {
+    if (imp <= frict_thresh && imp >= -frict_thresh) {
         //DBG_PRINT("friction\n");
         // apply friction instead of collision
-        //DBG_VEC(b->phys.speed);
-        vector3_affine(b->phys.speed, -w->friction_coef/b->phys.mass*delta,
+        vector3_affine(b->phys.speed, -w->friction_coef,
                 b->phys.speed, b->phys.speed);
         vector3_affine(w->normal, -imp,
                 b->phys.speed, b->phys.speed);
-        //DBG_VEC(b->phys.speed);
         return;
     }
+    //DBG_PRINT("collision\n");
 
     vector3_affine(w->normal, -2*imp, b->phys.speed, b->phys.speed);
-    vector3_affine(b->phys.speed, -w->collision_coef/b->phys.mass*delta,
+    vector3_affine(b->phys.speed, -w->collision_coef,
             b->phys.speed, b->phys.speed);
 }
 
@@ -93,9 +92,10 @@ static void ball_ball_collision(struct ball *b1, struct ball *b2) {
     vector3_sub(b2->phys.speed, b1->phys.speed, vr);
     impulse = vector3_dot(dist, vr);
 
-    vector3_affine(dist, impulse/b1->phys.mass,
+    //impulse
+    vector3_affine(dist, impulse,///b1->phys.mass,
             b1->phys.speed, b1->phys.speed);
-    vector3_affine(dist, -impulse/b2->phys.mass,
+    vector3_affine(dist, -impulse,///b2->phys.mass,
             b2->phys.speed, b2->phys.speed);
 
     vector3_affine(dist, -ball_get_radius(b1)-ball_get_radius(b2)+d,

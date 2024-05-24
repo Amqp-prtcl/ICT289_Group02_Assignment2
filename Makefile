@@ -1,5 +1,5 @@
 CC:=gcc
-CFLAGS:=-I/opt/local/include -MMD -g -DDEBUG -Wall
+CFLAGS:=-I/opt/local/include -MMD -O3 -g -DDEBUG -Wall #-Wextra
 LDFLAGS:=-L/opt/local/lib #-fsanitize=address
 LDLIBS:=-lglut -lGLU -lGL -lm
 

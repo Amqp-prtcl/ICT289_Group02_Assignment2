@@ -1,6 +1,10 @@
 #pragma once
 #include "GL/freeglut.h"
 
+#define SIGN(a) (((a)<0)?(-1):1)
+#define ABS(a) (((a)<0)?(-a):(a))
+#define MAX(a,b) (((a)>(b))?(a):(b))
+#define MIN(a,b) (((a)<(b))?(a):(b))
 #define CLAMP(x,a,b) ((x)<(a)?(a):((x)>(b)?(b):(x)))
 
 typedef GLfloat Vector3[3];

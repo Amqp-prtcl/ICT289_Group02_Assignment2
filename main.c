@@ -33,20 +33,20 @@ struct ball balls[10] = {
     {
         {255, 0, 0},
         {
-            {0, 1, 0},
+            {0, .03, 0.02},
             {0, 0, 0},
             {1, 1, 1}
         },
         {
             0.162,
             0.028575,
-            {0, 0, 0}
+            {.5, 0, 0}
         }
     },
     {
         {0, 255, 0},
         {
-            {-2, .5, -.5},
+            {1, .03, -.5},
             {0, 0, 0},
             {1, 1, 1}
         },
@@ -59,14 +59,14 @@ struct ball balls[10] = {
     {
         {0, 0, 255},
         {
-            {8, .5, 0},
+            {-1, .03, 0},
             {0, 0, 0},
             {1, 1, 1}
         },
         {
             0.162,
             .028575,
-            {-8, 0, 0}
+            {1.5, 0, 0}
         }
     },
 };
@@ -130,7 +130,7 @@ static void init(void) {
     board.length = 200;
 
     board.balls = balls;
-    board.balls_num = 1;
+    board.balls_num = 3;
 
     board.walls = walls;
     board.walls_num = 0;
@@ -142,7 +142,7 @@ static void init(void) {
     for (size_t i = 0; i < board.walls_num; i++)
         wall_init(board.walls + i);
 
-    board.timescale = 1.0;
+    board.timescale = 0;
 }
 
 void draw_text(char text[], GLfloat x, GLfloat y, GLfloat viewport[4]) {
@@ -159,6 +159,21 @@ void draw_ui() {
 
     ui_begin(viewport);
     glColor3f(1, 0, 0);
+    char *d;
+    asprintf(&d, "camera position: {x: %f, y: %f, z: %f}",
+            current_camera.pos[0],
+            current_camera.pos[1],
+            current_camera.pos[2]);
+    free(d);
+    draw_text(d, 0, 20, viewport);
+    asprintf(&d, "camera rotation: {x: %f, y: %f, z: %f}",
+            current_camera.rot[0],
+            current_camera.rot[1],
+            current_camera.rot[2]);
+    free(d);
+    draw_text(d, 0, 0, viewport);
+    ui_end();
+    return;
     if (display_help == 0) {
         draw_text("H - Show keyboard options", 0, 0, viewport);
         ui_end();
@@ -185,8 +200,8 @@ void display(void) {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glPushMatrix();
     camera_apply();
-    drawAxis();
-    drawGrid(100/100, 100);
+    //drawAxis();
+    //drawGrid(100/100, 100);
 
     for (size_t i = 0; i < board.balls_num; i++)
         draw_ball(board.balls + i);
@@ -226,6 +241,7 @@ void keyboard(unsigned char key, int x, int y) {
             break;
         case 13:
             game_started = 1;
+            board.timescale = 1.0;
             //cue_start_anim(&board.cue);
             break;
         case 'r':
@@ -242,19 +258,19 @@ void test(int last_time) {
     GLfloat delta = (GLfloat)(curr_time - last_time)/1000.0;
     glutTimerFunc(DELAY, test, curr_time);
 
-	GLfloat curr, max_speed, sub_delta;
-	curr = 0;
+    GLfloat curr, max_speed, sub_delta;
+    curr = 0;
 
-	max_speed = board_apply_forces(&board, delta);
-	sub_delta = (0.028)/max_speed * board.timescale;
-	if (sub_delta > delta)
-		sub_delta = delta;
-	while (curr < delta) {
-		board_compute_next_positions(&board, sub_delta);
-    	board_handle_collisions(&board, sub_delta);
-		curr += sub_delta;
+    max_speed = board_apply_forces(&board, delta * board.timescale);
+    sub_delta = (0.028)/max_speed * board.timescale;
+    if (sub_delta > delta)
+        sub_delta = delta;
 
-	}
+    while (curr < delta && sub_delta != 0) {
+        board_compute_next_positions(&board, sub_delta);
+        board_handle_collisions(&board, delta);
+        curr += sub_delta;
+    }
 
     //max_speed = board_compute_next_positions(&board, delta * board.timescale);
     //board_handle_collisions(&board, delta * board.timescale);

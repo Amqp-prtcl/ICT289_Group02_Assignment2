@@ -5,9 +5,9 @@
 const Vector3 vector3_zero = {0, 0, 0};
 const Vector3 vector3_ones = {1, 1, 1};
 
-const Vector3 vector3_forward = {1, 0, 0};
+const Vector3 vector3_forward = {0, 0, -1};
 const Vector3 vector3_up = {0, 1, 0};
-const Vector3 vector3_left = {0, 0, 1};
+const Vector3 vector3_left = {-1, 0, 0};
 
 // HELPERS
 

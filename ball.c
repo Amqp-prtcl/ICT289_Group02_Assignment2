@@ -1,4 +1,5 @@
 #include "ball.h"
+#include "dbg.h"
 
 void draw_ball(const struct ball *ball) {
     //DBG_BALL(ball);
