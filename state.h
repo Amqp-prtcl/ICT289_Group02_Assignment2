@@ -2,7 +2,9 @@
 
 enum game_state {
     INIT,
-    AIMING_CUE,
+    PAUSED,
+    AIMING,
+    CUE_ANIM,
     RUNNING,
 };
 

@@ -79,3 +79,14 @@ void matrix_rotate_vector(const Vector3 rotation, const Vector3 in,
     };
     matrix_vector_mul(m, in, out);
 }
+
+void matrix_rotate_vector_around_point(const Vector3 rot, const Vector3 ancor,
+        const Vector3 in, Vector3 out) {
+    Vector3 dir;
+    vector3_sub(in, ancor, dir);
+
+    matrix_rotate_vector(rot, dir, out);
+
+    vector3_add(ancor, out, out);
+}
+

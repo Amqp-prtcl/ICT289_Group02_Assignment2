@@ -1,3 +1,4 @@
+#include "input.h"
 #include "cue.h"
 #include "math.h"
 #include "matrix.h"
@@ -26,8 +27,6 @@ static GLfloat get_speed(const GLfloat t) {
 
 #define OFFSET 0.05
 void cue_place(struct cue *cue, const struct ball *b) {
-    if (current_cue != NULL)
-        return;
     GLfloat d = vector3_norm(b->trans.position);
     vector3_affine(b->trans.position, OFFSET/d,
             b->trans.position,
@@ -50,11 +49,6 @@ static void get_angles(const struct cue *cue, Vector3 out) {
     a[0] = dir[0];
     a[1] = 0;
     a[2] = dir[2];
-    /*glColor3f(0, 0, 1);
-    glBegin(GL_LINES);
-    glVertex3f(0, 0, 0);
-    glVertex3f(a[0], a[1], a[2]);
-    glEnd();*/
     n = vector3_norm(a);
     b = vector3_dot(vector3_backward, a);
     d = vector3_dot(vector3_right, a);
@@ -69,14 +63,6 @@ static void get_angles(const struct cue *cue, Vector3 out) {
     a[0] = 0;
     a[1] = dir[1];
     a[2] = dir[2];
-
-    /*glColor3f(1, 0, 0);
-    glBegin(GL_LINES);
-    glVertex3f(0, 0, 0);
-    glVertex3f(f[0], f[1], f[2]);
-    glEnd();
-    glColor3f(0, 1, 0);*/
-
     n = vector3_norm(a);
     b = vector3_dot(vector3_backward, a);
     d = vector3_dot(vector3_up, a);
@@ -90,6 +76,8 @@ static void get_angles(const struct cue *cue, Vector3 out) {
 }
 
 void draw_cue(struct cue *cue) {
+    if (cue->hide)
+        return;
     Vector3 rot;
     GLfloat rad = ball_get_radius(&cue->hit_ball);
     glColor3fv(cue->hit_ball.color);
@@ -149,3 +137,27 @@ void cue_start_anim(struct cue *cue, const GLfloat speed) {
     vector3_normalize(temp, temp);
     vector3_scale(temp, speed, current_cue->hit_ball.phys.speed);
 }
+
+void hide_cue(struct cue *cue) {
+    cue->hide = 1;
+}
+
+void show_cue(struct cue *cue) {
+    cue->hide = 0;
+}
+
+#define ROT_SPEED 15
+void cue_keyboard_handler(struct cue *cue, const GLfloat delta) {
+    Vector3 rot = {0, ROT_SPEED * delta, 0};
+
+    if (is_key_up('k') && is_key_up('l'))
+        return;
+
+    if (is_key_down('l'))
+        rot[1] *= -1;
+
+    matrix_rotate_vector_around_point(rot, cue->lookat,
+            cue->hit_ball.trans.position,
+            cue->hit_ball.trans.position);
+}
+

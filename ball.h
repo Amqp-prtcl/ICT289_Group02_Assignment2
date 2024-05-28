@@ -5,6 +5,7 @@
 #include "phys.h"
 
 #define BALL_RAD 0.028
+#define BALL_MASS 0.160
 
 struct ball {
     Vector3 color;
