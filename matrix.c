@@ -2,7 +2,7 @@
 #include "math.h"
 #include "dbg.h"
 
-#define THRESH 0.01
+#define THRESH 0.00001
 
 #define I(a, b) a+b*3
 //int inverse_3x3_matrix(const GLfloat *in, GLfloat *out) {

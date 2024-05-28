@@ -6,6 +6,8 @@
 #include "cue.h"
 #include "table.h"
 
+#define G_FORCE 9.81
+
 struct board {
     GLfloat width;
     GLfloat length;
@@ -22,9 +24,11 @@ struct board {
     struct cue cue;
 
     GLfloat timescale;
+
 };
 
 GLfloat board_apply_forces(struct board *board, const GLfloat delta);
 void board_compute_next_positions(struct board *board, const GLfloat delta);
-void board_handle_collisions(struct board *board, const GLfloat delta);
+void board_handle_collisions(struct board *board, const Vector3 gravity,
+        const GLfloat delta);
 

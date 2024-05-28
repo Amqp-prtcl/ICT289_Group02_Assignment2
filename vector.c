@@ -1,12 +1,16 @@
 #include "vector.h"
 #include "math.h"
 #include "GL/freeglut.h"
+#include "dbg.h"
 
 const Vector3 vector3_zero = {0, 0, 0};
 const Vector3 vector3_ones = {1, 1, 1};
 
 const Vector3 vector3_forward = {0, 0, -1};
+const Vector3 vector3_backward = {0, 0, 1};
 const Vector3 vector3_up = {0, 1, 0};
+const Vector3 vector3_down = {0, -1, 0};
+const Vector3 vector3_right = {1, 0, 0};
 const Vector3 vector3_left = {-1, 0, 0};
 
 // HELPERS
@@ -65,10 +69,11 @@ void vector3_sub(const Vector3 a, const Vector3 b, Vector3 out) {
     out[2] = a[2] - b[2];
 }
 
-void vector3_lerp(const Vector3 a, const Vector3 b, GLfloat t, Vector3 out) {
-    out[0] = (1-t)*a[0] + t*b[0];
-    out[1] = (1-t)*a[1] + t*b[1];
-    out[2] = (1-t)*a[2] + t*b[2];
+void vector3_lerp(const Vector3 a, const Vector3 b,
+        const GLfloat t, Vector3 out) {
+    out[0] = (1.0-t)*a[0] + t*b[0];
+    out[1] = (1.0-t)*a[1] + t*b[1];
+    out[2] = (1.0-t)*a[2] + t*b[2];
 }
 
 void vector3_affine(const Vector3 a, const GLfloat k,

@@ -6,6 +6,7 @@
 #define MAX(a,b) (((a)>(b))?(a):(b))
 #define MIN(a,b) (((a)<(b))?(a):(b))
 #define CLAMP(x,a,b) ((x)<(a)?(a):((x)>(b)?(b):(x)))
+#define MAP(x,a,b,c,d) (((x)-(a))*((d)-(c))/((b)-(a))+(c))
 
 typedef GLfloat Vector3[3];
 #define Point3 Vector3
@@ -13,9 +14,11 @@ typedef GLfloat Vector3[3];
 extern const Vector3 vector3_zeros;
 extern const Vector3 vector3_one;
 
-// NOTE: bad names (confusing)
 extern const Vector3 vector3_forward;
+extern const Vector3 vector3_backward;
 extern const Vector3 vector3_up;
+extern const Vector3 vector3_down;
+extern const Vector3 vector3_right;
 extern const Vector3 vector3_left;
 
 //// HELPERS ////
@@ -39,7 +42,8 @@ void vector3_add(const Vector3 a, const Vector3 b, Vector3 out);
 
 void vector3_sub(const Vector3 a, const Vector3 b, Vector3 out);
 
-void vector3_lerp(const Vector3 a, const Vector3 b, GLfloat t, Vector3 out);
+void vector3_lerp(const Vector3 a, const Vector3 b,
+        const GLfloat t, Vector3 out);
 
 void vector3_affine(const Vector3 a, const GLfloat k, const Vector3 b,
         Vector3 c);

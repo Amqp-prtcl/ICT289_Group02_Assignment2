@@ -1,6 +1,22 @@
 #include "scene_utils.h"
 #include "vector.h"
 
+/*
+void DrawCircle(float cx, float cy, float r, int num_segments)
+{
+    glBegin(GL_LINE_LOOP);
+    for(int ii = 0; ii < num_segments; ii++)
+    {
+        float theta = 2.0f * 3.1415926f * (float)(ii) / (float)(num_segments);
+        float x = r * cosf(theta);//calculate the x component
+        float y = r * sinf(theta);//calculate the y component
+
+        glVertex2f(x + cx, y + cy);//output vertex
+
+    }
+    glEnd();
+}
+*/
 
 void drawGrid(GLfloat cell_length, int grid_length) {
     GLfloat grid_size = cell_length * grid_length;

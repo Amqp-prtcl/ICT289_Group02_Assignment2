@@ -1,10 +1,11 @@
 CC:=gcc
-CFLAGS:=-I/opt/local/include -MMD -O3 -g -DDEBUG -Wall #-Wextra
+CFLAGS:=-I/opt/local/include -MMD -g -DDEBUG -Wall #-Wextra
 LDFLAGS:=-L/opt/local/lib #-fsanitize=address
 LDLIBS:=-lglut -lGLU -lGL -lm
 
 SRC:= main.c object.c scene_utils.c off.c shape.c vector.c board.c matrix.c\
-	  wall.c ui.c cue.c ball.c wall.c camera.c input.c table.c
+	  wall.c ui.c cue.c ball.c wall.c camera.c input.c table.c state.c\
+	  game.c draw.c
 OBJ:=${SRC:.c=.o}
 DEPS:=${SRC:.c=.d}
 

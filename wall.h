@@ -4,6 +4,8 @@
 #include "matrix.h"
 #include "dbg.h"
 
+#include "ball.h"
+
 struct wall {
     Vector3 color;
     Vector3 p1;
@@ -16,6 +18,9 @@ struct wall {
 
     // 0 means no friction, the higher the more friction
     GLfloat friction_coef;
+
+    void(*on_trigger)(struct wall *w, struct ball *b);
+    int is_trigger_only;
 
     // should be automatically filled by CHECK_WALL()
     Vector3 p4;
