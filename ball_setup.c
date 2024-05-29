@@ -19,7 +19,7 @@ static void align(struct ball *b, const size_t num,
     }
 }
 
-struct ball * create_start_ball_setup(size_t ball_num, const Vector3 origin) {
+struct ball * create_start_ball_setup(size_t ball_num, const Vector3 origin, GLuint* BallTexture) {
     struct ball *res = malloc(ball_num * sizeof(struct ball));
     if (res == NULL || ball_num == 0)
         return NULL;
@@ -30,6 +30,7 @@ struct ball * create_start_ball_setup(size_t ball_num, const Vector3 origin) {
         b = res + i;
 
         vector3_copy(c, b->color);
+	b->texture = BallTexture[(((int)i)%16)];
         vector3_to_zero(b->trans.rotation);
         vector3_to_one(b->trans.scale);
         vector3_to_zero(b->phys.speed);

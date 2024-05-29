@@ -11,7 +11,7 @@
 GLuint LoadTex(const char*);
 //char* readShaderSource(const char*);
 //GLuint loadShader(GLenum, const char*);
-//GLuint* LoadAllTex(char**, size_t); 
+GLuint* LoadAllTex(char**, size_t); 
 
 void draw_texture(GLuint id);
 

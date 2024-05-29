@@ -15,6 +15,26 @@
 #define WIND_W 1300
 #define WIND_H 700
 
+char* TexPaths[] = { "data/texture/BallCue.jpg",
+	             "data/texture/Ball1.jpg",
+		     "data/texture/Ball2.jpg",
+		     "data/texture/Ball3.jpg",
+		     "data/texture/Ball8.jpg",
+		     "data/texture/Ball4.jpg",
+		     "data/texture/Ball5.jpg",
+		     "data/texture/Ball6.jpg",
+		     "data/texture/Ball7.jpg",
+		     "data/texture/Ball9.jpg",
+		     "data/texture/Ball10.jpg",
+		     "data/texture/Ball11.jpg",
+		     "data/texture/Ball12.jpg",
+		     "data/texture/Ball13.jpg",
+		     "data/texture/Ball14.jpg",
+		     "data/texture/Ball15.jpg"
+};
+int pathNum = 16;
+GLuint* BallTexture;
+
 static void init(void) {
     init_camera();
     glClearColor (0.0, 0.0, 0.0, 0.0);
@@ -44,10 +64,10 @@ static void init(void) {
     glLightfv(GL_LIGHT0, GL_POSITION, pos);
     */
 
-    texture_id = LoadTex("data/texture/Ball4.jpg");
-    DBGU(texture_id);
+    BallTexture = LoadAllTex(TexPaths,pathNum);
+    //DBGU(texture_id);
 
-    game_init();
+    game_init(BallTexture);
 }
 
 void reshape (int w, int h) {

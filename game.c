@@ -123,14 +123,14 @@ void game_keyboard_event(unsigned char key) {
     }
 }
 
-void game_init(void) {
+void game_init(GLuint* BallTexture) {
     on_state_change = on_state_event;
 
     board.timescale = 1.0;
 
     Vector3 origin = {.7, BALL_RAD+0.0001, 0};
     board.balls_num = 10;
-    board.balls = create_start_ball_setup(board.balls_num, origin);
+    board.balls = create_start_ball_setup(board.balls_num, origin, BallTexture);
 
     init_default_table(&board.table);
     for (size_t i = 0; i < board.walls_num; i++)

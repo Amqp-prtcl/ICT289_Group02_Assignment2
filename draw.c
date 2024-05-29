@@ -64,7 +64,7 @@ void draw_scene(void) {
     draw_table(&board.table);
     draw_cue(&board.cue);
 
-    draw_texture(texture_id);
+    //draw_texture(texture_id);
 
     glPopMatrix();
 
