@@ -13,6 +13,8 @@ extern GLuint texture_id;
 typedef GLfloat Vector3[3];
 #define Point3 Vector3
 
+typedef GLfloat Vector4[4];
+
 extern const Vector3 vector3_zeros;
 extern const Vector3 vector3_one;
 
