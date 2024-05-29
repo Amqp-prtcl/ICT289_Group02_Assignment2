@@ -8,74 +8,47 @@
 #include "game.h"
 #include "state.h"
 
+#include "texture.h"
+
 #include "dbg.h"
 
 #define WIND_W 1300
 #define WIND_H 700
-
-struct ball balls[] = {
-    {
-        {1, 1, 1},
-        {
-            {.5, .03, .5},
-            {0, 0, 0},
-            {1, 1, 1}
-        },
-        {
-            0.162,
-            0.028575,
-            {0, 0, 0}
-        }
-    },
-    {
-        {255, 0, 0},
-        {
-            {0, .03, 0.02},
-            {0, 0, 0},
-            {1, 1, 1}
-        },
-        {
-            0.162,
-            0.028575,
-            {0, 0, 0}
-        }
-    },
-    {
-        {0, 255, 0},
-        {
-            {1, .03, -.5},
-            {0, 0, 0},
-            {1, 1, 1}
-        },
-        {
-            0.162,
-            .028575,
-            {0, 0, 0}
-        }
-    },
-    {
-        {0, 0, 255},
-        {
-            {-1, .03, 0},
-            {0, 0, 0},
-            {1, 1, 1}
-        },
-        {
-            0.162,
-            .028575,
-            {0, 0, 0}
-        }
-    },
-};
 
 static void init(void) {
     init_camera();
     glClearColor (0.0, 0.0, 0.0, 0.0);
     glEnable(GL_DEPTH_TEST);
 
+    glEnable(GL_TEXTURE_2D);
+
+    /*
+    glEnable(GL_LIGHTING);
+
+    GLfloat ambient[] = {0.2, 0.2, 0.2, 1.0};
+    GLfloat diffuse[] = {0.8, 0.8, 0.8, 1.0};
+    GLfloat specular[] = {1.0, 1.0, 1.0, 1.0};
+    GLfloat position[] = {1.0, 1.0, 1.0, 0.0};
+
+    glEnable(GL_LIGHT0);
+
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+    glLightfv(GL_LIGHT0, GL_POSITION, position);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    GLfloat pos[] = {1, 1, 1, 0};
+    glLightfv(GL_LIGHT0, GL_POSITION, pos);
+    */
+
+    texture_id = LoadTex("data/texture/Ball4.jpg");
+    DBGU(texture_id);
+
     game_init();
 }
-
 
 void reshape (int w, int h) {
    glViewport (0, 0, (GLsizei) w, (GLsizei) h);

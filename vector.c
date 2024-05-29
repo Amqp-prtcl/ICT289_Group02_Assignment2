@@ -3,6 +3,8 @@
 #include "GL/freeglut.h"
 #include "dbg.h"
 
+GLuint texture_id;
+
 const Vector3 vector3_zero = {0, 0, 0};
 const Vector3 vector3_ones = {1, 1, 1};
 

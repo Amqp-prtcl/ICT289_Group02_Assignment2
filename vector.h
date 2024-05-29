@@ -1,6 +1,8 @@
 #pragma once
 #include "GL/freeglut.h"
 
+extern GLuint texture_id;
+
 #define SIGN(a) (((a)<0)?(-1):1)
 #define ABS(a) (((a)<0)?(-a):(a))
 #define MAX(a,b) (((a)>(b))?(a):(b))

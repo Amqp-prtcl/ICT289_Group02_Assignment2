@@ -41,11 +41,8 @@ struct ball * create_start_ball_setup(size_t ball_num, const Vector3 origin) {
     GLfloat offset = origin[0];
     size_t a = 0;
     for (size_t i = 0; i < ball_num; i += a) {
-        DBGF(offset);
         align(res+i, ++a, offset, origin[1]);
         offset += (2*(BALL_RAD+0.0001)) * COS30;
-        DBGZU(i);
-        DBGZU(a);
     }
 
     return res;

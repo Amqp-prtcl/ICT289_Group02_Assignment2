@@ -5,6 +5,8 @@
 #include "camera.h"
 #include "scene_utils.h"
 
+#include "texture.h"
+
 static int y_offset;
 
 static void ui_printf(GLfloat *viewport, char *fmt, ...) {
@@ -61,7 +63,11 @@ void draw_scene(void) {
 
     draw_table(&board.table);
     draw_cue(&board.cue);
+
+    draw_texture(texture_id);
+
     glPopMatrix();
+
 
     draw_ui();
 
