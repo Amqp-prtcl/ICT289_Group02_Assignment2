@@ -1,6 +1,8 @@
 #include "board.h"
 #include "dbg.h"
 
+struct board board;
+
 // MOVEMENTS
 
 static GLfloat apply_forces(struct ball *b, const GLfloat delta) {

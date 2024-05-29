@@ -142,3 +142,4 @@ void draw_table(const struct table *table) {
         draw_wall(table->walls + i);
     glPopMatrix();
 }
+

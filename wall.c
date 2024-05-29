@@ -1,6 +1,9 @@
 #include "wall.h"
 
 void wall_init(struct wall *w) {
+    if (w->filled)
+        return;
+
     Matrix3x3 m;
     vector3_sub(w->p1, w->p2, m);
     vector3_sub(w->p3, w->p2, m+3);

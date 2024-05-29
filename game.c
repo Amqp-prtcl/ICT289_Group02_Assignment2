@@ -5,7 +5,7 @@
 #include "state.h"
 #include "ball_setup.h"
 
-struct board board;
+//struct board board;
 
 static void bruh(void* f) {
     board.cue.hit_ball.trans.position[1] = board.balls->trans.position[1];
