@@ -5,7 +5,7 @@
 #include "camera.h"
 #include "scene_utils.h"
 
-#include "texture.h"
+#include "light.h"
 
 static int y_offset;
 
@@ -53,6 +53,7 @@ void draw_scene(void) {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glPushMatrix();
     camera_apply();
+    apply_light();
     //drawAxis();
     //drawGrid(100/100, 100);
 

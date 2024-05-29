@@ -115,6 +115,10 @@ void game_keyboard_event(unsigned char key) {
             if (current_state == AIMING)
                 game_set_state(CUE_FORCE);
             break;
+        case 'T':
+        case 't':
+            camera_toggle();
+            break;
         case 'g':
             DBG_PRINT("'g' pressed\n");
             break;
@@ -129,7 +133,7 @@ void game_init(GLuint* BallTexture) {
     board.timescale = 1.0;
 
     Vector3 origin = {.7, BALL_RAD+0.0001, 0};
-    board.balls_num = 10;
+    board.balls_num = 2;
     board.balls = create_start_ball_setup(board.balls_num, origin, BallTexture);
 
     init_default_table(&board.table);
@@ -142,3 +146,4 @@ void game_init(GLuint* BallTexture) {
 
     game_set_state(PAUSED);
 }
+

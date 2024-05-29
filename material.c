@@ -1,5 +1,7 @@
 #include "material.h"
+#include "dbg.h"
 
+#include "light.h"
 
 static const struct material default_mat = {
     {1.0, 1.0, 1.0, 1.0},
@@ -9,10 +11,10 @@ static const struct material default_mat = {
 };
 
 static const struct material ball_mat = {
-    {0.00, 0.00, 0.00, 1.0},
-    {0.01, 0.01, 0.01, 1.0},
-    {0.50, 0.50, 0.50, 1.0},
-    32.0,
+    {0.25, 0.25, 0.25, 1.0},
+    {0.4, 0.4, 0.4, 1.0},
+    {0.9, 0.9, 0.9, 1.0},
+    76.0,
 };
 
 static const struct material cue_mat = {
@@ -23,10 +25,10 @@ static const struct material cue_mat = {
 };
 
 static const struct material board_mat = {
-    {1.0, 1.0, 1.0, 1.0},
-    {1.0, 1.0, 1.0, 1.0},
-    {1.0, 1.0, 1.0, 1.0},
-    1,
+    {0.3, 0.7, 0.3, 1.0},
+    {0.4, 0.5, 0.4, 1.0},
+    {0.04, 0.07, 0.04, 1.0},
+    10,
 };
 
 const struct material * get_mat(enum mat m) {
@@ -43,8 +45,9 @@ const struct material * get_mat(enum mat m) {
 }
 
 void apply_material(const struct material *mat) {
-    glMaterialfv(GL_FRONT, GL_AMBIENT, mat->ambient);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat->diffuse);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, mat->specular);
-    glMaterialf(GL_FRONT, GL_SHININESS, mat->shininess);
+    //apply_light();
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat->ambient);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat->diffuse);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat->specular);
+    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, mat->shininess);
 }

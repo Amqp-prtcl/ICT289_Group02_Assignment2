@@ -103,7 +103,7 @@ void draw_cue(const struct cue *cue) {
     glutWireCylinder(rad, 1.473, 12, 20);
     glPopMatrix();
 
-    glTranslatef(0, -cue->hit_ball.trans.position[1]+0.001, -vector3_norm(dir));
+    glTranslatef(0, -cue->hit_ball.trans.position[1]+0.01, -vector3_norm(dir));
     draw_cue_overlay(cue);
 
     glPopMatrix();

@@ -1,6 +1,9 @@
 #include "ball.h"
 #include "dbg.h"
 
+#include "light.h"
+#include "material.h"
+
 void drawTexturedSphere(float radius, int slices, int stacks) {
     for (int i = 0; i <= stacks; ++i) {
         double lat0 = M_PI * (-0.5 + (double) (i - 1) / stacks);
@@ -11,7 +14,7 @@ void drawTexturedSphere(float radius, int slices, int stacks) {
         double z1 = sin(lat1);
         double zr1 = cos(lat1);
 
-        glBegin(GL_QUADS);
+        glBegin(GL_QUAD_STRIP);
         for (int j = 0; j <= slices; ++j) {
             double lng = 2 * M_PI * (double) (j - 1) / slices;
             double x = cos(lng);
@@ -36,14 +39,20 @@ void drawTexturedSphere(float radius, int slices, int stacks) {
 void draw_ball(const struct ball *ball) {
     if (ball->off)
         return;
-    //DBG_BALL(ball);
     glPushMatrix();
     //glColor3fv(ball->color);
     glColor3f(1,1,1);
     glBindTexture(GL_TEXTURE_2D,ball->texture);
     object_trans_apply(&ball->trans);
     //glutWireSphere(ball_get_radius(ball), 30, 30);
+
+    apply_material(get_mat(BALL));
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_TEXTURE_2D);
     drawTexturedSphere(ball_get_radius(ball), 30, 30);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
     glPopMatrix();
 }
 
@@ -57,7 +66,6 @@ void ball_ball_collision(struct ball *b1, struct ball *b2) {
     if (d > ball_get_radius(b1) + ball_get_radius(b2))
         return;
 
-    //DBG_PRINT("ball-ball collision!");
     // normalize dist
     vector3_scale(dist, 1/d, dist);
     vector3_sub(b2->phys.speed, b1->phys.speed, vr);

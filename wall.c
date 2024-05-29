@@ -1,4 +1,5 @@
 #include "wall.h"
+#include "material.h"
 
 void wall_init(struct wall *w) {
     if (w->filled)
@@ -39,16 +40,22 @@ void draw_wall(const struct wall *w) {
     glVertex3fv(w->p2);
     glVertex3fv(w->p4);
     glEnd();
+
+    //apply_light();
+
     /*
-    glBegin(GL_POLYGON);
+    //glEnable(GL_LIGHTING);
+    //apply_material(get_mat(BALL));
+    //glColor4f(1, 1, 1, 1);
+    glBegin(GL_QUADS);
     glVertex3fv(w->p1);
     glVertex3fv(w->p2);
     glVertex3fv(w->p3);
     glVertex3fv(w->p4);
     glEnd();
+    glDisable(GL_LIGHTING);
+    */
 
-    glScalef(1, 1, 1);
-    glWire*/
     //glPopMatrix();
 }
 
