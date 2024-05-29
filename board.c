@@ -64,19 +64,16 @@ static void ball_wall_collision(struct ball *b, struct wall *w,
     GLfloat frict_thresh = vector3_dot(gravity, w->normal);
 
     imp = vector3_dot(b->phys.speed, w->normal);
-    //DBGF(delta);
-    //DBGF(imp);
-    if (imp <= frict_thresh && imp >= -frict_thresh) {
+    if (imp <= frict_thresh + 0.01 && imp >= -frict_thresh - 0.01) {
         //DBG_PRINT("friction\n");
-        // apply friction instead of collision
         vector3_affine(b->phys.speed, -w->friction_coef*delta,
                 b->phys.speed, b->phys.speed);
         vector3_affine(w->normal, -imp,
                 b->phys.speed, b->phys.speed);
         return;
     }
-    //DBG_PRINT("collision\n");
 
+    //DBG_PRINT("collision\n");
     vector3_affine(w->normal, -2*imp, b->phys.speed, b->phys.speed);
     vector3_affine(b->phys.speed, -w->collision_coef,
             b->phys.speed, b->phys.speed);

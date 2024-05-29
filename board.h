@@ -25,6 +25,8 @@ struct board {
 
     GLfloat timescale;
 
+    GLfloat cue_force;
+
 };
 
 GLfloat board_apply_forces(struct board *board, const GLfloat delta);

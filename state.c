@@ -15,3 +15,23 @@ void game_set_state(enum game_state new_state) {
         on_state_change(old, new_state);
     }
 }
+
+const char *state_to_string(enum game_state state) {
+    switch (state) {
+        case INIT:
+            return "INIT";
+        case PAUSED:
+            return "PAUSED";
+        case AIMING:
+            return "AIMING";
+        case CUE_FORCE:
+            return "CUE_FORCE";
+        case CUE_ANIM:
+            return "CUE_ANIM";
+        case RUNNING:
+            return "RUNNING";
+        default:
+            return "";
+    }
+}
+
