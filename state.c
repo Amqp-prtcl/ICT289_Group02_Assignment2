@@ -30,8 +30,10 @@ const char *state_to_string(enum game_state state) {
             return "CUE_ANIM";
         case RUNNING:
             return "RUNNING";
+        case QUIT:
+            return "QUIT";
         default:
-            return "";
+            return "UNKNOWN_STATE";
     }
 }
 

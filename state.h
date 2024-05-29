@@ -7,6 +7,7 @@ enum game_state {
     CUE_FORCE,
     CUE_ANIM,
     RUNNING,
+    QUIT,
 };
 
 const char *state_to_string(enum game_state state);

@@ -1,24 +1,32 @@
 #include "scene_utils.h"
 #include "vector.h"
+#include "math.h"
 
-/*
-void DrawCircle(float cx, float cy, float r, int num_segments)
-{
-    glBegin(GL_LINE_LOOP);
-    for(int ii = 0; ii < num_segments; ii++)
-    {
-        float theta = 2.0f * 3.1415926f * (float)(ii) / (float)(num_segments);
-        float x = r * cosf(theta);//calculate the x component
-        float y = r * sinf(theta);//calculate the y component
-
-        glVertex2f(x + cx, y + cy);//output vertex
-
+void draw_circle(GLfloat cx, GLfloat cy, GLfloat r, GLfloat prec) {
+    GLfloat x, y, t, inc = 1/prec;
+    glBegin(GL_POLYGON);
+    for (GLfloat i = 0; i < prec; i += inc) {
+        t = 2.0f * 3.1415926f * i;
+        x = r * cosf(t);
+        y = r * sinf(t);
+        glVertex2f(x + cx, y + cy);
     }
     glEnd();
 }
-*/
 
-void drawGrid(GLfloat cell_length, int grid_length) {
+void draw_wire_circle(GLfloat cx, GLfloat cy, GLfloat r, GLfloat prec) {
+    GLfloat x, y, t, inc = 1/prec;
+    glBegin(GL_LINE_LOOP);
+    for (GLfloat i = 0; i < prec; i += inc) {
+        t = 2.0f * 3.1415926f * i;
+        x = r * cosf(t);
+        y = r * sinf(t);
+        glVertex2f(x + cx, y + cy);
+    }
+    glEnd();
+}
+
+void draw_grid(GLfloat cell_length, int grid_length) {
     GLfloat grid_size = cell_length * grid_length;
     for (int i = -grid_length; i <= grid_length; i++) {
         glBegin(GL_LINES);
@@ -35,7 +43,7 @@ void drawGrid(GLfloat cell_length, int grid_length) {
     }
 }
 
-void drawAxis() {
+void draw_axis() {
     glBegin(GL_LINES);
     glColor3f(1, 0, 0);
     glVertex3f(0, 0, 0);
@@ -53,7 +61,7 @@ void drawAxis() {
     glEnd();
 }
 
-void drawcube() {
+void draw_cube() {
     Point3 verts[8] = {
         {-.5, -.5, 0.5},
         {0.5, -.5, 0.5},

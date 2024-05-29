@@ -1,6 +1,7 @@
 #include "draw_cue.h"
 #include "math.h"
 #include "matrix.h"
+#include "dbg.h"
 
 static void get_angles(const struct cue *cue, Vector3 out) {
     Vector3 dir, a, rot = {0};

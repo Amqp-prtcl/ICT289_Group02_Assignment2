@@ -7,7 +7,7 @@
 
 static int y_offset;
 
-static void print_text(GLfloat *viewport, char *fmt, ...) {
+static void ui_printf(GLfloat *viewport, char *fmt, ...) {
     va_list v;
     va_start(v, fmt);
     glColor3f(1, 0, 0);
@@ -27,19 +27,21 @@ static void draw_ui() {
     ui_begin(viewport);
     y_offset = 20;
     glColor3f(1, 0, 0);
-    print_text(viewport, "camera position: {x: %f, y: %f, z: %f}",
+    ui_printf(viewport, "camera position: {x: %f, y: %f, z: %f}",
             current_camera.pos[0],
             current_camera.pos[1],
             current_camera.pos[2]);
 
-    print_text(viewport, "camera rotation: {x: %f, y: %f, z: %f}",
+    ui_printf(viewport, "camera rotation: {x: %f, y: %f, z: %f}",
             current_camera.rot[0],
             current_camera.rot[1],
             current_camera.rot[2]);
 
+    ui_printf(viewport, "current state: %s", state_to_string(current_state));
+
     if (current_state == CUE_FORCE || current_state == RUNNING ||
             current_state == CUE_ANIM)
-        print_text(viewport, "Cue force: %f", board.cue_force);
+        ui_printf(viewport, "Cue force: %f", board.cue_force);
 
     ui_end();
     return;

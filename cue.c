@@ -72,6 +72,18 @@ void cue_start_anim(struct cue *cue, const GLfloat speed) {
     vector3_scale(temp, speed, current_cue->hit_ball.phys.speed);
 }
 
+void cue_init(struct cue *cue) {
+    cue->hit_ball.color[0] = 0;
+    cue->hit_ball.color[1] = 1;
+    cue->hit_ball.color[2] = 0;
+    vector3_to_zero(cue->hit_ball.trans.position);
+    vector3_to_zero(cue->hit_ball.trans.rotation);
+    vector3_to_one(cue->hit_ball.trans.scale);
+    cue->hit_ball.phys.radius = 0.0090;
+    vector3_to_zero(cue->lookat);
+    cue->hide = 0;
+}
+
 void hide_cue(struct cue *cue) {
     cue->hide = 1;
 }

@@ -17,6 +17,8 @@ void cue_place(struct cue *cue, const struct ball *b);
 
 void cue_tick_anim(GLfloat delta);
 
+void cue_init(struct cue *cue);
+
 void hide_cue(struct cue *cue);
 void show_cue(struct cue *cue);
 

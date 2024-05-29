@@ -5,8 +5,8 @@
 #include "camera.h"
 #include "input.h"
 #include "draw.h"
-#include "table.h"
 #include "game.h"
+#include "state.h"
 
 #include "dbg.h"
 
@@ -68,42 +68,10 @@ struct ball balls[] = {
     },
 };
 
-struct cue cue = {
-    {
-        {0, 255, 0},
-        {
-            {0, 1, 0},
-            {0, 0, 0},
-            {1, 1, 1},
-        },
-        {
-            .6,
-            .01,
-            {0, 0, 0}
-        },
-    },
-    {0, 0, 0},
-};
-
-
 static void init(void) {
     init_camera();
     glClearColor (0.0, 0.0, 0.0, 0.0);
     glEnable(GL_DEPTH_TEST);
-
-    board.balls = balls;
-    //board.balls_num = 4;
-    board.balls_num = sizeof(balls)/sizeof(struct ball);
-
-    board.walls = NULL;
-    board.walls_num = 0;
-
-    init_default_table(&board.table);
-
-    board.cue = cue;
-
-    for (size_t i = 0; i < board.walls_num; i++)
-        wall_init(board.walls + i);
 
     game_init();
 }
@@ -124,7 +92,8 @@ void keyboard(unsigned char key, int x, int y) {
         case 27:
         case 'q':
         case 'Q':
-            glutLeaveMainLoop();
+            //glutLeaveMainLoop();
+            game_set_state(QUIT);
             break;
         default:
             game_keyboard_event(key);

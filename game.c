@@ -1,7 +1,9 @@
 #include "input.h"
 #include "game.h"
+#include "table.h"
 #include "camera.h"
 #include "state.h"
+#include "ball_setup.h"
 
 struct board board;
 
@@ -14,6 +16,8 @@ static void bruh(void* f) {
 static void on_state_event(enum game_state old, enum game_state new) {
     DBG_PRINT("game state event: %s -> %s\n",
             state_to_string(old), state_to_string(new));
+    if (old == PAUSED)
+        board.timescale = 1.0;
     switch (new) {
         case PAUSED:
             board.timescale = 0.0;
@@ -29,6 +33,11 @@ static void on_state_event(enum game_state old, enum game_state new) {
         case RUNNING:
             hide_cue(&board.cue);
             break;
+        case QUIT:
+            free(board.balls);
+            board.balls_num = 0;
+            glutLeaveMainLoop();
+            break;
         default:
             break;
     }
@@ -37,9 +46,9 @@ static void on_state_event(enum game_state old, enum game_state new) {
 static void tick_phys(const GLfloat delta) {
     GLfloat sub_delta, max_speed, a;
     size_t b;
-    Vector3 gravity = {0, G_FORCE*delta*board.timescale, 0};
+    Vector3 gravity = {0, G_FORCE*delta, 0};
 
-    max_speed = board_apply_forces(&board, delta * board.timescale);
+    max_speed = board_apply_forces(&board, delta);
     sub_delta = (BALL_RAD/2)/max_speed * board.timescale;
     if (sub_delta > delta || sub_delta <= 0)
         sub_delta = delta;
@@ -53,7 +62,7 @@ static void tick_phys(const GLfloat delta) {
         board_handle_collisions(&board, gravity, sub_delta);
     }
 
-    if (current_state == RUNNING && max_speed <= G_FORCE*delta*board.timescale)
+    if (current_state == RUNNING && max_speed <= G_FORCE*delta)
         game_set_state(AIMING);
 
 }
@@ -65,11 +74,15 @@ static void game_tick(int last_time) {
     GLfloat delta = (GLfloat)(curr_time - last_time)/1000.0;
     glutTimerFunc(DELAY, game_tick, curr_time);
 
-    cue_tick_anim(delta);
-
-    tick_phys(delta);
-
     camera_handle_keyboard(delta);
+
+    delta *= board.timescale;
+
+    if (current_state != PAUSED) {
+        cue_tick_anim(delta);
+        tick_phys(delta);
+    }
+
 
     if (current_state == AIMING)
         cue_keyboard_handler(&board.cue, delta);
@@ -94,10 +107,8 @@ void game_keyboard_event(unsigned char key) {
         case 13:
             if (current_state != PAUSED)
                 game_set_state(PAUSED);
-            else {
-                board.timescale = 1.0;
+            else
                 game_set_state(AIMING);
-            }
             break;
         case 'r':
         case 'R':
@@ -113,14 +124,21 @@ void game_keyboard_event(unsigned char key) {
 }
 
 void game_init(void) {
-    anim_end_callback = bruh;
-    cue_place(&board.cue, board.balls);
+    on_state_change = on_state_event;
 
+    board.timescale = 1.0;
+
+    Vector3 origin = {.7, BALL_RAD+0.0001, 0};
+    board.balls_num = 10;
+    board.balls = create_start_ball_setup(board.balls_num, origin);
+
+    init_default_table(&board.table);
     for (size_t i = 0; i < board.walls_num; i++)
         wall_init(board.walls + i);
 
-    board.timescale = 0;
+    cue_init(&board.cue);
+    anim_end_callback = bruh;
+    cue_place(&board.cue, board.balls);
 
-    on_state_change = on_state_event;
     game_set_state(PAUSED);
 }
