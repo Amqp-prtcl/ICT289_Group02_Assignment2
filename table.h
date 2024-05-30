@@ -14,3 +14,6 @@ extern void(*on_hole_event)(struct wall *w, struct ball *b);
 
 void init_default_table(struct table *table);
 void draw_table(const struct table *table);
+
+void edit_table_roughness(const struct table *t, const GLfloat delta);
+GLfloat get_table_roughness(const struct table *t);

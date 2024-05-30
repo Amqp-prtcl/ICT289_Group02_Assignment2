@@ -16,6 +16,11 @@ static void on_hole(struct wall *w, struct ball *b) {
     vector3_to_zero(b->phys.speed);
     b->trans.position[1] += 2;
     b->off = 1;
+    if (board.score == board.balls_num - 1) {
+        board.score += 1;
+        game_set_state(WON);
+        return;
+    }
     if (b == board.balls) {
         game_set_state(LOST);
         return;
@@ -94,6 +99,7 @@ static void tick_phys(const GLfloat delta) {
 
 #define DELAY 1
 #define FORCE_DELTA 2
+#define ROUGHNESS_DELTA 1
 static void game_tick(int last_time) {
     int curr_time = glutGet(GLUT_ELAPSED_TIME);
     GLfloat delta = (GLfloat)(curr_time - last_time)/1000.0;
@@ -103,12 +109,15 @@ static void game_tick(int last_time) {
 
     delta *= board.timescale;
 
-    if (current_state == AIMING || current_state == CUE_FORCE ||
-            current_state == CUE_ANIM || current_state == RUNNING) {
+    if (IS_STATE_IN_GAME) {
         cue_tick_anim(delta);
         tick_phys(delta);
-    }
 
+        if (is_key_down('o'))
+            edit_table_roughness(&board.table, ROUGHNESS_DELTA * delta);
+        if (is_key_down('i'))
+            edit_table_roughness(&board.table, -ROUGHNESS_DELTA * delta);
+    }
 
     if (current_state == AIMING)
         cue_keyboard_handler(&board.cue, delta);

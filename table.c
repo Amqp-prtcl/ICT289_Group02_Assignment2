@@ -107,11 +107,11 @@ static struct wall walls[] = {
         0, 0,
         wall_trigger, 1,
     },
-    z_wall(2.540/2 - 0.12, 0.05715, 1.27/2.0, 2.54/4),
-    z_wall(2.540/2 - 0.12, 0.05715, 1.27/2.0, -2.54/4),
-    z_wall(2.540/2 - 0.12, 0.05715, -1.27/2.0, 2.54/4),
+    z_wall(2.540/2 - 0.12, 0.05715,  1.27/2.0,  2.54/4),
+    z_wall(2.540/2 - 0.12, 0.05715,  1.27/2.0, -2.54/4),
+    z_wall(2.540/2 - 0.12, 0.05715, -1.27/2.0,  2.54/4),
     z_wall(2.540/2 - 0.12, 0.05715, -1.27/2.0, -2.54/4),
-    x_wall(1.27 - 0.12, 0.05715, 2.54/2.0, 0),
+    x_wall(1.27 - 0.12, 0.05715,  2.54/2.0, 0),
     x_wall(1.27 - 0.12, 0.05715, -2.54/2.0, 0),
 
     side_pocket(1,  1)
@@ -144,3 +144,10 @@ void draw_table(const struct table *table) {
     glPopMatrix();
 }
 
+void edit_table_roughness(const struct table *t, const GLfloat delta) {
+    t->walls->friction_coef += delta;
+}
+
+GLfloat get_table_roughness(const struct table *t) {
+    return t->walls->friction_coef;
+}

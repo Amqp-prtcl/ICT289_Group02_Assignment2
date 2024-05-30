@@ -44,6 +44,7 @@ static void draw_ui() {
     ui_printf(viewport, "current state: %s", state_to_string(current_state));
 #endif
 
+    ui_printf(viewport, "table roughness: %f", get_table_roughness(&board.table));
     ui_printf(viewport, "score: %zu", board.score);
 
     if (current_state == CUE_FORCE || current_state == RUNNING ||

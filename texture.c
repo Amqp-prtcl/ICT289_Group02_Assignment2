@@ -46,18 +46,7 @@ GLuint LoadTex(const char* path)
     return id;
 }
 
-static void set_mat() {
-    GLfloat a[] = {0.5, 0.5, 0.5, 1};
-    GLfloat b[] = {0.5, 0.5, 0.5, 1};
-    GLfloat c[] = {0.5, 0.5, 0.5, 1};
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, a);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, b);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, c);
-    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 1.0);
-}
-
 void draw_texture(GLuint id) {
-    //set_mat();
     glColor3f(1, 1, 1);
     glBindTexture(GL_TEXTURE_2D, id);
     glBegin(GL_QUADS);

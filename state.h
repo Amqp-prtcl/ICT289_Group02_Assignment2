@@ -14,6 +14,9 @@ enum game_state {
     END_SCREEN,
 };
 
+#define IS_STATE_IN_GAME (current_state == AIMING || current_state == CUE_FORCE\
+        || current_state == CUE_ANIM || current_state == RUNNING)
+
 const char *state_to_string(enum game_state state);
 
 extern enum game_state current_state;
