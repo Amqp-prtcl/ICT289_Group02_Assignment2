@@ -7,6 +7,7 @@
 #include "table.h"
 
 #define G_FORCE 9.81
+#define FORCE_MAX 8
 
 struct board {
     GLfloat width;
@@ -26,6 +27,11 @@ struct board {
     GLfloat timescale;
 
     GLfloat cue_force;
+    size_t score;
+
+    char input[3];
+    const char *err;
+    GLuint *textures;
 
 };
 

@@ -20,6 +20,8 @@ const char *state_to_string(enum game_state state) {
     switch (state) {
         case INIT:
             return "INIT";
+        case START_SCREEN:
+            return "START_SCREEN";
         case PAUSED:
             return "PAUSED";
         case AIMING:
@@ -32,6 +34,12 @@ const char *state_to_string(enum game_state state) {
             return "RUNNING";
         case QUIT:
             return "QUIT";
+        case WON:
+            return "WON";
+        case LOST:
+            return "LOST";
+        case END_SCREEN:
+            return "END_SCREEN";
         default:
             return "UNKNOWN_STATE";
     }

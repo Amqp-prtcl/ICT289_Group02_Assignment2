@@ -69,12 +69,12 @@ void ball_ball_collision(struct ball *b1, struct ball *b2) {
     // normalize dist
     vector3_scale(dist, 1/d, dist);
     vector3_sub(b2->phys.speed, b1->phys.speed, vr);
-    impulse = vector3_dot(dist, vr);
+    impulse = vector3_dot(dist, vr)*(b1->phys.mass + b2->phys.mass)/2.0;
 
     //impulse
-    vector3_affine(dist, impulse,///b1->phys.mass,
+    vector3_affine(dist, impulse/b1->phys.mass,
             b1->phys.speed, b1->phys.speed);
-    vector3_affine(dist, -impulse,///b2->phys.mass,
+    vector3_affine(dist, -impulse/b2->phys.mass,
             b2->phys.speed, b2->phys.speed);
 
     vector3_affine(dist, -ball_get_radius(b1)-ball_get_radius(b2)+d,

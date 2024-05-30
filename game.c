@@ -5,12 +5,22 @@
 #include "state.h"
 #include "ball_setup.h"
 
-//struct board board;
-
 static void bruh(void* f) {
     board.cue.hit_ball.trans.position[1] = board.balls->trans.position[1];
+    board.cue.hit_ball.phys.mass = BALL_MASS;
     ball_ball_collision(&board.cue.hit_ball, board.balls);
     game_set_state(RUNNING);
+}
+
+static void on_hole(struct wall *w, struct ball *b) {
+    vector3_to_zero(b->phys.speed);
+    b->trans.position[1] += 2;
+    b->off = 1;
+    if (b == board.balls) {
+        game_set_state(LOST);
+        return;
+    }
+    board.score += 1;
 }
 
 static void on_state_event(enum game_state old, enum game_state new) {
@@ -37,6 +47,21 @@ static void on_state_event(enum game_state old, enum game_state new) {
             free(board.balls);
             board.balls_num = 0;
             glutLeaveMainLoop();
+            break;
+        case START_SCREEN:
+            if (board.balls != NULL) {
+                free(board.balls);
+                board.balls = NULL;
+                board.balls_num = 0;
+            }
+            board.score = 0;
+            board.err = NULL;
+            board.input[2] = 0;
+            board.input[0] = 0;
+            break;
+        case LOST:
+        case WON:
+            game_set_state(END_SCREEN);
             break;
         default:
             break;
@@ -78,7 +103,8 @@ static void game_tick(int last_time) {
 
     delta *= board.timescale;
 
-    if (current_state != PAUSED) {
+    if (current_state == AIMING || current_state == CUE_FORCE ||
+            current_state == CUE_ANIM || current_state == RUNNING) {
         cue_tick_anim(delta);
         tick_phys(delta);
     }
@@ -91,8 +117,11 @@ static void game_tick(int last_time) {
         if (is_key_up('r')) {
             game_set_state(CUE_ANIM);
             cue_start_anim(&board.cue, board.cue_force);
-        } else
+        } else {
             board.cue_force += FORCE_DELTA * delta;
+            if (board.cue_force > FORCE_MAX)
+                board.cue_force = FORCE_MAX;
+        }
     }
 
     glutPostRedisplay();
@@ -100,15 +129,78 @@ static void game_tick(int last_time) {
 
 void start_game() {
     glutTimerFunc(DELAY, game_tick, glutGet(GLUT_ELAPSED_TIME));
+    game_set_state(START_SCREEN);
+}
+
+static const char err_no_char[] = "no input";
+static const char err_invalid[] = "unable to parse input";
+static const char err_low[] = "input too low!";
+static const char err_high[] = "input too high!";
+
+static void try_start_game() {
+    if (board.input[0] == 0) {
+        board.err = err_no_char;
+        return;
+    }
+    ssize_t v;
+    if (sscanf(board.input, "%zi", &v) != 1) {
+        board.err = err_invalid;
+        return;
+    }
+    if (v < 2) {
+        board.err = err_low;
+        return;
+    }
+    if (v > 30) {
+        board.err = err_high;
+        return;
+    }
+
+    board.balls_num = v;
+    Vector3 origin = {.7, BALL_RAD+0.0001, 0};
+    board.balls = create_start_ball_setup(v, origin, board.textures);
+    game_set_state(AIMING);
+}
+
+static void add_key(unsigned char key) {
+    if (key == 8) {
+        if (board.input[1] == 0)
+            board.input[0] = 0;
+        board.input[1] = 0;
+        return;
+    }
+    if (board.input[0] == 0) {
+        board.input[1] = 0;
+        board.input[0] = key;
+        return;
+    }
+    if (board.input[1] == 0)
+        board.input[1] = key;
 }
 
 void game_keyboard_event(unsigned char key) {
+    if (current_state == START_SCREEN) {
+        if ((key >= '0' && key <= '9') || key == 8) {// DEL key
+            add_key(key);
+            return;
+        }
+    }
     switch (key) {
         case 13:
-            if (current_state != PAUSED)
-                game_set_state(PAUSED);
-            else
-                game_set_state(AIMING);
+            switch (current_state) {
+                case PAUSED:
+                    game_set_state(AIMING);
+                    break;
+                case START_SCREEN:
+                    try_start_game();
+                    break;
+                case END_SCREEN:
+                    game_set_state(START_SCREEN);
+                    break;
+                default:
+                    game_set_state(PAUSED);
+                    break;
+            }
             break;
         case 'r':
         case 'R':
@@ -129,12 +221,13 @@ void game_keyboard_event(unsigned char key) {
 
 void game_init(GLuint* BallTexture) {
     on_state_change = on_state_event;
+    on_hole_event = on_hole;
 
     board.timescale = 1.0;
 
-    Vector3 origin = {.7, BALL_RAD+0.0001, 0};
-    board.balls_num = 2;
-    board.balls = create_start_ball_setup(board.balls_num, origin, BallTexture);
+    board.balls_num = 0;
+    board.balls = NULL;
+    board.textures = BallTexture;
 
     init_default_table(&board.table);
     for (size_t i = 0; i < board.walls_num; i++)
@@ -142,8 +235,6 @@ void game_init(GLuint* BallTexture) {
 
     cue_init(&board.cue);
     anim_end_callback = bruh;
-    cue_place(&board.cue, board.balls);
-
-    game_set_state(PAUSED);
+    //cue_place(&board.cue, board.balls);
 }
 

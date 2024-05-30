@@ -82,10 +82,10 @@ void draw_cue(const struct cue *cue) {
     glColor3fv(cue->hit_ball.color);
     glPushMatrix();
 
-    set_clip_plane(0, board.table.walls + 1, 1, -1);
-    set_clip_plane(1, board.table.walls + 3, -1, 1);
-    set_clip_plane(2, board.table.walls + 5, 1, 1);
-    set_clip_plane(3, board.table.walls + 6, -1, -1);
+    set_clip_plane(0, board.table.walls + 2, 1, -1);
+    set_clip_plane(1, board.table.walls + 4, -1, 1);
+    set_clip_plane(2, board.table.walls + 6, 1, 1);
+    set_clip_plane(3, board.table.walls + 7, -1, -1);
     object_trans_apply(&cue->hit_ball.trans);
 
     vector3_sub(cue->lookat, cue->hit_ball.trans.position, dir);

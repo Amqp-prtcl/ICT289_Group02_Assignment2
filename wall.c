@@ -41,12 +41,13 @@ void draw_wall(const struct wall *w) {
     glVertex3fv(w->p4);
     glEnd();
 
+    /*
     //apply_light();
 
-    /*
-    //glEnable(GL_LIGHTING);
-    //apply_material(get_mat(BALL));
-    //glColor4f(1, 1, 1, 1);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glEnable(GL_LIGHTING);
+    apply_material(get_mat(BALL));
+    glColor4f(1, 1, 1, 1);
     glBegin(GL_QUADS);
     glVertex3fv(w->p1);
     glVertex3fv(w->p2);

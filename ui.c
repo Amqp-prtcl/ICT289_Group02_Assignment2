@@ -11,6 +11,14 @@ void ui_draw_text(char text[], GLfloat x, GLfloat y, GLfloat viewport[4]) {
         glutBitmapCharacter(GLUT_BITMAP_9_BY_15, *(text++));
 }
 
+void ui_draw_stroke(char *text, GLfloat x, GLfloat y, GLfloat *viewport) {
+    glRasterPos2f(UI_DEFAULT_X_POSITION + x,
+                  viewport[3] - UI_DEFAULT_Y_POSITION - y);
+
+    while (*text != 0)
+        glutStrokeCharacter(GLUT_STROKE_ROMAN, *(text++));
+}
+
 void ui_begin(GLfloat viewport[4]) {
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();

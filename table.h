@@ -10,5 +10,7 @@ struct table {
     size_t walls_num;
 };
 
+extern void(*on_hole_event)(struct wall *w, struct ball *b);
+
 void init_default_table(struct table *table);
 void draw_table(const struct table *table);

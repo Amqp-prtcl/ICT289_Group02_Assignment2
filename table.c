@@ -1,5 +1,7 @@
 #include "table.h"
 
+void (*on_hole_event)(struct wall *w, struct ball *b);
+
 #define table(lx, lz, y) {\
     {1, 0, 0},\
     {lx/2.0, y, lz/2.0},\
@@ -92,19 +94,19 @@ static struct wall walls[] = {
     },*/
     {
         {.3, 1, .3},
-        { 2.540/2 + 1, 0,  1.270/2 + 1},
-        {-2.540/2 - 1, 0,  1.270/2 + 1},
-        {-2.540/2 - 1, 0, -1.270/2 - 1},
+        { 2.540/2 + 0, 0,  1.270/2 + 0},
+        {-2.540/2 - 0, 0,  1.270/2 + 0},
+        {-2.540/2 - 0, 0, -1.270/2 - 0},
         0, 1,
     },
-    /*{
+    {
         {.6, .6, .6},
         { 3, -0.01,  2.5},
         {-3, -0.01,  2.5},
         {-3, -0.01, -2.5},
         0, 0,
-        //wall_trigger, 1,
-    },*/
+        wall_trigger, 1,
+    },
     z_wall(2.540/2 - 0.12, 0.05715, 1.27/2.0, 2.54/4),
     z_wall(2.540/2 - 0.12, 0.05715, 1.27/2.0, -2.54/4),
     z_wall(2.540/2 - 0.12, 0.05715, -1.27/2.0, 2.54/4),
@@ -122,9 +124,8 @@ static struct wall walls[] = {
 };
 
 static void wall_trigger(struct wall *w, struct ball *b) {
-    vector3_to_zero(b->phys.speed);
-    b->trans.position[1] += 2;
-    b->off = 1;
+    if (on_hole_event != NULL)
+        on_hole_event(w, b);
 }
 
 void init_default_table(struct table *table) {

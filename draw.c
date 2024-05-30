@@ -29,6 +29,8 @@ static void draw_ui() {
     ui_begin(viewport);
     y_offset = 20;
     glColor3f(1, 0, 0);
+
+#ifdef DEBUG
     ui_printf(viewport, "camera position: {x: %f, y: %f, z: %f}",
             current_camera.pos[0],
             current_camera.pos[1],
@@ -40,6 +42,9 @@ static void draw_ui() {
             current_camera.rot[2]);
 
     ui_printf(viewport, "current state: %s", state_to_string(current_state));
+#endif
+
+    ui_printf(viewport, "score: %zu", board.score);
 
     if (current_state == CUE_FORCE || current_state == RUNNING ||
             current_state == CUE_ANIM)
@@ -49,8 +54,58 @@ static void draw_ui() {
     return;
 }
 
+void draw_start_screen() {
+    glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
+
+    GLfloat viewport[4];
+    glGetFloatv(GL_VIEWPORT, viewport);
+
+    ui_begin(viewport);
+
+    y_offset = 20;
+    glColor3f(1, 0, 0);
+
+    ui_printf(viewport, "Start Game ?");
+    ui_printf(viewport, "please enter amount of balls: %s", board.input);
+    if (board.err != NULL)
+        ui_printf(viewport, "Cannot start game: %s", board.err);
+
+    ui_end();
+    glutSwapBuffers();
+}
+
+void draw_end_screen() {
+    glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
+
+    GLfloat viewport[4];
+    glGetFloatv(GL_VIEWPORT, viewport);
+
+    ui_begin(viewport);
+
+    y_offset = 20;
+    glColor3f(1, 0, 0);
+
+    ui_printf(viewport, "Ended!");
+    ui_printf(viewport, "your score: %zu", board.score);
+    ui_printf(viewport, "press enter to restart or 'q' to quit...");
+
+    ui_end();
+    glutSwapBuffers();
+}
+
 void draw_scene(void) {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if (current_state == END_SCREEN) {
+        draw_end_screen();
+        return;
+    }
+    if (current_state == START_SCREEN) {
+        draw_start_screen();
+        return;
+    }
+
     glPushMatrix();
     camera_apply();
     apply_light();
@@ -70,6 +125,7 @@ void draw_scene(void) {
     glPopMatrix();
 
 
+    //draw_end_screen();
     draw_ui();
 
     glutSwapBuffers();

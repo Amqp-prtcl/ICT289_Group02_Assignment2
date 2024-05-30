@@ -2,12 +2,16 @@
 
 enum game_state {
     INIT,
+    START_SCREEN,
     PAUSED,
     AIMING,
     CUE_FORCE,
     CUE_ANIM,
     RUNNING,
     QUIT,
+    WON,
+    LOST,
+    END_SCREEN,
 };
 
 const char *state_to_string(enum game_state state);
