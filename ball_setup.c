@@ -7,8 +7,8 @@
 
 // BALL_RAD
 
-static void align(struct ball *b, const size_t num,
-        const GLfloat len_offset, const GLfloat y) {
+static void align(struct ball *b, const size_t num, const GLfloat len_offset,
+        const GLfloat y) {
 
     GLfloat side_offset = (num-1) * (BALL_RAD + 0.001);
 
@@ -48,6 +48,8 @@ struct ball * create_start_ball_setup(size_t ball_num, const Vector3 origin,
     GLfloat offset = origin[0];
     size_t a = 0;
     for (size_t i = 1; i < ball_num; i += a) {
+        if (i+a+1 >= ball_num)
+            a = ball_num - i-1;
         align(res+i, ++a, offset, origin[1]);
         offset += (2*(BALL_RAD+0.001)) * COS30;
     }
