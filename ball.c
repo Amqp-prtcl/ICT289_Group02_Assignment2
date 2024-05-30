@@ -5,7 +5,7 @@
 #include "material.h"
 
 void drawTexturedSphere(float radius, int slices, int stacks) {
-    for (int i = 0; i <= stacks; ++i) {
+    for (int i = 1; i <= stacks; ++i) {
         double lat0 = M_PI * (-0.5 + (double) (i - 1) / stacks);
         double z0  = sin(lat0);
         double zr0 =  cos(lat0);
@@ -20,7 +20,7 @@ void drawTexturedSphere(float radius, int slices, int stacks) {
             double x = cos(lng);
             double y = sin(lng);
 
-            double u = (double)(j - 1) / slices;
+            double u = (double)(j) / slices;
             double v0 = (double)(i - 1) / stacks;
             double v1 = (double)i / stacks;
 
