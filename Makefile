@@ -5,7 +5,8 @@ LDLIBS:=-lglut -lGLU -lGL -lm
 
 SRC:= main.c object.c scene_utils.c vector.c board.c matrix.c\
 	wall.c ui.c cue.c ball.c wall.c camera.c input.c table.c state.c game.c\
-	draw.c ball_setup.c draw_cue.c texture.c material.c light.c
+	draw.c ball_setup.c draw_cue.c texture.c material.c light.c phys_table.c\
+	graph_table.c
 OBJ:=${SRC:.c=.o}
 DEPS:=${SRC:.c=.d}
 

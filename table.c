@@ -1,151 +1,16 @@
 #include "table.h"
 
-void (*on_hole_event)(struct wall *w, struct ball *b);
-
-#define TABLE_LENGTH 2.9
-#define TABLE_WIDTH 1.63
-
-#define PLAYFIELD_LENGTH 2.54
-#define PLAYFIELD_WIDTH 1.27
-
-#define TABLE_HEIGHT 0.06
-
-#define HOLE_RADIUS 0.06
-
-#define x_wall(l, h, x, z) {\
-    {1, 0, 0},\
-    {x, 0, -(l)/2.0 + z},\
-    {x, 0, (l)/2.0 + z},\
-    {x, h, (l)/2.0 + z},\
-}
-
-#define z_wall(l, h, z, x) {\
-    {1, 0, 0},\
-    {-(l)/2.0 + x, 0, z},\
-    {(l)/2.0 + x, 0, z},\
-    {(l)/2.0 + x, h, z},\
-}
-
-#define side_pocket(dx, dz)\
-    {\
-        {0, 0, 1},\
-        {(dx)*HOLE_RADIUS, 0.0         , (dz)*PLAYFIELD_WIDTH/2.0},\
-        { 0.00           , 0.0         , (dz)*TABLE_WIDTH/2.0},\
-        { 0.00           , TABLE_HEIGHT, (dz)*TABLE_WIDTH/2.0},\
-    },\
-    {\
-        {0, 0, 1},\
-        {-(dx)*HOLE_RADIUS, 0.0         , (dz)*PLAYFIELD_WIDTH/2.0},\
-        { 0.00            , 0.0         , (dz)*TABLE_WIDTH/2.0},\
-        { 0.00            , TABLE_HEIGHT, (dz)*TABLE_WIDTH/2.0},\
-    },\
-    {\
-        {0, 1, 1},\
-        { (dx)*2*HOLE_RADIUS, 0.0         , (dz)*PLAYFIELD_WIDTH/2.0},\
-        {-(dx)*2*HOLE_RADIUS, 0.0         , (dz)*TABLE_WIDTH/2.0},\
-        {-(dx)*2*HOLE_RADIUS, TABLE_HEIGHT, (dz)*TABLE_WIDTH/2.0},\
-    },\
-    {\
-        {0, 1, 1},\
-        {-(dx)*2*HOLE_RADIUS, 0.0         , (dz)*PLAYFIELD_WIDTH/2.0},\
-        { (dx)*2*HOLE_RADIUS, 0.0         , (dz)*TABLE_WIDTH/2.0},\
-        { (dx)*2*HOLE_RADIUS, TABLE_HEIGHT, (dz)*TABLE_WIDTH/2.0},\
-    },
-
-#define corner(dx, dz)\
-    {\
-        {0, 0, 1},\
-        {(dx)*(PLAYFIELD_LENGTH/2.0 - HOLE_RADIUS), 0.0         , (dz)*(PLAYFIELD_WIDTH/2.0)},\
-        {(dx)*(TABLE_LENGTH/2.0 - HOLE_RADIUS)    , 0.0         , (dz)*(TABLE_WIDTH/2.0)},\
-        {(dx)*(TABLE_LENGTH/2.0 - HOLE_RADIUS)    , TABLE_HEIGHT, (dz)*(TABLE_WIDTH/2.0)},\
-    },\
-    {\
-        {0, 0, 1},\
-        {(dx)*(PLAYFIELD_LENGTH/2.0), 0.0         , (dz)*(PLAYFIELD_WIDTH/2.0 - HOLE_RADIUS)},\
-        {(dx)*(TABLE_LENGTH/2.0)    , 0.0         , (dz)*(TABLE_WIDTH/2.0 - HOLE_RADIUS)},\
-        {(dx)*(TABLE_LENGTH/2.0)    , TABLE_HEIGHT, (dz)*(TABLE_WIDTH/2.0 - HOLE_RADIUS)},\
-    },\
-    {\
-        {1, 1, 1},\
-        {(dx)*((PLAYFIELD_LENGTH + TABLE_LENGTH)/4.0), 0.0         , (dz)*(PLAYFIELD_WIDTH/2.0)},\
-        {(dx)*(PLAYFIELD_LENGTH/2.0)                 , 0.0         , (dz)*((PLAYFIELD_WIDTH+TABLE_WIDTH)/4.0)},\
-        {(dx)*(PLAYFIELD_LENGTH/2.0)                 , TABLE_HEIGHT, (dz)*((PLAYFIELD_WIDTH+TABLE_WIDTH)/4.0)},\
-    },\
-    {\
-        {0, 1, 1},\
-        {(dx)*(PLAYFIELD_LENGTH/2.0 + HOLE_RADIUS), 0.0         , (dz)*(PLAYFIELD_WIDTH/2.0 - HOLE_RADIUS)},\
-        {(dx)*(PLAYFIELD_LENGTH/2.0 + HOLE_RADIUS), 0.0         , (dz)*((PLAYFIELD_WIDTH+TABLE_WIDTH)/4.0)},\
-        {(dx)*(PLAYFIELD_LENGTH/2.0 + HOLE_RADIUS), TABLE_HEIGHT, (dz)*((PLAYFIELD_WIDTH+TABLE_WIDTH)/4.0)},\
-    },\
-    {\
-        {0, 1, 1},\
-        {(dx)*(PLAYFIELD_LENGTH/2.0 - HOLE_RADIUS) , 0.0         , (dz)*(PLAYFIELD_WIDTH/2.0 + HOLE_RADIUS)},\
-        {(dx)*((PLAYFIELD_LENGTH+TABLE_LENGTH)/4.0), 0.0         , (dz)*(PLAYFIELD_WIDTH/2.0 + HOLE_RADIUS)},\
-        {(dx)*((PLAYFIELD_LENGTH+TABLE_LENGTH)/4.0), TABLE_HEIGHT, (dz)*(PLAYFIELD_WIDTH/2.0 + HOLE_RADIUS)},\
-    },
-
-static void wall_trigger();
-
-static struct wall walls[] = {
-    {
-        {.3, 1, .3},
-        { PLAYFIELD_LENGTH/2 + 0, 0,  PLAYFIELD_WIDTH/2 + 0},
-        {-PLAYFIELD_LENGTH/2 - 0, 0,  PLAYFIELD_WIDTH/2 + 0},
-        {-PLAYFIELD_LENGTH/2 - 0, 0, -PLAYFIELD_WIDTH/2 - 0},
-        0, 1,
-    },
-    {
-        {.6, .6, .6},
-        { 3, -0.01,  2.5},
-        {-3, -0.01,  2.5},
-        {-3, -0.01, -2.5},
-        0, 0,
-        wall_trigger, 1,
-    },
-    z_wall(PLAYFIELD_LENGTH/2 - 2*HOLE_RADIUS, TABLE_HEIGHT,  PLAYFIELD_WIDTH/2.0,  PLAYFIELD_LENGTH/4),
-    z_wall(PLAYFIELD_LENGTH/2 - 2*HOLE_RADIUS, TABLE_HEIGHT,  PLAYFIELD_WIDTH/2.0, -PLAYFIELD_LENGTH/4),
-    z_wall(PLAYFIELD_LENGTH/2 - 2*HOLE_RADIUS, TABLE_HEIGHT, -PLAYFIELD_WIDTH/2.0,  PLAYFIELD_LENGTH/4),
-    z_wall(PLAYFIELD_LENGTH/2 - 2*HOLE_RADIUS, TABLE_HEIGHT, -PLAYFIELD_WIDTH/2.0, -PLAYFIELD_LENGTH/4),
-
-    x_wall(PLAYFIELD_WIDTH - 2*HOLE_RADIUS, TABLE_HEIGHT,  PLAYFIELD_LENGTH/2.0, 0),
-    x_wall(PLAYFIELD_WIDTH - 2*HOLE_RADIUS, TABLE_HEIGHT, -PLAYFIELD_LENGTH/2.0, 0),
-
-    side_pocket(1,  1)
-    side_pocket(1, -1)
-
-    corner( 1,  1)
-    corner(-1,  1)
-    corner( 1, -1)
-    corner(-1, -1)
-};
-
-static void wall_trigger(struct wall *w, struct ball *b) {
-    if (on_hole_event != NULL)
-        on_hole_event(w, b);
-}
-
-void init_default_table(struct table *table) {
-    object_trans_reset(&table->trans);
-    table->walls = walls;
-    table->walls_num = sizeof(walls) / sizeof(struct wall);
-    for (size_t i = 0; i < table->walls_num; i++)
-        CHECK_WALL(walls + i);
-}
-
 void draw_table(const struct table *table) {
     glPushMatrix();
     object_trans_apply(&table->trans);
-    for (size_t i = 0; i < table->walls_num; i++)
-        draw_wall(table->walls + i);
+    if (table->filled)
+        for (size_t i = 0; i < table->walls_num; i++)
+            draw_wall_filled(table->walls + i);
+    else
+        for (size_t i = 0; i < table->walls_num; i++)
+            draw_wall(table->walls + i);
+
     glPopMatrix();
-}
-
-void edit_table_roughness(const struct table *t, const GLfloat delta) {
-    t->walls->friction_coef += delta;
-}
-
-GLfloat get_table_roughness(const struct table *t) {
-    return t->walls->friction_coef;
 }
 
 static void set_clip_plane(const size_t plane, const struct wall *w,
@@ -157,10 +22,12 @@ static void set_clip_plane(const size_t plane, const struct wall *w,
 }
 
 void table_load_clipping_planes() {
+    /*
     set_clip_plane(0, walls + 2, 1, -1);
     set_clip_plane(1, walls + 4, -1, 1);
     set_clip_plane(2, walls + 6, 1, 1);
     set_clip_plane(3, walls + 7, -1, -1);
+    */
 }
 
 void table_enable_clipping_planes() {

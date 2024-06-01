@@ -20,7 +20,8 @@ struct board {
     struct wall *walls;
     size_t walls_num;
 
-    struct table table;
+    struct table phys_table;
+    struct table graph_table;
 
     struct cue cue;
 

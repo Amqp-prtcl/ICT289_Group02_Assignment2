@@ -4,6 +4,7 @@
 #include "state.h"
 #include "camera.h"
 #include "scene_utils.h"
+#include "phys_table.h"
 
 #include "light.h"
 
@@ -25,7 +26,7 @@ static void draw_ui(void) {
     ui_printf("current state: %s", state_to_string(current_state));
 #endif
 
-    ui_printf("table roughness: %f", get_table_roughness(&board.table));
+    ui_printf("table roughness: %f", get_table_roughness(&board.phys_table));
     ui_printf("score: %zu", board.score);
 
     if (current_state == CUE_FORCE || current_state == RUNNING ||
@@ -92,7 +93,8 @@ void draw_scene(void) {
     for (size_t i = 0; i < board.walls_num; i++)
         draw_wall(board.walls + i);
 
-    draw_table(&board.table);
+    draw_table(&board.phys_table);
+    draw_table(&board.graph_table);
     draw_cue(&board.cue);
 
     glPopMatrix();
