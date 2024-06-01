@@ -3,7 +3,7 @@ CFLAGS:=-I/opt/local/include -MMD -g -DDEBUG -Wall #-Wextra
 LDFLAGS:=-L/opt/local/lib -fsanitize=address
 LDLIBS:=-lglut -lGLU -lGL -lm
 
-SRC:= main.c object.c scene_utils.c off.c shape.c vector.c board.c matrix.c\
+SRC:= main.c object.c scene_utils.c vector.c board.c matrix.c\
 	wall.c ui.c cue.c ball.c wall.c camera.c input.c table.c state.c game.c\
 	draw.c ball_setup.c draw_cue.c texture.c material.c light.c
 OBJ:=${SRC:.c=.o}

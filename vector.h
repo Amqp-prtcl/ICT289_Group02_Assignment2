@@ -1,8 +1,6 @@
 #pragma once
 #include "GL/freeglut.h"
 
-extern GLuint texture_id;
-
 #define SIGN(a) (((a)<0)?(-1):1)
 #define ABS(a) (((a)<0)?(-a):(a))
 #define MAX(a,b) (((a)>(b))?(a):(b))
@@ -15,7 +13,7 @@ typedef GLfloat Vector3[3];
 
 typedef GLfloat Vector4[4];
 
-extern const Vector3 vector3_zeros;
+extern const Vector3 vector3_zero;
 extern const Vector3 vector3_one;
 
 extern const Vector3 vector3_forward;

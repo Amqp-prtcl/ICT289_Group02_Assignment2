@@ -17,3 +17,8 @@ void draw_table(const struct table *table);
 
 void edit_table_roughness(const struct table *t, const GLfloat delta);
 GLfloat get_table_roughness(const struct table *t);
+
+void table_load_clipping_planes(void);
+void table_enable_clipping_planes(void);
+void table_disable_clipping_planes(void);
+

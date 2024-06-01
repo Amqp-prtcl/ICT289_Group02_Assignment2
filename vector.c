@@ -3,10 +3,8 @@
 #include "GL/freeglut.h"
 #include "dbg.h"
 
-GLuint texture_id;
-
 const Vector3 vector3_zero = {0, 0, 0};
-const Vector3 vector3_ones = {1, 1, 1};
+const Vector3 vector3_one = {1, 1, 1};
 
 const Vector3 vector3_forward = {0, 0, -1};
 const Vector3 vector3_backward = {0, 0, 1};
@@ -51,10 +49,9 @@ void vector3_normalize(const Vector3 in, Vector3 out) {
     GLfloat n = vector3_norm(in);;
     if (n != 0) {
         n = 1/n;
+        vector3_copy(in, out);
     }
-    out[0] = in[0] * n;
-    out[1] = in[1] * n;
-    out[2] = in[2] * n;
+    vector3_scale(in, n, out);
 }
 
 // OTHER OPERATIONS

@@ -4,7 +4,7 @@
 
 #define THRESH 0.00001
 
-#define I(a, b) a+b*3
+#define I(a, b) a*3+b
 //int inverse_3x3_matrix(const GLfloat *in, GLfloat *out) {
 int matrix_invert(const Matrix3x3 in, Matrix3x3 out) {
     GLfloat det = in[I(0,0)] * (in[I(1,1)] * in[I(2,2)] - in[I(2,1)] * in[I(1,2)]) -
@@ -14,13 +14,14 @@ int matrix_invert(const Matrix3x3 in, Matrix3x3 out) {
 #ifdef DEBUG
     if (ABS(det) <= THRESH) {
         DBG_PRINT("Matrix inverse bad determinant: %f\n", det);
-        //return 0;
+        return 0;
     }
 #endif
 
     det = 1/det;
 
-    /* normal inverse
+    // normal inverse
+    /*
     out[I(0,0)] = det * (in[I(1,1)] * in[I(2,2)] - in[I(2,1)] * in[I(1,2)]);
     out[I(0,1)] = det * (in[I(0,2)] * in[I(2,1)] - in[I(0,1)] * in[I(2,2)]);
     out[I(0,2)] = det * (in[I(0,1)] * in[I(1,2)] - in[I(0,2)] * in[I(1,1)]);
@@ -32,15 +33,15 @@ int matrix_invert(const Matrix3x3 in, Matrix3x3 out) {
     out[I(2,2)] = det * (in[I(0,0)] * in[I(1,1)] - in[I(1,0)] * in[I(0,1)]);
     */
 
-    out[I(0,0)] =   det * (in[I(1,1)] * in[I(2,2)] - in[I(2,1)] * in[I(1,2)]);
-    out[I(0,1)] = - det * (in[I(0,1)] * in[I(2,2)] - in[I(0,2)] * in[I(2,1)]);
-    out[I(0,2)] =   det * (in[I(0,1)] * in[I(1,2)] - in[I(0,2)] * in[I(1,1)]);
-    out[I(1,0)] = - det * (in[I(1,0)] * in[I(2,2)] - in[I(1,2)] * in[I(2,0)]);
-    out[I(1,1)] =   det * (in[I(0,0)] * in[I(2,2)] - in[I(0,2)] * in[I(2,0)]);
-    out[I(1,2)] = - det * (in[I(0,0)] * in[I(1,2)] - in[I(1,0)] * in[I(0,2)]);
-    out[I(2,0)] =   det * (in[I(1,0)] * in[I(2,1)] - in[I(2,0)] * in[I(1,1)]);
-    out[I(2,1)] = - det * (in[I(0,0)] * in[I(2,1)] - in[I(2,0)] * in[I(0,1)]);
-    out[I(2,2)] =   det * (in[I(0,0)] * in[I(1,1)] - in[I(1,0)] * in[I(0,1)]);
+    out[I(0,0)] = det * (in[I(1,1)] * in[I(2,2)] - in[I(2,1)] * in[I(1,2)]);
+    out[I(0,1)] = det * (in[I(1,2)] * in[I(2,0)] - in[I(1,0)] * in[I(2,2)]);
+    out[I(0,2)] = det * (in[I(1,0)] * in[I(2,1)] - in[I(2,0)] * in[I(1,1)]);
+    out[I(1,0)] = det * (in[I(0,2)] * in[I(2,1)] - in[I(0,1)] * in[I(2,2)]);
+    out[I(1,1)] = det * (in[I(0,0)] * in[I(2,2)] - in[I(0,2)] * in[I(2,0)]);
+    out[I(1,2)] = det * (in[I(2,0)] * in[I(0,1)] - in[I(0,0)] * in[I(2,1)]);
+    out[I(2,0)] = det * (in[I(0,1)] * in[I(1,2)] - in[I(0,2)] * in[I(1,1)]);
+    out[I(2,1)] = det * (in[I(1,0)] * in[I(0,2)] - in[I(0,0)] * in[I(1,2)]);
+    out[I(2,2)] = det * (in[I(0,0)] * in[I(1,1)] - in[I(1,0)] * in[I(0,1)]);
 
     return 1;
 }
@@ -88,5 +89,37 @@ void matrix_rotate_vector_around_point(const Vector3 rot, const Vector3 ancor,
     matrix_rotate_vector(rot, dir, out);
 
     vector3_add(ancor, out, out);
+}
+
+void matrix_vector_get_angles(const Vector3 in, Vector3 out) {
+    Vector3 a, rot = {0};
+    GLfloat n, b, d, ax, ay;
+
+    a[0] = in[0];
+    a[1] = 0;
+    a[2] = in[2];
+    n = vector3_norm(a);
+    b = vector3_dot(vector3_backward, a);
+    d = vector3_dot(vector3_right, a);
+    ay = (float)acos(b/n) * 180/M_PI;
+    if (d <= 0.0)
+        ay *= -1.0;
+
+    rot[1] = -ay;
+    matrix_rotate_vector(rot, in, out);
+
+    a[0] = 0;
+    a[1] = out[1];
+    a[2] = out[2];
+    n = vector3_norm(a);
+    b = vector3_dot(vector3_backward, a);
+    d = vector3_dot(vector3_up, a);
+    ax = (float)acos(b/n) * 180/M_PI;
+    if (d <= 0.0)
+        ax *= -1.0;
+
+    out[0] = ax;
+    out[1] = ay;
+    out[2] = 0;
 }
 

@@ -19,6 +19,7 @@ void wall_init(struct wall *w) {
     matrix_invert(m, w->m);
     //DBG_MAT(m);
     //DBG_MAT(w->m);
+    //exit(1);
     w->filled = 1;
 }
 

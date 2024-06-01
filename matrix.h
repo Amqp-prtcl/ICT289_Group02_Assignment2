@@ -19,3 +19,5 @@ void matrix_rotate_vector(const Vector3 rotation, const Vector3 in,
 void matrix_rotate_vector_around_point(const Vector3 rot, const Vector3 ancor,
         const Vector3 in, Vector3 out);
 
+void matrix_vector_get_angles(const Vector3 in, Vector3 out);
+

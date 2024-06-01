@@ -2,9 +2,9 @@
 
 #include "GL/freeglut.h"
 
-void ui_begin(GLfloat viewport[4]);
-void ui_end();
+void ui_begin(void);
+void ui_end(void);
 
-void ui_draw_text(char text[], GLfloat x, GLfloat y, GLfloat viewport[4]);
-void ui_draw_stroke(char *t, GLfloat x, GLfloat y, GLfloat *viewport);
+void ui_printf(const char *fmt, ...);
+void ui_draw_text(const char *text, GLfloat x, GLfloat y);
 

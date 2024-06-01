@@ -51,6 +51,7 @@ static void on_state_event(enum game_state old, enum game_state new) {
         case QUIT:
             free(board.balls);
             board.balls_num = 0;
+            free(board.textures);
             glutLeaveMainLoop();
             break;
         case START_SCREEN:

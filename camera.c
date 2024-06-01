@@ -1,6 +1,7 @@
 #include "camera.h"
 #include "input.h"
 #include "matrix.h"
+
 #include "dbg.h"
 
 // since it is the viewing point, all translations must be done in the
@@ -37,7 +38,7 @@ void camera_handle_keyboard(const GLfloat delta) {
     if (w_camera != &current_camera)
         return;
     Vector3 f, left;
-    Vector3 rot = {0, current_camera.rot[1], 0};
+    Vector3 rot = {0, -current_camera.rot[1], 0};
     matrix_rotate_vector(rot, vector3_forward, f);
     matrix_rotate_vector(rot, vector3_left, left);
     if (is_key_down('w'))
@@ -82,3 +83,4 @@ void camera_toggle() {
     else
         w_camera = &current_camera;
 }
+

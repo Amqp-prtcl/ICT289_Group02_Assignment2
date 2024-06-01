@@ -6,7 +6,7 @@ void draw_circle(GLfloat cx, GLfloat cy, GLfloat r, GLfloat prec) {
     GLfloat x, y, t, inc = 1/prec;
     glBegin(GL_POLYGON);
     for (GLfloat i = 0; i < prec; i += inc) {
-        t = 2.0f * 3.1415926f * i;
+        t = 2.0f * M_PI * i;
         x = r * cosf(t);
         y = r * sinf(t);
         glVertex2f(x + cx, y + cy);
@@ -18,7 +18,7 @@ void draw_wire_circle(GLfloat cx, GLfloat cy, GLfloat r, GLfloat prec) {
     GLfloat x, y, t, inc = 1/prec;
     glBegin(GL_LINE_LOOP);
     for (GLfloat i = 0; i < prec; i += inc) {
-        t = 2.0f * 3.1415926f * i;
+        t = 2.0f * M_PI * i;
         x = r * cosf(t);
         y = r * sinf(t);
         glVertex2f(x + cx, y + cy);
