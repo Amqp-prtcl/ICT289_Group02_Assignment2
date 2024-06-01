@@ -5,7 +5,6 @@ enum graph_type {
     RECTANGLE,
     POLYGON,
     BEZIER3,
-    BEZIER4,
 };
 
 struct graph_wall {
@@ -46,7 +45,7 @@ void graph_table_init(struct graph_table *table) {
 
 #define BEZIER_PREC 20.0
 static void draw_graph_wall(const struct graph_wall *w) {
-    Vector3 v, v1, v2, d;
+    Vector3 v, v1, d;
     glColor3fv(w->color);
     switch (w->type) {
         case TRIANGLE:
@@ -67,22 +66,20 @@ static void draw_graph_wall(const struct graph_wall *w) {
             break;
         case BEZIER3:
             vector3_sub(w->p3, w->p4, d);
-            glBegin(GL_LINE_LOOP);
+            glBegin(GL_QUAD_STRIP);
+            glVertex3fv(w->p1);
+            vector3_add(w->p1, d, v);
+            glVertex3fv(v);
             for (GLfloat t = 0; t < 1.0; t += 1/BEZIER_PREC) {
                 vector3_lerp(w->p1, w->p2, t, v);
                 vector3_lerp(w->p2, w->p3, t, v1);
                 vector3_lerp(v, v1, t, v);
                 glVertex3fv(v);
-            }
-            glVertex3fv(w->p3);
-            for (GLfloat t = 1.0; t > 0; t -= 1/BEZIER_PREC) {
-                vector3_lerp(w->p1, w->p2, t, v);
-                vector3_lerp(w->p2, w->p3, t, v1);
-                vector3_lerp(v, v1, t, v);
-                vector3_add(d, v, v);
+                vector3_add(v, d, v);
                 glVertex3fv(v);
             }
-            vector3_add(w->p1, d, v);
+            glVertex3fv(w->p3);
+            vector3_add(w->p3, d, v);
             glVertex3fv(v);
             glEnd();
             break;
