@@ -5,6 +5,7 @@
 #include "wall.h"
 #include "cue.h"
 #include "table.h"
+#include "graph_table.h"
 
 #define G_FORCE 9.81
 #define FORCE_MAX 8
@@ -20,8 +21,8 @@ struct board {
     struct wall *walls;
     size_t walls_num;
 
-    struct table phys_table;
-    struct table graph_table;
+    struct table table;
+    struct graph_table graph_table;
 
     struct cue cue;
 

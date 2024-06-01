@@ -5,7 +5,7 @@
 #include "state.h"
 #include "ball_setup.h"
 
-#include "phys_table.h"
+#include "table.h"
 #include "graph_table.h"
 
 static void bruh(void* f) {
@@ -118,9 +118,9 @@ static void game_tick(int last_time) {
         tick_phys(delta);
 
         if (is_key_down('o'))
-            phys_table_roughness(&board.phys_table, ROUGHNESS_DELTA * delta);
+            table_set_roughness(&board.table, ROUGHNESS_DELTA * delta);
         if (is_key_down('i'))
-            phys_table_roughness(&board.phys_table, -ROUGHNESS_DELTA * delta);
+            table_set_roughness(&board.table, -ROUGHNESS_DELTA * delta);
     }
 
     if (current_state == AIMING)
@@ -244,7 +244,7 @@ void game_init(GLuint* BallTexture) {
 
     board.walls_num = 0;
 
-    phys_table_init(&board.phys_table);
+    table_init(&board.table);
     graph_table_init(&board.graph_table);
 
     cue_init(&board.cue);
