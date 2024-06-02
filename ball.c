@@ -4,6 +4,8 @@
 #include "light.h"
 #include "material.h"
 
+#include "math.h"
+
 void drawTexturedSphere(float radius, int slices, int stacks) {
     for (int i = 1; i <= stacks; ++i) {
         double lat0 = M_PI * (-0.5 + (double) (i - 1) / stacks);

@@ -9,7 +9,7 @@ GLuint LoadTex(const char* path)
     GLuint id;
 
     int width, height, nrChannels;
-    unsigned char *image = stbi_load(path, &width, &height, &nrChannels, 0); 
+    unsigned char *image = stbi_load(path, &width, &height, &nrChannels, 0);
     if(!image) {
         printf("échec du chargement");
         return 999;
@@ -30,17 +30,13 @@ GLuint LoadTex(const char* path)
     glTexImage2D(GL_TEXTURE_2D,0,format,(GLsizei) width,(GLsizei) height,
             0,format,GL_UNSIGNED_BYTE,image);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);//GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);//GL_CLAMP_TO_BORDER
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);//GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-    glActiveTexture(GL_TEXTURE0);
-
-    //glGenerateMipmap(GL_TEXTURE_2D);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
     stbi_image_free(image);
 
     return id;

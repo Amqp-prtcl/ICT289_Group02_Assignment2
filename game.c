@@ -155,8 +155,8 @@ static void try_start_game() {
         board.err = err_no_char;
         return;
     }
-    ssize_t v;
-    if (sscanf(board.input, "%zi", &v) != 1) {
+    int v;
+    if (sscanf(board.input, "%i", &v) != 1) {
         board.err = err_invalid;
         return;
     }
