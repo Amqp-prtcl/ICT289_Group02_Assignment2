@@ -7,6 +7,7 @@ enum graph_type {
     POLYGON,
     BEZIER3,
     B,
+    CIRCLE,
 };
 
 struct graph_wall {
@@ -714,6 +715,12 @@ static struct graph_wall walls[] = {
         {TABLE_LENGTH/2, -0.0001, -TABLE_WIDTH/2+HOLE_RADIUS},
         {PLAYFIELD_LENGTH/2+HOLE_RADIUS, -0.0001, -PLAYFIELD_WIDTH/2},
     },
+    {
+        {0, 0, 0},
+	CIRCLE,
+	{0, 1, 0},
+	{1, 0, 0},
+    }
 };
 
 static void check_graph_wall(struct graph_wall *w) {
@@ -733,6 +740,7 @@ void graph_table_init(struct graph_table *table) {
 }
 
 #define BEZIER_PREC 20.0
+#define CIRCLE_PREC 20.0
 static void draw_graph_wall(const struct graph_wall *w) {
     Vector3 v, v1, d;
     glColor3fv(w->color);
@@ -791,6 +799,13 @@ static void draw_graph_wall(const struct graph_wall *w) {
             glVertex3fv(v);
             glEnd();
             break;
+	case CIRCLE:
+	    glPushMatrix();
+	    glTranslatef(0, w->p1[1], 0);
+	    glRotatef(90, 1, 0, 0);
+	    draw_circle(w->p1[0], w->p1[2], w->p2[0], CIRCLE_PREC);
+	    glPopMatrix();
+	    break;
         default:
             return;
     }
