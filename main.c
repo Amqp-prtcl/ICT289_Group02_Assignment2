@@ -31,11 +31,9 @@ static const char* TexPaths[] = { "data/texture/BallCue.jpg",
 };
 
 static void init(void) {
-    init_camera();
     glClearColor(0.0, 0.0, 0.0, 0.0);
     glEnable(GL_DEPTH_TEST);
 
-    //glEnable(GL_TEXTURE_2D);
     light_init();
 
     GLuint *textures = LoadAllTex(TexPaths,
@@ -46,11 +44,6 @@ static void init(void) {
 
 static void reshape (int w, int h) {
     glViewport (0, 0, (GLsizei) w, (GLsizei) h);
-    //glMatrixMode (GL_PROJECTION);
-    //glLoadIdentity ();
-    //gluPerspective(80.0, (GLfloat) w/(GLfloat) h, 0.01, 300.0);
-    //glMatrixMode(GL_MODELVIEW);
-    //glLoadIdentity();
 }
 
 static void keyboard(unsigned char key, int x, int y) {

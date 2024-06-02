@@ -13,7 +13,6 @@ struct camera {
 extern struct camera current_camera;
 #endif
 
-void init_camera(void);
 void camera_apply(void);
 void camera_apply_projection(void);
 void camera_handle_keyboard(const GLfloat delta);

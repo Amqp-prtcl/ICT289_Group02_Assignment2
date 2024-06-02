@@ -6,7 +6,12 @@
 
 // since it is the viewing point, all translations must be done in the
 // opposite direction
-struct camera current_camera;
+struct camera current_camera = {
+    {0, 1.2, 1},
+    {90, 15, 0},
+    80,
+    0, 0,
+};
 struct camera camera_top = {
     {0, 2, 0},
     {90, 0, 0},
@@ -14,16 +19,7 @@ struct camera camera_top = {
     0, 0,
 };
 
-static struct camera *w_camera = &current_camera;
-
-
-void init_camera() {
-    vector3_to_zero(current_camera.pos);
-    vector3_to_zero(current_camera.rot);
-    current_camera.fov = 80;
-    current_camera.last_x = 0;
-    current_camera.last_y = 0;
-}
+static struct camera *w_camera = &camera_top;
 
 void camera_apply() {
     glRotatef(w_camera->rot[0], 1, 0, 0);
