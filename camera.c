@@ -8,8 +8,9 @@
 // opposite direction
 struct camera current_camera;
 struct camera camera_top = {
-    {0, 1, 0},
+    {0, 2, 0},
     {90, 0, 0},
+    60,
     0, 0,
 };
 
@@ -19,6 +20,7 @@ static struct camera *w_camera = &current_camera;
 void init_camera() {
     vector3_to_zero(current_camera.pos);
     vector3_to_zero(current_camera.rot);
+    current_camera.fov = 80;
     current_camera.last_x = 0;
     current_camera.last_y = 0;
 }
@@ -31,6 +33,16 @@ void camera_apply() {
     glTranslatef(-w_camera->pos[0],
             -w_camera->pos[1],
             -w_camera->pos[2]);
+}
+
+void camera_apply_projection() {
+    Vector4 v;
+    glGetFloatv(GL_VIEWPORT, v);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(w_camera->fov, v[2]/v[3], 0.01, 300.0);
+    glMatrixMode(GL_MODELVIEW);
 }
 
 #define MOVE_SPEED 1

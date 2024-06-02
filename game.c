@@ -224,6 +224,10 @@ void game_keyboard_event(unsigned char key) {
         case 't':
             camera_toggle();
             break;
+        case 'Y':
+        case 'y':
+            table_toggle(&board.table);
+            break;
         case 'g':
             DBG_PRINT("'g' pressed\n");
             break;

@@ -38,6 +38,5 @@ struct wall {
 
 #define CHECK_WALL(w) if (!(w)->filled) wall_init(w);
 void wall_init(struct wall *w);
-void draw_wall_filled(const struct wall *w);
 void draw_wall(const struct wall *w);
 

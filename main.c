@@ -47,12 +47,12 @@ static void init(void) {
 }
 
 void reshape (int w, int h) {
-   glViewport (0, 0, (GLsizei) w, (GLsizei) h);
-   glMatrixMode (GL_PROJECTION);
-   glLoadIdentity ();
-   gluPerspective(80.0, (GLfloat) w/(GLfloat) h, 0.01, 3000.0);
-   glMatrixMode(GL_MODELVIEW);
-   glLoadIdentity();
+    glViewport (0, 0, (GLsizei) w, (GLsizei) h);
+    glMatrixMode (GL_PROJECTION);
+    glLoadIdentity ();
+    gluPerspective(80.0, (GLfloat) w/(GLfloat) h, 0.01, 300.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }
 
 void keyboard(unsigned char key, int x, int y) {
