@@ -10,3 +10,4 @@
 
 #define HOLE_RADIUS 0.06
 
+#define TABLE_GROUND_HEIGHT 1.00
