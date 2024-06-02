@@ -3,6 +3,7 @@
 #include "matrix.h"
 #include "dbg.h"
 
+#define CUE_RADIUS 0.0090
 void cue_init(struct cue *cue) {
     cue->hit_ball.color[0] = 0;
     cue->hit_ball.color[1] = 1;
@@ -10,7 +11,7 @@ void cue_init(struct cue *cue) {
     vector3_to_zero(cue->hit_ball.trans.position);
     vector3_to_zero(cue->hit_ball.trans.rotation);
     vector3_to_one(cue->hit_ball.trans.scale);
-    cue->hit_ball.phys.radius = 0.0090;
+    cue->hit_ball.phys.radius = CUE_RADIUS;
     vector3_to_zero(cue->lookat);
     cue->hide = 0;
 }
@@ -32,26 +33,29 @@ static GLfloat get_speed(const GLfloat t) {
     return res;
 }
 
+#define ANIM_STAGE_1 0.3
+#define ANIM_STAGE_2 0.5
+#define ANIM_TRAVEL 0.25
 void cue_tick_anim(GLfloat delta) {
     if (current_cue == NULL)
         return;
     current_time += delta;
 
-    if (current_time > .5) {
+    if (current_time > ANIM_STAGE_2) {
         if (anim_end_callback != NULL)
             anim_end_callback();
         vector3_copy(start_pos, current_cue->hit_ball.trans.position);
         current_cue = NULL;
         return;
     }
-    if (current_time  < .3) {
+    if (current_time  < ANIM_STAGE_1) {
         vector3_lerp(start_pos, end_pos,
-                get_speed(MAP(current_time, 0, .30, 0, 1)),
+                get_speed(MAP(current_time, 0, ANIM_STAGE_1, 0, 1)),
                 current_cue->hit_ball.trans.position);
         return;
     }
     vector3_lerp(end_pos, current_cue->lookat,
-            get_speed(MAP(current_time, .30, .5, 0, 0.95)),
+            get_speed(MAP(current_time, ANIM_STAGE_1, ANIM_STAGE_2, 0, 0.95)),
             current_cue->hit_ball.trans.position);
 }
 
@@ -65,7 +69,7 @@ void cue_start_anim(struct cue *cue, const GLfloat speed) {
     vector3_copy(cue->hit_ball.trans.position, start_pos);
     vector3_sub(cue->lookat, cue->hit_ball.trans.position, temp);
     vector3_normalize(temp, temp);
-    vector3_affine(temp, -.25, start_pos, end_pos);
+    vector3_affine(temp, -ANIM_TRAVEL, start_pos, end_pos);
 
     temp[1] = 0;
     vector3_normalize(temp, temp);
@@ -73,14 +77,15 @@ void cue_start_anim(struct cue *cue, const GLfloat speed) {
 }
 
 #define OFFSET 0.05
+#define OFFSET_HEIGHT 0.005
 void cue_place(struct cue *cue, const struct ball *b) {
     GLfloat d = vector3_norm(b->trans.position);
     vector3_affine(b->trans.position, OFFSET/d,
             b->trans.position,
             cue->hit_ball.trans.position);
-    cue->hit_ball.trans.position[1] = BALL_RAD+0.005;
+    cue->hit_ball.trans.position[1] = BALL_RAD+OFFSET_HEIGHT;
     vector3_copy(b->trans.position, cue->lookat);
-    vector3_affine(vector3_down, 0.005,
+    vector3_affine(vector3_down, OFFSET_HEIGHT,
             cue->lookat, cue->lookat);
 }
 

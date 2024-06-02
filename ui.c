@@ -35,6 +35,18 @@ int vasprintf(char **strp, const char *fmt, va_list ap) {
 }
 #endif
 
+void ui_stroke(const char *fmt, ...) {
+    char *d;
+
+    va_list v;
+    va_start(v, fmt);
+    vasprintf(&d, fmt, v);
+    va_end(v);
+
+    glutStrokeString(GLUT_STROKE_ROMAN, (unsigned char*)d);
+    free(d);
+}
+
 void ui_printf(const char *fmt, ...) {
     char *d;
 

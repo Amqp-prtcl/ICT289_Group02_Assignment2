@@ -8,7 +8,16 @@
 
 #include "light.h"
 
+static void move_for_menu() {
+    Vector4 v;
+    glGetFloatv(GL_VIEWPORT, v);
+    glTranslatef(v[2]*0.40/2, v[3]/2+v[3]/6, 0);
+    glScalef(0.5, 0.5, 1);
+}
+
 static void draw_ui(void) {
+    Vector4 v;
+    glGetFloatv(GL_VIEWPORT, v);
     ui_begin();
     glColor3f(1, 0, 0);
 
@@ -26,42 +35,47 @@ static void draw_ui(void) {
     ui_printf("current state: %s", state_to_string(current_state));
 #endif
 
-    ui_printf("table roughness: %f", table_get_roughness(&board.table));
-    ui_printf("score: %zu", board.score);
+    glTranslatef(20, v[3]-70, 0);
+    glScalef(0.3, 0.3, 1);
+    ui_stroke("table roughness: %f\n", table_get_roughness(&board.table));
+    ui_stroke("score: %zu\n", board.score);
 
     if (current_state == CUE_FORCE || current_state == RUNNING ||
             current_state == CUE_ANIM)
-        ui_printf("Cue force: %f", board.cue_force);
+        ui_stroke("Cue force: %f", board.cue_force);
 
     ui_end();
 }
 
-static void draw_start_screen(void) {
-    glDisable(GL_LIGHTING);
-    glDisable(GL_TEXTURE_2D);
 
+static void draw_start_screen(void) {
     ui_begin();
     glColor3f(1, 0, 0);
 
-    ui_printf("Start Game ?");
-    ui_printf("please enter amount of balls: %s", board.input);
-    if (board.err != NULL)
-        ui_printf("Cannot start game: %s", board.err);
+    move_for_menu();
 
+    ui_stroke("Start new game\n");
+    glScalef(0.5, 0.5, 1);
+    ui_stroke("Please enter amount of balls (includes white ball): %s\n",
+            board.input);
+    glTranslatef(0, -1, 0);
+    if (board.err != NULL)
+        ui_stroke("Cannot start game: %s", board.err);
+        
     ui_end();
     glutSwapBuffers();
 }
 
 static void draw_end_screen(void) {
-    glDisable(GL_LIGHTING);
-    glDisable(GL_TEXTURE_2D);
-
     ui_begin();
     glColor3f(1, 0, 0);
 
-    ui_printf("Ended!");
-    ui_printf("your score: %zu", board.score);
-    ui_printf("press enter to restart or 'q' to quit...");
+    move_for_menu();
+
+    ui_stroke("Game ended!\n");
+    glScalef(0.5, 0.5, 1);
+    ui_stroke("your score: %zu\n", board.score);
+    ui_stroke("press enter to restart or 'q' to quit...");
 
     ui_end();
     glutSwapBuffers();
@@ -69,6 +83,9 @@ static void draw_end_screen(void) {
 
 void draw_scene(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
 
     if (current_state == END_SCREEN) {
         draw_end_screen();
@@ -101,3 +118,4 @@ void draw_scene(void) {
 
     glutSwapBuffers();
 }
+
