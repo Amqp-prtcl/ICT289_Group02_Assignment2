@@ -56,7 +56,8 @@ void draw_cue(const struct cue *cue) {
 
     glutWireSphere(rad, 20, 20);
     glColor3f(1, 1, 0);
-    glutWireCylinder(rad, CUE_LENGTH, 12, 20);
+    //glutWireCylinder(rad, CUE_LENGTH, 12, 20);
+    glutSolidCylinder(rad, CUE_LENGTH, 12, 20);
     glPopMatrix();
 
     glTranslatef(0, -cue->hit_ball.trans.position[1]+0.01, -vector3_norm(dir));

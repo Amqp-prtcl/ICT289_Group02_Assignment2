@@ -1,10 +1,9 @@
 #pragma once
 
-#include "vector.h"
 #include "matrix.h"
-#include "dbg.h"
-
 #include "ball.h"
+
+#include "dbg.h"
 
 struct wall {
     Vector3 color;
@@ -39,4 +38,7 @@ struct wall {
 #define CHECK_WALL(w) if (!(w)->filled) wall_init(w);
 void wall_init(struct wall *w);
 void draw_wall(const struct wall *w);
+
+void wall_ball_collision(struct wall *w, struct ball *b,
+        const Vector3 gravity, const GLfloat delta);
 

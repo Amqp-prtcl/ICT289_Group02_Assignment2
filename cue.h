@@ -1,6 +1,5 @@
 #pragma once
 
-#include "vector.h"
 #include "ball.h"
 
 struct cue {
@@ -9,18 +8,17 @@ struct cue {
     int hide;
 };
 
-extern void(*anim_end_callback)(void*);
-extern void * cue_callback_arg;
+extern void(*anim_end_callback)(void);
+
+void cue_init(struct cue *cue);
 
 void cue_start_anim(struct cue *cue, const GLfloat speed);
 void cue_place(struct cue *cue, const struct ball *b);
 
-void cue_tick_anim(GLfloat delta);
 
-void cue_init(struct cue *cue);
-
-void hide_cue(struct cue *cue);
-void show_cue(struct cue *cue);
+void cue_hide(struct cue *cue);
+void cue_show(struct cue *cue);
 
 void cue_keyboard_handler(struct cue *cue, const GLfloat delta);
+void cue_tick_anim(const GLfloat delta);
 

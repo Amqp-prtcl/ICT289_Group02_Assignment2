@@ -1,8 +1,6 @@
 #include "material.h"
 #include "dbg.h"
 
-#include "light.h"
-
 static const struct material default_mat = {
     {1.0, 1.0, 1.0, 1.0},
     {1.0, 1.0, 1.0, 1.0},

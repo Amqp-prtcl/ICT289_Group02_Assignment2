@@ -5,7 +5,6 @@
 #define THRESH 0.00001
 
 #define I(a, b) a*3+b
-//int inverse_3x3_matrix(const GLfloat *in, GLfloat *out) {
 int matrix_invert(const Matrix3x3 in, Matrix3x3 out) {
     GLfloat det = in[I(0,0)] * (in[I(1,1)] * in[I(2,2)] - in[I(2,1)] * in[I(1,2)]) -
                 in[I(0,1)] * (in[I(1,0)] * in[I(2,2)] - in[I(1,2)] * in[I(2,0)]) +
@@ -19,19 +18,6 @@ int matrix_invert(const Matrix3x3 in, Matrix3x3 out) {
 #endif
 
     det = 1/det;
-
-    // normal inverse
-    /*
-    out[I(0,0)] = det * (in[I(1,1)] * in[I(2,2)] - in[I(2,1)] * in[I(1,2)]);
-    out[I(0,1)] = det * (in[I(0,2)] * in[I(2,1)] - in[I(0,1)] * in[I(2,2)]);
-    out[I(0,2)] = det * (in[I(0,1)] * in[I(1,2)] - in[I(0,2)] * in[I(1,1)]);
-    out[I(1,0)] = det * (in[I(1,2)] * in[I(2,0)] - in[I(1,0)] * in[I(2,2)]);
-    out[I(1,1)] = det * (in[I(0,0)] * in[I(2,2)] - in[I(0,2)] * in[I(2,0)]);
-    out[I(1,2)] = det * (in[I(1,0)] * in[I(0,2)] - in[I(0,0)] * in[I(1,2)]);
-    out[I(2,0)] = det * (in[I(1,0)] * in[I(2,1)] - in[I(2,0)] * in[I(1,1)]);
-    out[I(2,1)] = det * (in[I(2,0)] * in[I(0,1)] - in[I(0,0)] * in[I(2,1)]);
-    out[I(2,2)] = det * (in[I(0,0)] * in[I(1,1)] - in[I(1,0)] * in[I(0,1)]);
-    */
 
     out[I(0,0)] = det * (in[I(1,1)] * in[I(2,2)] - in[I(2,1)] * in[I(1,2)]);
     out[I(0,1)] = det * (in[I(1,2)] * in[I(2,0)] - in[I(1,0)] * in[I(2,2)]);
@@ -68,11 +54,6 @@ void matrix_rotate_vector(const Vector3 rotation, const Vector3 in,
     cosy = cosf(rotation[2] * M_PI/180);
     siny = sinf(rotation[2] * M_PI/180);
 
-    /*Matrix3x3 m = {
-        cosb*cosa, cosa*sinb*siny-sina*cosy, cosa*sinb*cosy+sina*siny,
-        cosb*sina, sina*sinb*siny+cosa*cosy, sina*sinb*cosy-cosa*siny,
-        -sinb, cosb*siny, cosb*cosy,
-    };*/
     Matrix3x3 m = {
         cosb*cosy-sina*sinb*siny, -cosa*siny, sinb*cosy+sina*cosb*siny,
         cosb*sina+sina*sinb*cosy,  cosa*cosy, sinb*siny-sina*cosb*cosy,

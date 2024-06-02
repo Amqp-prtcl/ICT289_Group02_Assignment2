@@ -6,7 +6,7 @@
 
 #include "math.h"
 
-void drawTexturedSphere(float radius, int slices, int stacks) {
+static void drawTexturedSphere(float radius, int slices, int stacks) {
     for (int i = 1; i <= stacks; ++i) {
         double lat0 = M_PI * (-0.5 + (double) (i - 1) / stacks);
         double z0  = sin(lat0);
@@ -42,19 +42,24 @@ void draw_ball(const struct ball *ball) {
     if (ball->off)
         return;
     glPushMatrix();
-    //glColor3fv(ball->color);
-    glColor3f(1,1,1);
-    glBindTexture(GL_TEXTURE_2D,ball->texture);
     object_trans_apply(&ball->trans);
+
+    //glColor3fv(ball->color);
+    glColor3f(1, 1, 1);
     //glutWireSphere(ball_get_radius(ball), 30, 30);
 
-    apply_material(get_mat(BALL));
 
     glEnable(GL_LIGHTING);
     glEnable(GL_TEXTURE_2D);
+
+    glBindTexture(GL_TEXTURE_2D, ball->texture);
+    apply_material(get_mat(BALL));
+
     drawTexturedSphere(ball_get_radius(ball), 30, 30);
+
     glDisable(GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
+
     glPopMatrix();
 }
 

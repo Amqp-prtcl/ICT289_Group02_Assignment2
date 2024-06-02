@@ -5,8 +5,6 @@
 
 #define COS30 0.86602540378
 
-// BALL_RAD
-
 static void align(struct ball *b, const size_t num, const GLfloat len_offset,
         const GLfloat y) {
 
@@ -20,7 +18,7 @@ static void align(struct ball *b, const size_t num, const GLfloat len_offset,
 }
 
 struct ball * create_start_ball_setup(size_t ball_num, const Vector3 origin,
-        GLuint* BallTexture) {
+        const GLuint *BallTexture) {
 
     struct ball *res = malloc(ball_num * sizeof(struct ball));
     if (res == NULL || ball_num == 0)

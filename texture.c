@@ -42,6 +42,7 @@ GLuint LoadTex(const char* path)
     return id;
 }
 
+/*
 void draw_texture(GLuint id) {
     glColor3f(1, 1, 1);
     glBindTexture(GL_TEXTURE_2D, id);
@@ -57,8 +58,9 @@ void draw_texture(GLuint id) {
     glEnd();
     glBindTexture(GL_TEXTURE_2D, 0);
 }
+*/
 
-GLuint* LoadAllTex(char** paths, size_t n)
+GLuint* LoadAllTex(const char** paths, size_t n)
 {
     GLuint* TexTable = malloc(n*sizeof(GLuint));
     for(size_t i = 0; i<n;i++)

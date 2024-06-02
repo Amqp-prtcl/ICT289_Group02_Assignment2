@@ -1,8 +1,5 @@
 #pragma once
 
-#include "vector.h"
-#include "ball.h"
-#include "wall.h"
 #include "cue.h"
 #include "table.h"
 #include "graph_table.h"
@@ -17,9 +14,6 @@ struct board {
     // the first one (index 0) is the white ball
     struct ball *balls;
     size_t balls_num;
-
-    struct wall *walls;
-    size_t walls_num;
 
     struct table table;
     struct graph_table graph_table;

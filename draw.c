@@ -91,9 +91,6 @@ void draw_scene(void) {
     for (size_t i = 0; i < board.balls_num; i++)
         draw_ball(board.balls + i);
 
-    for (size_t i = 0; i < board.walls_num; i++)
-        draw_wall(board.walls + i);
-
     draw_table(&board.table);
     draw_graph_table(&board.graph_table);
     draw_cue(&board.cue);

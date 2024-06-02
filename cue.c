@@ -3,12 +3,24 @@
 #include "matrix.h"
 #include "dbg.h"
 
+void cue_init(struct cue *cue) {
+    cue->hit_ball.color[0] = 0;
+    cue->hit_ball.color[1] = 1;
+    cue->hit_ball.color[2] = 0;
+    vector3_to_zero(cue->hit_ball.trans.position);
+    vector3_to_zero(cue->hit_ball.trans.rotation);
+    vector3_to_one(cue->hit_ball.trans.scale);
+    cue->hit_ball.phys.radius = 0.0090;
+    vector3_to_zero(cue->lookat);
+    cue->hide = 0;
+}
+
+void (*anim_end_callback)(void) = NULL;
+
 static struct cue *current_cue;
 static GLfloat current_time;
 static Vector3 start_pos;
 static Vector3 end_pos;
-void (*anim_end_callback)(void*) = NULL;
-void * cue_callback_arg = NULL;
 
 static GLfloat get_speed(const GLfloat t) {
     GLfloat t_1, res, p2, p3;
@@ -20,18 +32,6 @@ static GLfloat get_speed(const GLfloat t) {
     return res;
 }
 
-#define OFFSET 0.05
-void cue_place(struct cue *cue, const struct ball *b) {
-    GLfloat d = vector3_norm(b->trans.position);
-    vector3_affine(b->trans.position, OFFSET/d,
-            b->trans.position,
-            cue->hit_ball.trans.position);
-    cue->hit_ball.trans.position[1] = BALL_RAD+0.005;
-    vector3_copy(b->trans.position, cue->lookat);
-    vector3_affine(vector3_down, 0.005,
-            cue->lookat, cue->lookat);
-}
-
 void cue_tick_anim(GLfloat delta) {
     if (current_cue == NULL)
         return;
@@ -39,7 +39,7 @@ void cue_tick_anim(GLfloat delta) {
 
     if (current_time > .5) {
         if (anim_end_callback != NULL)
-            anim_end_callback(cue_callback_arg);
+            anim_end_callback();
         vector3_copy(start_pos, current_cue->hit_ball.trans.position);
         current_cue = NULL;
         return;
@@ -72,23 +72,23 @@ void cue_start_anim(struct cue *cue, const GLfloat speed) {
     vector3_scale(temp, speed, current_cue->hit_ball.phys.speed);
 }
 
-void cue_init(struct cue *cue) {
-    cue->hit_ball.color[0] = 0;
-    cue->hit_ball.color[1] = 1;
-    cue->hit_ball.color[2] = 0;
-    vector3_to_zero(cue->hit_ball.trans.position);
-    vector3_to_zero(cue->hit_ball.trans.rotation);
-    vector3_to_one(cue->hit_ball.trans.scale);
-    cue->hit_ball.phys.radius = 0.0090;
-    vector3_to_zero(cue->lookat);
-    cue->hide = 0;
+#define OFFSET 0.05
+void cue_place(struct cue *cue, const struct ball *b) {
+    GLfloat d = vector3_norm(b->trans.position);
+    vector3_affine(b->trans.position, OFFSET/d,
+            b->trans.position,
+            cue->hit_ball.trans.position);
+    cue->hit_ball.trans.position[1] = BALL_RAD+0.005;
+    vector3_copy(b->trans.position, cue->lookat);
+    vector3_affine(vector3_down, 0.005,
+            cue->lookat, cue->lookat);
 }
 
-void hide_cue(struct cue *cue) {
+void cue_hide(struct cue *cue) {
     cue->hide = 1;
 }
 
-void show_cue(struct cue *cue) {
+void cue_show(struct cue *cue) {
     cue->hide = 0;
 }
 

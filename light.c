@@ -3,7 +3,7 @@
 #include "vector.h"
 
 void light_init() {
-    glEnable(GL_LIGHTING);
+    //glEnable(GL_LIGHTING);
 
     GLfloat ambient[] = {0.5, 0.5, 0.5, 1.0};
     GLfloat diffuse[] = {1.0, 1.0, 1.0, 1.0};

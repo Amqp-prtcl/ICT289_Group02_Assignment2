@@ -6,39 +6,40 @@ object_trans - done
 
 matrix - done
 
-ball
+ball - done
 
-ball_setup - 
+ball_setup - done
 
-board
+board - done
 
-camera
+camera - done
 
-cue
+cue - done
 
-draw
+draw - done
 
-draw_cue
+draw_cue - done
 
-game
+game - done
 
-input
+input - done
 
-light
+light - done
 
 main
 
-material
+material - done
 
-scene_utils
+scene_utils - done
 
-state
+state - done
 
-table
+table - done
 
-texture
+texture - done
 
-ui
+ui - done
 
-wall
+wall - done
 
+TODO: cue anim fix consts

@@ -1,4 +1,3 @@
-#include "stddef.h"
 #include "input.h"
 #include "GL/freeglut.h"
 #include "dbg.h"

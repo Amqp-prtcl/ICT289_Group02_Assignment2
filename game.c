@@ -8,7 +8,7 @@
 #include "table.h"
 #include "graph_table.h"
 
-static void bruh(void* f) {
+static void on_anim_end(void) {
     board.cue.hit_ball.trans.position[1] = board.balls->trans.position[1];
     board.cue.hit_ball.phys.mass = BALL_MASS;
     ball_ball_collision(&board.cue.hit_ball, board.balls);
@@ -41,7 +41,7 @@ static void on_state_event(enum game_state old, enum game_state new) {
             board.timescale = 0.0;
             break;
         case AIMING:
-            show_cue(&board.cue);
+            cue_show(&board.cue);
             cue_place(&board.cue, board.balls);
             vector3_to_zero(board.balls->phys.speed);
             break;
@@ -49,7 +49,7 @@ static void on_state_event(enum game_state old, enum game_state new) {
             board.cue_force = 0;
             break;
         case RUNNING:
-            hide_cue(&board.cue);
+            cue_hide(&board.cue);
             break;
         case QUIT:
             free(board.balls);
@@ -236,7 +236,7 @@ void game_keyboard_event(unsigned char key) {
     }
 }
 
-void game_init(GLuint* BallTexture) {
+void game_init(const GLuint *BallTexture) {
     on_state_change = on_state_event;
     on_hole_event = on_hole;
 
@@ -246,12 +246,10 @@ void game_init(GLuint* BallTexture) {
     board.balls = NULL;
     board.textures = BallTexture;
 
-    board.walls_num = 0;
-
     table_init(&board.table);
     graph_table_init(&board.graph_table);
 
     cue_init(&board.cue);
-    anim_end_callback = bruh;
+    anim_end_callback = on_anim_end;
 }
 

@@ -12,7 +12,7 @@
 #define WIND_W 1300
 #define WIND_H 700
 
-char* TexPaths[] = { "data/texture/BallCue.jpg",
+static const char* TexPaths[] = { "data/texture/BallCue.jpg",
      "data/texture/Ball1.jpg",
      "data/texture/Ball2.jpg",
      "data/texture/Ball3.jpg",
@@ -29,33 +29,31 @@ char* TexPaths[] = { "data/texture/BallCue.jpg",
      "data/texture/Ball14.jpg",
      "data/texture/Ball15.jpg"
 };
-int pathNum = 16;
-GLuint* BallTexture;
 
 static void init(void) {
     init_camera();
-    glClearColor (0.0, 0.0, 0.0, 0.0);
+    glClearColor(0.0, 0.0, 0.0, 0.0);
     glEnable(GL_DEPTH_TEST);
 
-    glEnable(GL_TEXTURE_2D);
-
+    //glEnable(GL_TEXTURE_2D);
     light_init();
 
-    BallTexture = LoadAllTex(TexPaths,pathNum);
+    const GLuint *textures = LoadAllTex(TexPaths,
+            sizeof(TexPaths)/sizeof(char *));
 
-    game_init(BallTexture);
+    game_init(textures);
 }
 
-void reshape (int w, int h) {
+static void reshape (int w, int h) {
     glViewport (0, 0, (GLsizei) w, (GLsizei) h);
-    glMatrixMode (GL_PROJECTION);
-    glLoadIdentity ();
-    gluPerspective(80.0, (GLfloat) w/(GLfloat) h, 0.01, 300.0);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+    //glMatrixMode (GL_PROJECTION);
+    //glLoadIdentity ();
+    //gluPerspective(80.0, (GLfloat) w/(GLfloat) h, 0.01, 300.0);
+    //glMatrixMode(GL_MODELVIEW);
+    //glLoadIdentity();
 }
 
-void keyboard(unsigned char key, int x, int y) {
+static void keyboard(unsigned char key, int x, int y) {
     switch (key) {
         case 27:
         case 'q':
@@ -74,7 +72,9 @@ int main(int argc, char** argv) {
     glutInitWindowSize(WIND_W, WIND_H);
     glutInitWindowPosition(10, 10);
     glutCreateWindow(argv[0]);
+
     init();
+
     glutDisplayFunc(draw_scene);
     glutReshapeFunc(reshape);
     glutPassiveMotionFunc(camera_handle_mouse);

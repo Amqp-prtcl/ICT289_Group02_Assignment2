@@ -36,18 +36,46 @@ void draw_wall(const struct wall *w) {
     glVertex3fv(w->p2);
     glVertex3fv(w->p4);
     glEnd();
+}
 
-    /*
-    glEnable(GL_LIGHTING);
-    apply_material(get_mat(BALL));
-    glColor4f(1, 1, 1, 1);
-    glBegin(GL_QUADS);
-    glVertex3fv(w->p1);
-    glVertex3fv(w->p2);
-    glVertex3fv(w->p3);
-    glVertex3fv(w->p4);
-    glEnd();
-    glDisable(GL_LIGHTING);
-    */
+#define is_not_bound(a) a < 0.0 || a > 1.0
+void wall_ball_collision(struct wall *w, struct ball *b,
+        const Vector3 gravity, const GLfloat delta) {
+    Vector3 v1, v2;
+    GLfloat imp;
+
+    vector3_sub(b->trans.position, w->p2, v1);
+    matrix_vector_mul(w->m, v1, v2);
+
+    if (v2[2] < -ball_get_radius(b) || v2[2] > ball_get_radius(b) ||
+            is_not_bound(v2[0]) || is_not_bound(v2[1]))
+        return;
+
+    if (w->on_trigger != NULL) {
+        DBG_PRINT("wall trigger\n");
+        w->on_trigger(w, b);
+    }
+    if (w->is_trigger_only)
+        return;
+
+    vector3_affine(w->normal, SIGN(v2[2])*(ball_get_radius(b)-ABS(v2[2])),
+            b->trans.position, b->trans.position);
+
+    GLfloat frict_thresh = vector3_dot(gravity, w->normal);
+
+    imp = vector3_dot(b->phys.speed, w->normal);
+    if (imp <= frict_thresh + 0.01 && imp >= -frict_thresh - 0.01) {
+        //DBG_PRINT("friction\n");
+        vector3_affine(b->phys.speed, -w->friction_coef*delta,
+                b->phys.speed, b->phys.speed);
+        vector3_affine(w->normal, -imp,
+                b->phys.speed, b->phys.speed);
+        return;
+    }
+
+    //DBG_PRINT("collision\n");
+    vector3_affine(w->normal, -2*imp, b->phys.speed, b->phys.speed);
+    vector3_affine(b->phys.speed, -w->collision_coef,
+            b->phys.speed, b->phys.speed);
 }
 

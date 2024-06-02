@@ -38,50 +38,6 @@ void board_compute_next_positions(struct board *board, const GLfloat delta) {
     }
 }
 
-// COLLISIONS HANDLING
-
-#define is_not_bound(a) a < 0.0 || a > 1.0
-static void ball_wall_collision(struct ball *b, struct wall *w,
-        const Vector3 gravity, const GLfloat delta) {
-    Vector3 v1, v2;
-    GLfloat imp;
-
-    vector3_sub(b->trans.position, w->p2, v1);
-    matrix_vector_mul(w->m, v1, v2);
-
-    if (v2[2] < -ball_get_radius(b) || v2[2] > ball_get_radius(b) ||
-            is_not_bound(v2[0]) || is_not_bound(v2[1]))
-        return;
-
-    if (w->on_trigger != NULL) {
-        DBG_PRINT("wall trigger\n");
-        w->on_trigger(w, b);
-    }
-    if (w->is_trigger_only)
-        return;
-
-    vector3_affine(w->normal, SIGN(v2[2])*(ball_get_radius(b)-ABS(v2[2])),
-            b->trans.position, b->trans.position);
-
-    GLfloat frict_thresh = vector3_dot(gravity, w->normal);
-
-    imp = vector3_dot(b->phys.speed, w->normal);
-    if (imp <= frict_thresh + 0.01 && imp >= -frict_thresh - 0.01) {
-        //DBG_PRINT("friction\n");
-        vector3_affine(b->phys.speed, -w->friction_coef*delta,
-                b->phys.speed, b->phys.speed);
-        vector3_affine(w->normal, -imp,
-                b->phys.speed, b->phys.speed);
-        return;
-    }
-
-    //DBG_PRINT("collision\n");
-    vector3_affine(w->normal, -2*imp, b->phys.speed, b->phys.speed);
-    vector3_affine(b->phys.speed, -w->collision_coef,
-            b->phys.speed, b->phys.speed);
-}
-
-
 void board_handle_collisions(struct board *board, const Vector3 gravity,
         const GLfloat delta) {
     struct ball *b1;
@@ -92,10 +48,8 @@ void board_handle_collisions(struct board *board, const Vector3 gravity,
         for (size_t j = i+1; j < board->balls_num; j++)
             if (!board->balls[j].off)
                 ball_ball_collision(b1, board->balls+j);
-        for (size_t j = 0; j < board->walls_num; j++)
-            ball_wall_collision(b1, board->walls + j, gravity, delta);
         for (size_t j = 0; j < board->table.walls_num; j++)
-            ball_wall_collision(b1, board->table.walls + j, gravity, delta);
+            wall_ball_collision(board->table.walls + j, b1, gravity, delta);
     }
 }
 
