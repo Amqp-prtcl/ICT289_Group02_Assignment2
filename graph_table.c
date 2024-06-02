@@ -19,12 +19,19 @@ struct graph_wall {
     Vector3 p4;
 };
 
-// {0.5, 0.25, 0}, --> Brown
+// BROWN, --> Brown
+#define BLACK {0, 0, 0}
+#define BROWN {0.5, 0.25, 0}
+#define GRAY {0.5, 0.5, 0.5}
+#define DARK_BLUE {0, 0, 0.25}
+#define LIGHT_BLUE {0.25, 0.25, 1}
+#define CLASSIC_BLUE {0, 0, 1}
+
 
 static struct graph_wall walls[] = {
         // Table ground
     {
-        {0, 0, 0.25},
+        DARK_BLUE,
         RECTANGLE,
         {PLAYFIELD_LENGTH/2+HOLE_RADIUS, 0, -PLAYFIELD_WIDTH/2-HOLE_RADIUS},
         {PLAYFIELD_LENGTH/2+HOLE_RADIUS, 0, PLAYFIELD_WIDTH/2+HOLE_RADIUS},
@@ -33,14 +40,14 @@ static struct graph_wall walls[] = {
         // Table INSIDE sides
     // Side width
     {
-        {0, 0, 1},
+        CLASSIC_BLUE,
         RECTANGLE,
         {PLAYFIELD_LENGTH/2+HOLE_RADIUS/2, 0, -PLAYFIELD_WIDTH/2+HOLE_RADIUS},
         {PLAYFIELD_LENGTH/2+HOLE_RADIUS/2, 0, PLAYFIELD_WIDTH/2-HOLE_RADIUS},
         {PLAYFIELD_LENGTH/2, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2-HOLE_RADIUS},
     },
     {
-        {1, 0, 1},
+        DARK_BLUE,
         RECTANGLE,
         {PLAYFIELD_LENGTH/2, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2+HOLE_RADIUS},
         {PLAYFIELD_LENGTH/2, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2-HOLE_RADIUS},
@@ -49,14 +56,14 @@ static struct graph_wall walls[] = {
     // Side length
     // 1/2
     {
-        {0, 0, 1},
+        CLASSIC_BLUE,
         RECTANGLE,
         {PLAYFIELD_LENGTH/2-HOLE_RADIUS, 0, PLAYFIELD_WIDTH/2+HOLE_RADIUS/2},
         {HOLE_RADIUS, 0, PLAYFIELD_WIDTH/2+HOLE_RADIUS/2},
         {HOLE_RADIUS, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2},
     },
     {
-        {1, 0, 1},
+        DARK_BLUE,
         RECTANGLE,
         {PLAYFIELD_LENGTH/2-HOLE_RADIUS, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2},
         {HOLE_RADIUS, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2},
@@ -64,14 +71,14 @@ static struct graph_wall walls[] = {
     },
     // 2/2
         {
-        {0, 0, 1},
+        CLASSIC_BLUE,
         RECTANGLE,
         {-HOLE_RADIUS, 0, PLAYFIELD_WIDTH/2+HOLE_RADIUS/2},
         {-PLAYFIELD_LENGTH/2+HOLE_RADIUS, 0, PLAYFIELD_WIDTH/2+HOLE_RADIUS/2},
         {-PLAYFIELD_LENGTH/2+HOLE_RADIUS, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2},
     },
     {
-        {1, 0, 1},
+        DARK_BLUE,
         RECTANGLE,
         {-HOLE_RADIUS, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2},
         {-PLAYFIELD_LENGTH/2+HOLE_RADIUS, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2},
@@ -79,14 +86,14 @@ static struct graph_wall walls[] = {
     },
     // Side width
     {
-        {0, 0, 1},
+        CLASSIC_BLUE,
         RECTANGLE,
         {-PLAYFIELD_LENGTH/2-HOLE_RADIUS/2, 0, PLAYFIELD_WIDTH/2-HOLE_RADIUS},
         {-PLAYFIELD_LENGTH/2-HOLE_RADIUS/2, 0, -PLAYFIELD_WIDTH/2+HOLE_RADIUS},
         {-PLAYFIELD_LENGTH/2, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2+HOLE_RADIUS},
     },
     {
-        {1, 0, 1},
+        DARK_BLUE,
         RECTANGLE,
         {-PLAYFIELD_LENGTH/2, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2-HOLE_RADIUS},
         {-PLAYFIELD_LENGTH/2, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2+HOLE_RADIUS},
@@ -95,14 +102,14 @@ static struct graph_wall walls[] = {
     // Side length
     // 1/2
     {
-        {0, 0, 1},
+        CLASSIC_BLUE,
         RECTANGLE,
         {-PLAYFIELD_LENGTH/2+HOLE_RADIUS, 0, -PLAYFIELD_WIDTH/2-HOLE_RADIUS/2},
         {-HOLE_RADIUS, 0, -PLAYFIELD_WIDTH/2-HOLE_RADIUS/2},
         {-HOLE_RADIUS, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2},
     },
     {
-        {1, 0, 1},
+        DARK_BLUE,
         RECTANGLE,
         {-PLAYFIELD_LENGTH/2+HOLE_RADIUS, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2},
         {-HOLE_RADIUS, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2},
@@ -110,14 +117,14 @@ static struct graph_wall walls[] = {
     },
     // 2/2
         {
-        {0, 0, 1},
+        CLASSIC_BLUE,
         RECTANGLE,
         {HOLE_RADIUS, 0, -PLAYFIELD_WIDTH/2-HOLE_RADIUS/2},
         {PLAYFIELD_LENGTH/2-HOLE_RADIUS, 0, -PLAYFIELD_WIDTH/2-HOLE_RADIUS/2},
         {PLAYFIELD_LENGTH/2-HOLE_RADIUS, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2},
     },
     {
-        {1, 0, 1},
+        DARK_BLUE,
         RECTANGLE,
         {HOLE_RADIUS, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2},
         {PLAYFIELD_LENGTH/2-HOLE_RADIUS, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2},
@@ -125,28 +132,28 @@ static struct graph_wall walls[] = {
     },
         // Table OUTSIDE sides
     {
-        {0.5, 0.25, 0},
+        BROWN,
         RECTANGLE,
         {TABLE_LENGTH/2, 0, -TABLE_WIDTH/2+TABLE_HEIGHT},
         {TABLE_LENGTH/2, 0, TABLE_WIDTH/2-TABLE_HEIGHT},
         {TABLE_LENGTH/2, TABLE_HEIGHT, TABLE_WIDTH/2-TABLE_HEIGHT},
     },
     {
-        {0.5, 0.25, 0},
+        BROWN,
         RECTANGLE,
         {TABLE_LENGTH/2-HOLE_RADIUS, 0, TABLE_WIDTH/2},
         {-TABLE_LENGTH/2+HOLE_RADIUS, 0, TABLE_WIDTH/2},
         {-TABLE_LENGTH/2+HOLE_RADIUS, TABLE_HEIGHT, TABLE_WIDTH/2},
     },
     {
-        {0.5, 0.25, 0},
+        BROWN,
         RECTANGLE,
         {-TABLE_LENGTH/2, 0, TABLE_WIDTH/2-HOLE_RADIUS},
         {-TABLE_LENGTH/2, 0, -TABLE_WIDTH/2+HOLE_RADIUS},
         {-TABLE_LENGTH/2, TABLE_HEIGHT, -TABLE_WIDTH/2+HOLE_RADIUS},
     },
     {
-        {0.5, 0.25, 0},
+        BROWN,
         RECTANGLE,
         {-TABLE_LENGTH/2+HOLE_RADIUS, 0, -TABLE_WIDTH/2},
         {TABLE_LENGTH/2-HOLE_RADIUS, 0, -TABLE_WIDTH/2},
@@ -158,7 +165,7 @@ static struct graph_wall walls[] = {
 
         // Corner table EXTERIOR
     {
-        {1, 0, 0},
+        GRAY,
         BEZIER3,
         {TABLE_LENGTH/2, 0, TABLE_WIDTH/2-HOLE_RADIUS},
         {TABLE_LENGTH/2, 0, TABLE_WIDTH/2},
@@ -166,7 +173,7 @@ static struct graph_wall walls[] = {
         {TABLE_LENGTH/2-HOLE_RADIUS, -TABLE_HEIGHT, TABLE_WIDTH/2},
     },
     {
-        {1, 0, 0},
+        GRAY,
         BEZIER3,
         {-TABLE_LENGTH/2+HOLE_RADIUS, 0, TABLE_WIDTH/2},
         {-TABLE_LENGTH/2, 0, TABLE_WIDTH/2},
@@ -174,7 +181,7 @@ static struct graph_wall walls[] = {
         {-TABLE_LENGTH/2, -TABLE_HEIGHT, TABLE_WIDTH/2-HOLE_RADIUS},
     },
     {
-        {1, 0, 0},
+        GRAY,
         BEZIER3,
         {-TABLE_LENGTH/2, 0, -TABLE_WIDTH/2+HOLE_RADIUS},
         {-TABLE_LENGTH/2, 0, -TABLE_WIDTH/2},
@@ -182,7 +189,7 @@ static struct graph_wall walls[] = {
         {-TABLE_LENGTH/2+HOLE_RADIUS, -TABLE_HEIGHT, -TABLE_WIDTH/2},
     },
     {
-        {1, 0, 0},
+        GRAY,
         BEZIER3,
         {TABLE_LENGTH/2-HOLE_RADIUS, 0, -TABLE_WIDTH/2},
         {TABLE_LENGTH/2, 0, -TABLE_WIDTH/2},
@@ -191,7 +198,7 @@ static struct graph_wall walls[] = {
     },
         // Corner table INTERIOR
     {
-        {0.5, 0.5, 0.5},
+        GRAY,
         BEZIER3,
         {PLAYFIELD_LENGTH/2+HOLE_RADIUS, 0, PLAYFIELD_WIDTH/2},
         {PLAYFIELD_LENGTH/2+HOLE_RADIUS, 0, PLAYFIELD_WIDTH/2+HOLE_RADIUS},
@@ -199,7 +206,7 @@ static struct graph_wall walls[] = {
         {PLAYFIELD_LENGTH/2, -TABLE_HEIGHT, PLAYFIELD_WIDTH/2+HOLE_RADIUS},
     },
     {
-        {0.5, 0.5, 0.5},
+        GRAY,
         BEZIER3,
         {-PLAYFIELD_LENGTH/2-HOLE_RADIUS, 0, PLAYFIELD_WIDTH/2},
         {-PLAYFIELD_LENGTH/2-HOLE_RADIUS, 0, PLAYFIELD_WIDTH/2+HOLE_RADIUS},
@@ -207,7 +214,7 @@ static struct graph_wall walls[] = {
         {-PLAYFIELD_LENGTH/2, -TABLE_HEIGHT, PLAYFIELD_WIDTH/2+HOLE_RADIUS},
     },
     {
-        {0.5, 0.5, 0.5},
+        GRAY,
         BEZIER3,
         {-PLAYFIELD_LENGTH/2-HOLE_RADIUS, 0, -PLAYFIELD_WIDTH/2},
         {-PLAYFIELD_LENGTH/2-HOLE_RADIUS, 0, -PLAYFIELD_WIDTH/2-HOLE_RADIUS},
@@ -215,7 +222,7 @@ static struct graph_wall walls[] = {
         {-PLAYFIELD_LENGTH/2, -TABLE_HEIGHT, -PLAYFIELD_WIDTH/2-HOLE_RADIUS},
     },
     {
-        {0.5, 0.5, 0.5},
+        GRAY,
         BEZIER3,
         {PLAYFIELD_LENGTH/2+HOLE_RADIUS, 0, -PLAYFIELD_WIDTH/2},
         {PLAYFIELD_LENGTH/2+HOLE_RADIUS, 0, -PLAYFIELD_WIDTH/2-HOLE_RADIUS},
@@ -224,7 +231,7 @@ static struct graph_wall walls[] = {
     },
         // Corner table LINK
     {
-        {0.5, 0.5, 0.5},
+        GRAY,
         B,
         {TABLE_LENGTH/2, TABLE_HEIGHT, TABLE_WIDTH/2-HOLE_RADIUS},
         {TABLE_LENGTH/2, TABLE_HEIGHT, TABLE_WIDTH/2},
@@ -232,7 +239,7 @@ static struct graph_wall walls[] = {
         {PLAYFIELD_LENGTH/2, TABLE_HEIGHT, PLAYFIELD_WIDTH/2+HOLE_RADIUS},
     },
     {
-        {0.5, 0.5, 0.5},
+        GRAY,
         B,
         {-TABLE_LENGTH/2+HOLE_RADIUS, TABLE_HEIGHT, TABLE_WIDTH/2},
         {-TABLE_LENGTH/2, TABLE_HEIGHT, TABLE_WIDTH/2},
@@ -240,7 +247,7 @@ static struct graph_wall walls[] = {
         {-PLAYFIELD_LENGTH/2-HOLE_RADIUS, TABLE_HEIGHT, PLAYFIELD_WIDTH/2},
     },
     {
-        {0.5, 0.5, 0.5},
+        GRAY,
         B,
         {-TABLE_LENGTH/2, TABLE_HEIGHT, -TABLE_WIDTH/2+HOLE_RADIUS},
         {-TABLE_LENGTH/2, TABLE_HEIGHT, -TABLE_WIDTH/2},
@@ -248,7 +255,7 @@ static struct graph_wall walls[] = {
         {-PLAYFIELD_LENGTH/2, TABLE_HEIGHT, -PLAYFIELD_WIDTH/2-HOLE_RADIUS},
     },
     {
-        {0.5, 0.5, 0.5},
+        GRAY,
         B,
         {TABLE_LENGTH/2-HOLE_RADIUS, TABLE_HEIGHT, -TABLE_WIDTH/2},
         {TABLE_LENGTH/2, TABLE_HEIGHT, -TABLE_WIDTH/2},
@@ -257,7 +264,7 @@ static struct graph_wall walls[] = {
     },
         // Corner table MIDDLE
     {
-        {0.5, 0.5, 0.5},
+        GRAY,
         BEZIER3,
         {HOLE_RADIUS, 0, PLAYFIELD_WIDTH/2+HOLE_RADIUS/2},
         {0, 0, PLAYFIELD_WIDTH/2+(TABLE_WIDTH-PLAYFIELD_WIDTH)/2},
@@ -265,7 +272,7 @@ static struct graph_wall walls[] = {
         {-HOLE_RADIUS, -TABLE_HEIGHT-0.0001, PLAYFIELD_WIDTH/2+HOLE_RADIUS/2},
     },
     {
-        {0.5, 0.5, 0.5},
+        GRAY,
         BEZIER3,
         {HOLE_RADIUS, 0, -PLAYFIELD_WIDTH/2-HOLE_RADIUS/2},
         {0, 0, -PLAYFIELD_WIDTH/2-(TABLE_WIDTH-PLAYFIELD_WIDTH)/2},
@@ -274,7 +281,7 @@ static struct graph_wall walls[] = {
     },
         // Corner table Ling MIDDLE
     {
-        {0.5, 0.5, 0.5},
+        GRAY,
         B,
         {HOLE_RADIUS, TABLE_HEIGHT+0.0001, PLAYFIELD_WIDTH/2+2*HOLE_RADIUS},
         {0, TABLE_HEIGHT+0.0001, PLAYFIELD_WIDTH/2+2*HOLE_RADIUS+(TABLE_WIDTH-PLAYFIELD_WIDTH)/3},
@@ -282,7 +289,7 @@ static struct graph_wall walls[] = {
         {-HOLE_RADIUS, TABLE_HEIGHT+0.0001, PLAYFIELD_WIDTH/2},
     },
     {
-        {0.5, 0.5, 0.5},
+        GRAY,
         B,
         {HOLE_RADIUS, TABLE_HEIGHT+0.0001, -PLAYFIELD_WIDTH/2-2*HOLE_RADIUS},
         {0, TABLE_HEIGHT+0.0001, -PLAYFIELD_WIDTH/2-2*HOLE_RADIUS-(TABLE_WIDTH-PLAYFIELD_WIDTH)/3},
@@ -297,7 +304,7 @@ static struct graph_wall walls[] = {
         // Width fill TOP
     // width
     {
-        {0.5, 0.25, 0},
+        BROWN,
         POLYGON,
         {TABLE_LENGTH/2, TABLE_HEIGHT, TABLE_WIDTH/2-HOLE_RADIUS},
         {PLAYFIELD_LENGTH/2+HOLE_RADIUS, TABLE_HEIGHT, PLAYFIELD_WIDTH/2},
@@ -305,7 +312,7 @@ static struct graph_wall walls[] = {
         {TABLE_LENGTH/2, TABLE_HEIGHT, -TABLE_WIDTH/2+HOLE_RADIUS},
     },
     {
-        {0.25, 0.25, 1},
+        LIGHT_BLUE,
         POLYGON,
         {PLAYFIELD_LENGTH/2+HOLE_RADIUS, TABLE_HEIGHT, PLAYFIELD_WIDTH/2},
         {PLAYFIELD_LENGTH/2, TABLE_HEIGHT, PLAYFIELD_WIDTH/2-HOLE_RADIUS},
@@ -313,7 +320,7 @@ static struct graph_wall walls[] = {
         {PLAYFIELD_LENGTH/2+HOLE_RADIUS, TABLE_HEIGHT, -PLAYFIELD_WIDTH/2},
     },
     {
-        {0.5, 0.25, 0},
+        BROWN,
         POLYGON,
         {-TABLE_LENGTH/2, TABLE_HEIGHT, TABLE_WIDTH/2-HOLE_RADIUS},
         {-PLAYFIELD_LENGTH/2-HOLE_RADIUS, TABLE_HEIGHT, PLAYFIELD_WIDTH/2},
@@ -321,7 +328,7 @@ static struct graph_wall walls[] = {
         {-TABLE_LENGTH/2, TABLE_HEIGHT, -TABLE_WIDTH/2+HOLE_RADIUS},
     },
     {
-        {0.25, 0.25, 1},
+        LIGHT_BLUE,
         POLYGON,
         {-PLAYFIELD_LENGTH/2-HOLE_RADIUS, TABLE_HEIGHT, PLAYFIELD_WIDTH/2},
         {-PLAYFIELD_LENGTH/2, TABLE_HEIGHT, PLAYFIELD_WIDTH/2-HOLE_RADIUS},
@@ -330,7 +337,7 @@ static struct graph_wall walls[] = {
     },
     // length
     {
-        {0.5, 0.25, 0},
+        BROWN,
         POLYGON,
         {TABLE_LENGTH/2-HOLE_RADIUS, TABLE_HEIGHT, TABLE_WIDTH/2},
         {PLAYFIELD_LENGTH/2, TABLE_HEIGHT, PLAYFIELD_WIDTH/2+HOLE_RADIUS},
@@ -338,7 +345,7 @@ static struct graph_wall walls[] = {
         {0, TABLE_HEIGHT, TABLE_WIDTH/2},
     },
     {
-        {0.25, 0.25, 1},
+        LIGHT_BLUE,
         POLYGON,
         {PLAYFIELD_LENGTH/2, TABLE_HEIGHT, PLAYFIELD_WIDTH/2+HOLE_RADIUS},
         {PLAYFIELD_LENGTH/2-HOLE_RADIUS, TABLE_HEIGHT, PLAYFIELD_WIDTH/2},
@@ -346,7 +353,7 @@ static struct graph_wall walls[] = {
         {HOLE_RADIUS, TABLE_HEIGHT, PLAYFIELD_WIDTH/2+HOLE_RADIUS},
     },
     {
-        {0.5, 0.25, 0},
+        BROWN,
         POLYGON,
         {-TABLE_LENGTH/2+HOLE_RADIUS, TABLE_HEIGHT, TABLE_WIDTH/2},
         {-PLAYFIELD_LENGTH/2, TABLE_HEIGHT, PLAYFIELD_WIDTH/2+HOLE_RADIUS},
@@ -354,7 +361,7 @@ static struct graph_wall walls[] = {
         {0, TABLE_HEIGHT, TABLE_WIDTH/2},
     },
     {
-        {0.25, 0.25, 1},
+        LIGHT_BLUE,
         POLYGON,
         {-PLAYFIELD_LENGTH/2, TABLE_HEIGHT, PLAYFIELD_WIDTH/2+HOLE_RADIUS},
         {-PLAYFIELD_LENGTH/2+HOLE_RADIUS, TABLE_HEIGHT, PLAYFIELD_WIDTH/2},
@@ -364,7 +371,7 @@ static struct graph_wall walls[] = {
 
 
     {
-        {0.5, 0.25, 0},
+        BROWN,
         POLYGON,
         {TABLE_LENGTH/2-HOLE_RADIUS, TABLE_HEIGHT, -TABLE_WIDTH/2},
         {PLAYFIELD_LENGTH/2, TABLE_HEIGHT, -PLAYFIELD_WIDTH/2-HOLE_RADIUS},
@@ -372,7 +379,7 @@ static struct graph_wall walls[] = {
         {0, TABLE_HEIGHT, -TABLE_WIDTH/2},
     },
     {
-        {0.25, 0.25, 1},
+        LIGHT_BLUE,
         POLYGON,
         {PLAYFIELD_LENGTH/2, TABLE_HEIGHT, -PLAYFIELD_WIDTH/2-HOLE_RADIUS},
         {PLAYFIELD_LENGTH/2-HOLE_RADIUS, TABLE_HEIGHT, -PLAYFIELD_WIDTH/2},
@@ -380,7 +387,7 @@ static struct graph_wall walls[] = {
         {HOLE_RADIUS, TABLE_HEIGHT, -PLAYFIELD_WIDTH/2-HOLE_RADIUS},
     },
     {
-        {0.5, 0.25, 0},
+        BROWN,
         POLYGON,
         {-TABLE_LENGTH/2+HOLE_RADIUS, TABLE_HEIGHT, -TABLE_WIDTH/2},
         {-PLAYFIELD_LENGTH/2, TABLE_HEIGHT, -PLAYFIELD_WIDTH/2-HOLE_RADIUS},
@@ -388,7 +395,7 @@ static struct graph_wall walls[] = {
         {0, TABLE_HEIGHT, -TABLE_WIDTH/2},
     },
     {
-        {0.25, 0.25, 1},
+        LIGHT_BLUE,
         POLYGON,
         {-PLAYFIELD_LENGTH/2, TABLE_HEIGHT, -PLAYFIELD_WIDTH/2-HOLE_RADIUS},
         {-PLAYFIELD_LENGTH/2+HOLE_RADIUS, TABLE_HEIGHT, -PLAYFIELD_WIDTH/2},
@@ -399,7 +406,7 @@ static struct graph_wall walls[] = {
     // Corner TOP LEFT 
     // 1/2
     {
-        {0, 0, 1},
+        CLASSIC_BLUE,
         POLYGON,
         {PLAYFIELD_LENGTH/2+HOLE_RADIUS, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2},
         {PLAYFIELD_LENGTH/2+HOLE_RADIUS, 0, PLAYFIELD_WIDTH/2},
@@ -407,7 +414,7 @@ static struct graph_wall walls[] = {
         {PLAYFIELD_LENGTH/2, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2-HOLE_RADIUS},
     },
     {
-        {1, 0, 1},
+        DARK_BLUE,
         RECTANGLE,
         {PLAYFIELD_LENGTH/2+HOLE_RADIUS, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2},
         {PLAYFIELD_LENGTH/2, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2-HOLE_RADIUS},
@@ -415,7 +422,7 @@ static struct graph_wall walls[] = {
     },
     // 2/2
     {
-        {0, 0, 1},
+        CLASSIC_BLUE,
         POLYGON,
         {PLAYFIELD_LENGTH/2, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2+HOLE_RADIUS},
         {PLAYFIELD_LENGTH/2, 0, PLAYFIELD_WIDTH/2+HOLE_RADIUS},
@@ -423,7 +430,7 @@ static struct graph_wall walls[] = {
         {PLAYFIELD_LENGTH/2-HOLE_RADIUS, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2},
     },
     {
-        {1, 0, 1},
+        DARK_BLUE,
         RECTANGLE,
         {PLAYFIELD_LENGTH/2, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2+HOLE_RADIUS},
         {PLAYFIELD_LENGTH/2-HOLE_RADIUS, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2},
@@ -432,7 +439,7 @@ static struct graph_wall walls[] = {
     // Corner BOTTOM RIGHT
     // 1/2
     {
-        {0, 0, 1},
+        CLASSIC_BLUE,
         POLYGON,
         {PLAYFIELD_LENGTH/2+HOLE_RADIUS, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2},
         {PLAYFIELD_LENGTH/2+HOLE_RADIUS, 0, -PLAYFIELD_WIDTH/2},
@@ -440,7 +447,7 @@ static struct graph_wall walls[] = {
         {PLAYFIELD_LENGTH/2, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2+HOLE_RADIUS},
     },
     {
-        {1, 0, 1},
+        DARK_BLUE,
         RECTANGLE,
         {PLAYFIELD_LENGTH/2+HOLE_RADIUS, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2},
         {PLAYFIELD_LENGTH/2, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2+HOLE_RADIUS},
@@ -448,7 +455,7 @@ static struct graph_wall walls[] = {
     },
     // 2/2
     {
-        {0, 0, 1},
+        CLASSIC_BLUE,
         POLYGON,
         {PLAYFIELD_LENGTH/2, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2-HOLE_RADIUS},
         {PLAYFIELD_LENGTH/2, 0, -PLAYFIELD_WIDTH/2-HOLE_RADIUS},
@@ -456,7 +463,7 @@ static struct graph_wall walls[] = {
         {PLAYFIELD_LENGTH/2-HOLE_RADIUS, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2},
     },
     {
-        {1, 0, 1},
+        DARK_BLUE,
         RECTANGLE,
         {PLAYFIELD_LENGTH/2, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2-HOLE_RADIUS},
         {PLAYFIELD_LENGTH/2-HOLE_RADIUS, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2},
@@ -465,7 +472,7 @@ static struct graph_wall walls[] = {
     // Corner TOP RIGHT 
     // 1/2
     {
-        {0, 0, 1},
+        CLASSIC_BLUE,
         POLYGON,
         {-PLAYFIELD_LENGTH/2-HOLE_RADIUS, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2},
         {-PLAYFIELD_LENGTH/2-HOLE_RADIUS, 0, PLAYFIELD_WIDTH/2},
@@ -473,7 +480,7 @@ static struct graph_wall walls[] = {
         {-PLAYFIELD_LENGTH/2, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2-HOLE_RADIUS},
     },
     {
-        {1, 0, 1},
+        DARK_BLUE,
         RECTANGLE,
         {-PLAYFIELD_LENGTH/2-HOLE_RADIUS, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2},
         {-PLAYFIELD_LENGTH/2, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2-HOLE_RADIUS},
@@ -481,7 +488,7 @@ static struct graph_wall walls[] = {
     },
     // 2/2
     {
-        {0, 0, 1},
+        CLASSIC_BLUE,
         POLYGON,
         {-PLAYFIELD_LENGTH/2, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2+HOLE_RADIUS},
         {-PLAYFIELD_LENGTH/2, 0, PLAYFIELD_WIDTH/2+HOLE_RADIUS},
@@ -489,7 +496,7 @@ static struct graph_wall walls[] = {
         {-PLAYFIELD_LENGTH/2+HOLE_RADIUS, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2},
     },
     {
-        {1, 0, 1},
+        DARK_BLUE,
         RECTANGLE,
         {-PLAYFIELD_LENGTH/2, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2+HOLE_RADIUS},
         {-PLAYFIELD_LENGTH/2+HOLE_RADIUS, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2},
@@ -498,7 +505,7 @@ static struct graph_wall walls[] = {
     // Corner BOTTOM RIGHT
     // 1/2
     {
-        {0, 0, 1},
+        CLASSIC_BLUE,
         POLYGON,
         {-PLAYFIELD_LENGTH/2-HOLE_RADIUS, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2},
         {-PLAYFIELD_LENGTH/2-HOLE_RADIUS, 0, -PLAYFIELD_WIDTH/2},
@@ -506,7 +513,7 @@ static struct graph_wall walls[] = {
         {-PLAYFIELD_LENGTH/2, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2+HOLE_RADIUS},
     },
     {
-        {1, 0, 1},
+        DARK_BLUE,
         RECTANGLE,
         {-PLAYFIELD_LENGTH/2-HOLE_RADIUS, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2},
         {-PLAYFIELD_LENGTH/2, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2+HOLE_RADIUS},
@@ -514,7 +521,7 @@ static struct graph_wall walls[] = {
     },
     // 2/2
     {
-        {0, 0, 1},
+        CLASSIC_BLUE,
         POLYGON,
         {-PLAYFIELD_LENGTH/2, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2-HOLE_RADIUS},
         {-PLAYFIELD_LENGTH/2, 0, -PLAYFIELD_WIDTH/2-HOLE_RADIUS},
@@ -522,7 +529,7 @@ static struct graph_wall walls[] = {
         {-PLAYFIELD_LENGTH/2+HOLE_RADIUS, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2},
     },
     {
-        {1, 0, 1},
+        DARK_BLUE,
         RECTANGLE,
         {-PLAYFIELD_LENGTH/2, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2-HOLE_RADIUS},
         {-PLAYFIELD_LENGTH/2+HOLE_RADIUS, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2},
@@ -531,14 +538,14 @@ static struct graph_wall walls[] = {
     // Corner MIDDLE TOP
     // 1/2
     {
-        {0, 0, 1},
+        CLASSIC_BLUE,
         TRIANGLE,
         {HOLE_RADIUS, 0, PLAYFIELD_WIDTH/2+HOLE_RADIUS/2},
         {HOLE_RADIUS, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2+HOLE_RADIUS/2},
         {HOLE_RADIUS, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2},
     },
     {
-        {1, 0, 1},
+        DARK_BLUE,
         RECTANGLE,
         {HOLE_RADIUS, TABLE_HEIGHT, PLAYFIELD_WIDTH/2+HOLE_RADIUS/2},
         {HOLE_RADIUS, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2+HOLE_RADIUS/2},
@@ -546,14 +553,14 @@ static struct graph_wall walls[] = {
     },
     // 2/2
     {
-        {0, 0, 1},
+        CLASSIC_BLUE,
         TRIANGLE,
         {-HOLE_RADIUS, 0, PLAYFIELD_WIDTH/2+HOLE_RADIUS/2},
         {-HOLE_RADIUS, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2+HOLE_RADIUS/2},
         {-HOLE_RADIUS, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2},
     },
     {
-        {1, 0, 1},
+        DARK_BLUE,
         RECTANGLE,
         {-HOLE_RADIUS, TABLE_HEIGHT, PLAYFIELD_WIDTH/2+HOLE_RADIUS/2},
         {-HOLE_RADIUS, TABLE_HEIGHT-0.005, PLAYFIELD_WIDTH/2+HOLE_RADIUS/2},
@@ -562,14 +569,14 @@ static struct graph_wall walls[] = {
     // Corner MIDDLE BOTTOM
     // 1/2
     {
-        {0, 0, 1},
+        CLASSIC_BLUE,
         TRIANGLE,
         {HOLE_RADIUS, 0, -PLAYFIELD_WIDTH/2-HOLE_RADIUS/2},
         {HOLE_RADIUS, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2-HOLE_RADIUS/2},
         {HOLE_RADIUS, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2},
     },
     {
-        {1, 0, 1},
+        DARK_BLUE,
         RECTANGLE,
         {HOLE_RADIUS, TABLE_HEIGHT, -PLAYFIELD_WIDTH/2-HOLE_RADIUS/2},
         {HOLE_RADIUS, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2-HOLE_RADIUS/2},
@@ -577,14 +584,14 @@ static struct graph_wall walls[] = {
     },
     // 2/2
     {
-        {0, 0, 1},
+        CLASSIC_BLUE,
         TRIANGLE,
         {-HOLE_RADIUS, 0, -PLAYFIELD_WIDTH/2-HOLE_RADIUS/2},
         {-HOLE_RADIUS, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2-HOLE_RADIUS/2},
         {-HOLE_RADIUS, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2},
     },
     {
-        {1, 0, 1},
+        DARK_BLUE,
         RECTANGLE,
         {-HOLE_RADIUS, TABLE_HEIGHT, -PLAYFIELD_WIDTH/2-HOLE_RADIUS/2},
         {-HOLE_RADIUS, TABLE_HEIGHT-0.005, -PLAYFIELD_WIDTH/2-HOLE_RADIUS/2},
@@ -593,7 +600,7 @@ static struct graph_wall walls[] = {
         // Width fill BOTTOM
     // width
     {
-        {0.5, 0.25, 0},
+        BROWN,
         POLYGON,
         {TABLE_LENGTH/2, -0.0001, TABLE_WIDTH/2-HOLE_RADIUS},
         {PLAYFIELD_LENGTH/2, -0.0001, PLAYFIELD_WIDTH/2-HOLE_RADIUS},
@@ -601,7 +608,7 @@ static struct graph_wall walls[] = {
         {TABLE_LENGTH/2, -0.0001, -TABLE_WIDTH/2+HOLE_RADIUS},
     },
     {
-        {0.5, 0.25, 0},
+        BROWN,
         POLYGON,
         {-TABLE_LENGTH/2, -0.0001, -TABLE_WIDTH/2+HOLE_RADIUS},
         {-PLAYFIELD_LENGTH/2, -0.0001, -PLAYFIELD_WIDTH/2+HOLE_RADIUS},
@@ -610,7 +617,7 @@ static struct graph_wall walls[] = {
     },
     // length
     {
-        {0.5, 0.25, 0},
+        BROWN,
         POLYGON,
         {TABLE_LENGTH/2-HOLE_RADIUS, -0.0001, TABLE_WIDTH/2},
         {PLAYFIELD_LENGTH/2-HOLE_RADIUS, -0.0001, PLAYFIELD_WIDTH/2},
@@ -618,7 +625,7 @@ static struct graph_wall walls[] = {
         {-TABLE_LENGTH/2+HOLE_RADIUS, -0.0001, TABLE_WIDTH/2},
     },
     {
-        {0.5, 0.25, 0},
+        BROWN,
         POLYGON,
         {TABLE_LENGTH/2-HOLE_RADIUS, -0.0001, -TABLE_WIDTH/2},
         {PLAYFIELD_LENGTH/2-HOLE_RADIUS, -0.0001, -PLAYFIELD_WIDTH/2},
@@ -627,7 +634,7 @@ static struct graph_wall walls[] = {
     },
         // Corner table BOTTON LINK
     {
-        {0.5, 0.5, 0.5},
+        GRAY,
         B,
         {TABLE_LENGTH/2, -0.0001, TABLE_WIDTH/2-HOLE_RADIUS},
         {TABLE_LENGTH/2, -0.0001, TABLE_WIDTH/2},
@@ -635,7 +642,7 @@ static struct graph_wall walls[] = {
         {PLAYFIELD_LENGTH/2, -0.0001, PLAYFIELD_WIDTH/2+HOLE_RADIUS},
     },
     {
-        {0.5, 0.5, 0.5},
+        GRAY,
         B,
         {-TABLE_LENGTH/2+HOLE_RADIUS, -0.0001, TABLE_WIDTH/2},
         {-TABLE_LENGTH/2, -0.0001, TABLE_WIDTH/2},
@@ -643,7 +650,7 @@ static struct graph_wall walls[] = {
         {-PLAYFIELD_LENGTH/2-HOLE_RADIUS, -0.0001, PLAYFIELD_WIDTH/2},
     },
     {
-        {0.5, 0.5, 0.5},
+        GRAY,
         B,
         {-TABLE_LENGTH/2, -0.0001, -TABLE_WIDTH/2+HOLE_RADIUS},
         {-TABLE_LENGTH/2, -0.0001, -TABLE_WIDTH/2},
@@ -651,7 +658,7 @@ static struct graph_wall walls[] = {
         {-PLAYFIELD_LENGTH/2, -0.0001, -PLAYFIELD_WIDTH/2-HOLE_RADIUS},
     },
     {
-        {0.5, 0.5, 0.5},
+        GRAY,
         B,
         {TABLE_LENGTH/2-HOLE_RADIUS, -0.0001, -TABLE_WIDTH/2},
         {TABLE_LENGTH/2, -0.0001, -TABLE_WIDTH/2},
@@ -660,37 +667,37 @@ static struct graph_wall walls[] = {
     },
         // Circle Holes
     {
-        {0, 0, 0},
+        BLACK,
 	    CIRCLE,
 	    {PLAYFIELD_LENGTH/2+0.01, 0.0001, PLAYFIELD_WIDTH/2+0.01},
 	    {HOLE_RADIUS, 0, 0},
     },
     {
-        {0, 0, 0},
+        BLACK,
 	    CIRCLE,
 	    {PLAYFIELD_LENGTH/2+0.01, 0.0001, -PLAYFIELD_WIDTH/2-0.01},
 	    {HOLE_RADIUS, 0, 0},
     },
     {
-        {0, 0, 0},
+        BLACK,
 	    CIRCLE,
 	    {-PLAYFIELD_LENGTH/2-0.01, 0.0001, PLAYFIELD_WIDTH/2-0.01},
 	    {HOLE_RADIUS, 0, 0},
     },
     {
-        {0, 0, 0},
+        BLACK,
 	    CIRCLE,
 	    {-PLAYFIELD_LENGTH/2-0.01, 0.0001, -PLAYFIELD_WIDTH/2-0.01},
 	    {HOLE_RADIUS, 0, 0},
     },
     {
-        {0, 0, 0},
+        BLACK,
 	    CIRCLE,
 	    {0, 0.0001, PLAYFIELD_WIDTH/2+0.04},
 	    {HOLE_RADIUS, 0, 0},
     },
     {
-        {0, 0, 0},
+        BLACK,
 	    CIRCLE,
 	    {0, 0.0001, -PLAYFIELD_WIDTH/2-0.04},
 	    {HOLE_RADIUS, 0, 0},
@@ -792,4 +799,3 @@ void draw_graph_table(const struct graph_table *table) {
         draw_graph_wall(table->walls + i);
     glPopMatrix();
 }
-
