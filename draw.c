@@ -8,7 +8,7 @@
 
 #include "light.h"
 
-static void move_for_menu() {
+static void move_for_menu(void) {
     Vector4 v;
     glGetFloatv(GL_VIEWPORT, v);
     glTranslatef(v[2]*0.40/2, v[3]/2+v[3]/6, 0);
