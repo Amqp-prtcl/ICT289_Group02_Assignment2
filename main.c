@@ -38,7 +38,7 @@ static void init(void) {
     //glEnable(GL_TEXTURE_2D);
     light_init();
 
-    const GLuint *textures = LoadAllTex(TexPaths,
+    GLuint *textures = LoadAllTex(TexPaths,
             sizeof(TexPaths)/sizeof(char *));
 
     game_init(textures);

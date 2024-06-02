@@ -236,7 +236,7 @@ void game_keyboard_event(unsigned char key) {
     }
 }
 
-void game_init(const GLuint *BallTexture) {
+void game_init(GLuint *BallTexture) {
     on_state_change = on_state_event;
     on_hole_event = on_hole;
 
