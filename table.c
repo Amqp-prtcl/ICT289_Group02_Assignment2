@@ -97,7 +97,7 @@ static struct wall walls[] = {
         { PLAYFIELD_LENGTH/2 + 0, 0,  PLAYFIELD_WIDTH/2 + 0},
         {-PLAYFIELD_LENGTH/2 - 0, 0,  PLAYFIELD_WIDTH/2 + 0},
         {-PLAYFIELD_LENGTH/2 - 0, 0, -PLAYFIELD_WIDTH/2 - 0},
-        0, 1,
+        0.5, 1,
     },
     {
         {.6, .6, .6},
